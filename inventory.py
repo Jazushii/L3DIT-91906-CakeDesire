@@ -9,6 +9,7 @@ inventory.resizable(False, False)
 # Task 1.2
 frm_title = tk.Frame(inventory, height=60, bg='#FFD333', bd=1, relief='solid')
 frm_title.pack(fill=tk.X)
+frm_title.pack_propagate(False)
 
 frm_navbar = tk.Frame(inventory, width=100, bg='#FEF67F')
 frm_navbar.pack(fill=tk.Y, side='left')
@@ -25,6 +26,11 @@ active_bottom_bd = tk.Frame(inventory, width=100, height=1, bg='black')
 active_bottom_bd.place(x=0, y=220)
 navbar_bottom_bd = tk.Frame(inventory, width=100, height=1, bg='black')
 navbar_bottom_bd.place(x=0, y=539)
+
+# Task 1.3
+cd_logo = tk.PhotoImage(file='cake-desire-logo.png')
+lbl_title = tk.Label(frm_title, text='Cake Desire', font=('Ink Free', 20, 'bold'), image=cd_logo, compound='right', bg='#FFD333')
+lbl_title.place(relx=0.5, rely=0.5, anchor='center')
 
 # Task 1.1
 inventory.mainloop()
