@@ -60,13 +60,38 @@ def OpenOrderList():
     content.place(x=110, y=60)
     content.pack_propagate(False)
 
-    name = tk.Frame(content, width=200, height=60, pady=5, bd=1.5, relief='groove')
-    name.place(x=20, y=20)
-    name.pack_propagate(False)
-    lbl_name = tk.Label(name, text='Customer Name:', font=('Segoe Print', 12))
-    lbl_name.place(x=5, y=-6)
-    ent_name = tk.Entry(name, width=20, font=('Arial', 12))
-    ent_name.place(x=5, y=24)
+    labels = [
+        'Customer Name:',
+        'Cake Flavour:',
+        'Due Date:',
+        'Cake Colour/s:',
+        'Cake Type:',
+        'Cake Shape'
+    ]
+    le = 0
+
+    entries = []
+
+    for r in range(3):
+        for c in range(2):
+            frame = tk.Frame(content, width=265, height=60, bd=1.5, relief='groove')
+            frame.grid(row=r, column=c)
+            frame.place(x=20+(c*275), y=20+(r*70))
+            frame.pack_propagate(False)
+            label = tk.Label(frame, text=labels[le], font=('Segoe Print', 12))
+            label.place(x=5, y=-1)
+            if le == 2:
+                entries.append(tk.Entry(frame, width=20, font=('Arial', 12), bg='white'))
+                frm_icon = tk.Frame(frame, width=20, height=20, bg='#FEF8A0')
+                frm_icon.place(x=168, y=29)
+                frm_icon.pack_propagate(False)
+                icon = tk.PhotoImage(file='date-icon.png')
+                img_icon = tk.Label(frm_icon, image=icon, bg='#FEF8A0')
+                img_icon.pack(fill="both", expand=True)
+            else:
+                entries.append(tk.Entry(frame, width=20, font=('Arial', 12), bg='#FEF8A0'))
+            entries[le].place(x=5, y=28)
+            le += 1
 
     # Task 1.1
     orderlist.mainloop()
