@@ -55,6 +55,19 @@ def OpenOrderList():
     btn_calen = tk.Button(navbar_calen, text='Calendar', font=('Segoe Print', 14), bg='#FEF67F', activebackground='#FFC957', command=switch_calendar)
     btn_calen.pack(fill="both", expand=True)
 
+    # Task 2.1
+    content = tk.Frame(main, width=850, height=480)
+    content.place(x=110, y=60)
+    content.pack_propagate(False)
+
+    name = tk.Frame(content, width=200, height=60, pady=5, bd=1.5, relief='groove')
+    name.place(x=20, y=20)
+    name.pack_propagate(False)
+    lbl_name = tk.Label(name, text='Customer Name:', font=('Segoe Print', 12))
+    lbl_name.place(x=5, y=-6)
+    ent_name = tk.Entry(name, width=20, font=('Arial', 12))
+    ent_name.place(x=5, y=24)
+
     # Task 1.1
     orderlist.mainloop()
 
