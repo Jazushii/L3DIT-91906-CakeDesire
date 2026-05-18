@@ -13,14 +13,17 @@ def OpenInventory():
     frm_title.pack_propagate(False)
 
     navbar_inventory = tk.Frame(inventory, width=110, height=160, bg='#FFC957')
-    navbar_inventory.place(x=0, y=60)
+    navbar_inventory.place(x=1, y=60)
     navbar_inventory.pack_propagate(False)
     navbar_orderlist = tk.Frame(inventory, width=110, height=160, bg='#FEF67F')
-    navbar_orderlist.place(x=0, y=220)
+    navbar_orderlist.place(x=1, y=220)
     navbar_orderlist.pack_propagate(False)
     navbar_calendar = tk.Frame(inventory, width=110, height=160, bg='#FEF67F')
-    navbar_calendar.place(x=0, y=380)
+    navbar_calendar.place(x=1, y=380)
     navbar_calendar.pack_propagate(False)
+
+    navbar_bd_left = tk.Frame(inventory, width=1, height=480, bg='black')
+    navbar_bd_left.place(x=0, y=60)
 
     # Task 1.3 & 1.4
     cd_logo = tk.PhotoImage(file='cake-desire-logo.png')

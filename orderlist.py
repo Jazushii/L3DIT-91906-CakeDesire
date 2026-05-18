@@ -22,6 +22,9 @@ def OpenOrderList():
     navbar_calendar.place(x=0, y=380)
     navbar_calendar.pack_propagate(False)
 
+    navbar_bd_left = tk.Frame(orderlist, width=1, height=480, bg='black')
+    navbar_bd_left.place(x=0, y=60)
+
     # Task 1.3 & 1.4
     cd_logo = tk.PhotoImage(file='cake-desire-logo.png')
     lbl_title = tk.Label(frm_title, text='Cake Desire ', font=('Ink Free', 24, 'bold'), image=cd_logo, compound='right', bg='#FFD333')
@@ -46,3 +49,6 @@ def OpenOrderList():
 
     # Task 1.1
     orderlist.mainloop()
+
+if __name__ == "__main__":
+    OpenOrderList()
