@@ -55,7 +55,7 @@ def OpenOrderList():
     btn_calen = tk.Button(navbar_calen, text='Calendar', font=('Segoe Print', 14), bg='#FEF67F', activebackground='#FFC957', command=switch_calendar)
     btn_calen.pack(fill="both", expand=True)
 
-    # Task 2.1
+    # Task 2.2
     content = tk.Frame(main, width=850, height=480)
     content.place(x=110, y=60)
     content.pack_propagate(False)
@@ -66,7 +66,7 @@ def OpenOrderList():
         'Due Date:',
         'Cake Colour/s:',
         'Cake Type:',
-        'Cake Shape'
+        'Cake Shape:'
     ]
     le = 0
 
@@ -74,7 +74,7 @@ def OpenOrderList():
 
     for r in range(3):
         for c in range(2):
-            frame = tk.Frame(content, width=265, height=60, bd=1.5, relief='groove')
+            frame = tk.Frame(content, width=265, height=62, bd=1.5, relief='groove')
             frame.grid(row=r, column=c)
             frame.place(x=20+(c*275), y=20+(r*70))
             frame.pack_propagate(False)
@@ -83,15 +83,38 @@ def OpenOrderList():
             if le == 2:
                 entries.append(tk.Entry(frame, width=20, font=('Arial', 12), bg='white'))
                 frm_icon = tk.Frame(frame, width=20, height=20, bg='#FEF8A0')
-                frm_icon.place(x=168, y=29)
+                frm_icon.place(x=168, y=31)
                 frm_icon.pack_propagate(False)
                 icon = tk.PhotoImage(file='date-icon.png')
                 img_icon = tk.Label(frm_icon, image=icon, bg='#FEF8A0')
                 img_icon.pack(fill="both", expand=True)
             else:
                 entries.append(tk.Entry(frame, width=20, font=('Arial', 12), bg='#FEF8A0'))
-            entries[le].place(x=5, y=28)
+            entries[le].place(x=5, y=30)
             le += 1
+    
+    # Task 2.3
+    frm_tiers = tk.Frame(content, width=265, height=100, bd=1.5, relief='groove')
+    frm_tiers.place(x=20, y=230)
+    frm_tiers.pack_propagate(False)
+    lbl_tiers = tk.Label(frm_tiers, text='No. of Cake Tiers:', font=('Segoe Print', 12))
+    lbl_tiers.place(x=5, y=-1)
+    ent_tiers = tk.Entry(frm_tiers, width=2, font=('Arial', 12))
+    ent_tiers.place(x=5, y=30)
+    def tiers_table():
+        for r in range(int(ent_tiers.get)):
+            for c in range(3):
+                frame = tk.Frame(frm_tiers, width=265, height=60, bd=1.5, relief='groove')
+                frame.grid(row=r, column=c)
+                frame.place(x=20+(c*275), y=20+(r*70))
+                frame.pack_propagate(False)
+                label = tk.Label(frame, text=labels[le], font=('Segoe Print', 12))
+                label.place(x=5, y=-1)
+    frm_btn_tiers = tk.Frame(frm_tiers, width=22, height=22, bg='#FEF8A0')
+    frm_btn_tiers.place(x=27, y=30)
+    frm_btn_tiers.pack_propagate(False)
+    btn_tiers = tk.Button(frm_btn_tiers, text='▼', font=('Arial', 10, 'bold'), bg='#FEF8A0', command=tiers_table)
+    btn_tiers.pack(fill='both', expand=True)
 
     # Task 1.1
     orderlist.mainloop()
