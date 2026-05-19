@@ -68,15 +68,16 @@ def OpenOrderList():
         'Cake Type:',
         'Cake Shape:'
     ]
+
     le = 0
 
     entries = []
 
-    for r in range(3):
-        for c in range(2):
+    for re in range(3):
+        for ce in range(2):
             frame = tk.Frame(content, width=265, height=62, bd=1.5, relief='groove')
-            frame.grid(row=r, column=c)
-            frame.place(x=20+(c*275), y=20+(r*70))
+            frame.grid(row=re, column=ce)
+            frame.place(x=20+(ce*275), y=20+(re*70))
             frame.pack_propagate(False)
             label = tk.Label(frame, text=labels[le], font=('Segoe Print', 12))
             label.place(x=5, y=-1)
@@ -94,22 +95,36 @@ def OpenOrderList():
             le += 1
     
     # Task 2.3
-    frm_tiers = tk.Frame(content, width=265, height=100, bd=1.5, relief='groove')
+    frm_tiers = tk.Frame(content, width=265, height=200, bd=1.5, relief='groove')
     frm_tiers.place(x=20, y=230)
     frm_tiers.pack_propagate(False)
     lbl_tiers = tk.Label(frm_tiers, text='No. of Cake Tiers:', font=('Segoe Print', 12))
     lbl_tiers.place(x=5, y=-1)
     ent_tiers = tk.Entry(frm_tiers, width=2, font=('Arial', 12))
     ent_tiers.place(x=5, y=30)
+
     def tiers_table():
-        for r in range(int(ent_tiers.get)):
-            for c in range(3):
-                frame = tk.Frame(frm_tiers, width=265, height=60, bd=1.5, relief='groove')
-                frame.grid(row=r, column=c)
-                frame.place(x=20+(c*275), y=20+(r*70))
+        tier_txt = [
+            'Tier:',
+            'No. of\nLayers:',
+            'Size (In.):'
+        ]
+
+        tt = 0
+
+        for rt in range(int(ent_tiers.get())):
+            for ct in range(3):
+                frame = tk.Frame(frm_tiers, width=84, height=50, bd=1.5, relief='groove')
+                frame.grid(row=rt, column=ct)
+                frame.place(x=5+(ct*84), y=60)
                 frame.pack_propagate(False)
-                label = tk.Label(frame, text=labels[le], font=('Segoe Print', 12))
-                label.place(x=5, y=-1)
+                if tt <= 4:
+                    label = tk.Label(frame, text=tier_txt[tt], font=('Segoe Print', 12))
+                    label.place(x=0, y=-1)
+                else:
+                    entry = tk.Entry(frame)
+                    entry.place(x=5, y=1)
+                tt += 1
     frm_btn_tiers = tk.Frame(frm_tiers, width=22, height=22, bg='#FEF8A0')
     frm_btn_tiers.place(x=27, y=30)
     frm_btn_tiers.pack_propagate(False)
