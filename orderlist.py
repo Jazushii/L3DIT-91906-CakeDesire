@@ -106,25 +106,30 @@ def OpenOrderList():
     def tiers_table():
         tier_txt = [
             'Tier:',
-            'No. of\nLayers:',
+            'Layers:',
             'Size (In.):'
         ]
 
         tt = 0
 
         for rt in range(int(ent_tiers.get())):
+            tt = 0
             for ct in range(3):
-                frame = tk.Frame(frm_tiers, width=84, height=50, bd=1.5, relief='groove')
-                frame.grid(row=rt, column=ct)
+                frame = tk.Frame(frm_tiers, width=84, height=38, bd=1.5, relief='groove')
+                frame.grid(row=0, column=ct)
                 frame.place(x=5+(ct*84), y=60)
                 frame.pack_propagate(False)
-                if tt <= 4:
-                    label = tk.Label(frame, text=tier_txt[tt], font=('Segoe Print', 12))
-                    label.place(x=0, y=-1)
-                else:
-                    entry = tk.Entry(frame)
-                    entry.place(x=5, y=1)
+                label = tk.Label(frame, text=tier_txt[tt], font=('Segoe Print', 12))
+                label.place(x=0, y=-1)
                 tt += 1
+
+                frame = tk.Frame(frm_tiers, width=84, height=25)
+                frame.grid(row=rt+1, column=ct)
+                frame.place(x=5+(ct*84), y=98+((rt)*25))
+                frame.pack_propagate(False)
+                entry = tk.Entry(frame, font=('Arial', 12))
+                entry.pack(fill='both', expand=True)
+
     frm_btn_tiers = tk.Frame(frm_tiers, width=22, height=22, bg='#FEF8A0')
     frm_btn_tiers.place(x=27, y=30)
     frm_btn_tiers.pack_propagate(False)
