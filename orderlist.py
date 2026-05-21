@@ -95,29 +95,39 @@ def OpenOrderList():
             le += 1
     
     # Task 2.3
-    frm_tiers = tk.Frame(content, width=265, height=200, bd=1.5, relief='groove')
-    frm_tiers.place(x=20, y=230)
-    frm_tiers.pack_propagate(False)
-    lbl_tiers = tk.Label(frm_tiers, text='No. of Cake Tiers:', font=('Segoe Print', 12))
-    lbl_tiers.place(x=5, y=-1)
-    ent_tiers = tk.Entry(frm_tiers, width=2, font=('Arial', 12))
-    ent_tiers.place(x=5, y=30)
+    frm_tiers = None
 
-    def tiers_table():
+    def tiers_table(rnum):
+        nonlocal frm_tiers
+        if frm_tiers is not None:
+            frm_tiers.destroy()
+
+        frm_tiers = tk.Frame(content, width=265, height=106+(int(rnum)*25), bd=1.5, relief='groove')
+        frm_tiers.place(x=20, y=230)
+        frm_tiers.pack_propagate(False)
+        lbl_tiers = tk.Label(frm_tiers, text='No. of Cake Tiers:', font=('Segoe Print', 12))
+        lbl_tiers.place(x=5, y=-1)
+        ent_tiers = tk.Entry(frm_tiers, width=2, font=('Arial', 12))
+        ent_tiers.place(x=5, y=30)
+        ent_tiers.insert(0, rnum)
+
         tier_txt = [
             'Tier:',
             'Layers:',
             'Size (In.):'
         ]
 
-        tt = 0
+        tier_entries = []
 
-        for rt in range(int(ent_tiers.get())):
+        tt = 0
+        et = 0
+
+        for rt in range(int(rnum)):
             tt = 0
             for ct in range(3):
                 frame = tk.Frame(frm_tiers, width=84, height=38, bd=1.5, relief='groove')
                 frame.grid(row=0, column=ct)
-                frame.place(x=5+(ct*84), y=60)
+                frame.place(x=4+(ct*84), y=60)
                 frame.pack_propagate(False)
                 label = tk.Label(frame, text=tier_txt[tt], font=('Segoe Print', 12))
                 label.place(x=0, y=-1)
@@ -125,16 +135,19 @@ def OpenOrderList():
 
                 frame = tk.Frame(frm_tiers, width=84, height=25)
                 frame.grid(row=rt+1, column=ct)
-                frame.place(x=5+(ct*84), y=98+((rt)*25))
+                frame.place(x=4+(ct*84), y=98+((rt)*25))
                 frame.pack_propagate(False)
-                entry = tk.Entry(frame, font=('Arial', 12))
-                entry.pack(fill='both', expand=True)
+                tier_entries.append(tk.Entry(frame, font=('Arial', 12)))
+                tier_entries[et].pack(fill='both', expand=True)
+                et += 1
 
-    frm_btn_tiers = tk.Frame(frm_tiers, width=22, height=22, bg='#FEF8A0')
-    frm_btn_tiers.place(x=27, y=30)
-    frm_btn_tiers.pack_propagate(False)
-    btn_tiers = tk.Button(frm_btn_tiers, text='▼', font=('Arial', 10, 'bold'), bg='#FEF8A0', command=tiers_table)
-    btn_tiers.pack(fill='both', expand=True)
+        frm_btn_tiers = tk.Frame(frm_tiers, width=22, height=22, bg='#FEF8A0')
+        frm_btn_tiers.place(x=27, y=30)
+        frm_btn_tiers.pack_propagate(False)
+        btn_tiers = tk.Button(frm_btn_tiers, text='▼', font=('Arial', 10, 'bold'), bg='#FEF8A0', command=lambda: tiers_table(ent_tiers.get()))
+        btn_tiers.pack(fill='both', expand=True)
+
+    tiers_table(1)
 
     # Task 1.1
     orderlist.mainloop()
