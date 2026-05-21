@@ -94,7 +94,7 @@ def OpenOrderList():
             entries[le].place(x=5, y=30)
             le += 1
     
-    # Task 2.3
+    # Task 2.3.1
     frm_tiers = None
 
     def tiers_table(rnum):
@@ -111,6 +111,7 @@ def OpenOrderList():
         ent_tiers.place(x=5, y=30)
         ent_tiers.insert(0, rnum)
 
+        # Task 2.3.2
         tier_txt = [
             'Tier:',
             'Layers:',
@@ -125,11 +126,11 @@ def OpenOrderList():
         for rt in range(int(rnum)):
             tt = 0
             for ct in range(3):
-                frame = tk.Frame(frm_tiers, width=84, height=38, bd=1.5, relief='groove')
+                frame = tk.Frame(frm_tiers, width=84, height=38, bd=1.5, relief='groove', bg='#FEF8A0')
                 frame.grid(row=0, column=ct)
                 frame.place(x=4+(ct*84), y=60)
                 frame.pack_propagate(False)
-                label = tk.Label(frame, text=tier_txt[tt], font=('Segoe Print', 12))
+                label = tk.Label(frame, text=tier_txt[tt], font=('Segoe Print', 12), bg='#FEF8A0')
                 label.place(x=0, y=-1)
                 tt += 1
 
@@ -137,10 +138,11 @@ def OpenOrderList():
                 frame.grid(row=rt+1, column=ct)
                 frame.place(x=4+(ct*84), y=98+((rt)*25))
                 frame.pack_propagate(False)
-                tier_entries.append(tk.Entry(frame, font=('Arial', 12)))
+                tier_entries.append(tk.Entry(frame, font=('Arial', 12), bd=1.5, relief='groove'))
                 tier_entries[et].pack(fill='both', expand=True)
                 et += 1
 
+        # Task 2.3.1
         frm_btn_tiers = tk.Frame(frm_tiers, width=22, height=22, bg='#FEF8A0')
         frm_btn_tiers.place(x=27, y=30)
         frm_btn_tiers.pack_propagate(False)
@@ -148,6 +150,20 @@ def OpenOrderList():
         btn_tiers.pack(fill='both', expand=True)
 
     tiers_table(1)
+
+    # Task 2.2.1
+    frm_decor = tk.Frame(content, width=265, height=231, bd=1.5, relief='groove')
+    frm_decor.place(x=295, y=230)
+    frm_decor.pack_propagate(False)
+    lbl_decor = tk.Label(frm_decor, text='Decorations/Toppings:', font=('Segoe Print', 12))
+    lbl_decor.place(x=5, y=-1)
+
+    # Task 2.2.3
+    frm_txt_decor = tk.Frame(frm_decor, width=250, height=190, bd=1.5, relief='groove', bg='#FEF8A0')
+    frm_txt_decor.place(x=5, y=30)
+    frm_txt_decor.pack_propagate(False)
+    txt_decor = tk.Text(frm_txt_decor, font=('Arial', 12), bg='#FEF8A0')
+    txt_decor.pack(fill='both', expand=True)
 
     # Task 1.1
     orderlist.mainloop()
