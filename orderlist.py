@@ -1,4 +1,5 @@
 import tkinter as tk
+import json
 
 def OpenOrderList():
     # Task 1.1 & 1.2
@@ -146,24 +147,33 @@ def OpenOrderList():
         frm_btn_tiers = tk.Frame(frm_tiers, width=22, height=22, bg='#FEF8A0')
         frm_btn_tiers.place(x=27, y=30)
         frm_btn_tiers.pack_propagate(False)
-        btn_tiers = tk.Button(frm_btn_tiers, text='▼', font=('Arial', 10, 'bold'), bg='#FEF8A0', command=lambda: tiers_table(ent_tiers.get()))
+        btn_tiers = tk.Button(frm_btn_tiers, text='▼', font=('Arial', 10, 'bold'), bg='#FEF8A0', activebackground='#FEF8A0', command=lambda: tiers_table(ent_tiers.get()))
         btn_tiers.pack(fill='both', expand=True)
 
     tiers_table(1)
 
-    # Task 2.2.1
-    frm_decor = tk.Frame(content, width=265, height=231, bd=1.5, relief='groove')
+    # Task 2.3.1
+    # height=231
+    frm_decor = tk.Frame(content, width=265, height=201, bd=1.5, relief='groove')
     frm_decor.place(x=295, y=230)
     frm_decor.pack_propagate(False)
     lbl_decor = tk.Label(frm_decor, text='Decorations/Toppings:', font=('Segoe Print', 12))
     lbl_decor.place(x=5, y=-1)
 
-    # Task 2.2.3
-    frm_txt_decor = tk.Frame(frm_decor, width=250, height=190, bd=1.5, relief='groove', bg='#FEF8A0')
+    # Task 2.3.3
+    # height=190
+    frm_txt_decor = tk.Frame(frm_decor, width=250, height=160, bd=1.5, relief='groove', bg='#FEF8A0')
     frm_txt_decor.place(x=5, y=30)
     frm_txt_decor.pack_propagate(False)
     txt_decor = tk.Text(frm_txt_decor, font=('Arial', 12), bg='#FEF8A0')
     txt_decor.pack(fill='both', expand=True)
+
+    # Task 2.4.2
+    frm_save = tk.Frame(content, width=150, height=30, bg='#FFB253')
+    frm_save.place(x=410, y=440)
+    frm_save.pack_propagate(False)
+    btn_save = tk.Button(frm_save, text='Confirm Order', font=('Segoe Print', 11), bg='#FFB253', activebackground='#FFB253')
+    btn_save.pack(fill='both', expand=True)
 
     # Task 1.1
     orderlist.mainloop()
