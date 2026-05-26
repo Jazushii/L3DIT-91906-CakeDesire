@@ -168,11 +168,29 @@ def OpenOrderList():
     txt_decor = tk.Text(frm_txt_decor, font=('Arial', 12), bg='#FEF8A0')
     txt_decor.pack(fill='both', expand=True)
 
+    # Task 2.4.1
+    def save_order():
+
+        order_details = {
+            'customer_details':entries[0].get(),
+            'cake_flavour':entries[1].get(),
+            'due_date':entries[2].get(),
+            'cake_colour/s':entries[3].get(),
+            'cake_type':entries[4].get(),
+            'cake_shape':entries[5].get()
+        }
+        
+        with open(f'{entries[0].get()}.json', 'w') as f:
+            json.dump(order_details, f, indent=4)
+
+        print('Saving...')
+
+
     # Task 2.4.2
     frm_save = tk.Frame(content, width=150, height=30, bg='#FFB253')
     frm_save.place(x=410, y=440)
     frm_save.pack_propagate(False)
-    btn_save = tk.Button(frm_save, text='Confirm Order', font=('Segoe Print', 11), bg='#FFB253', activebackground='#FFB253')
+    btn_save = tk.Button(frm_save, text='Confirm Order', font=('Segoe Print', 11), bg='#FFB253', activebackground='#FFB253', command=save_order)
     btn_save.pack(fill='both', expand=True)
 
     # Task 1.1
