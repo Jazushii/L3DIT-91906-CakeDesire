@@ -99,6 +99,8 @@ def OpenOrderList():
     frm_tiers = None
 
     def tiers_table(rnum):
+        global ent_tiers
+        global tier_entries
         nonlocal frm_tiers
         if frm_tiers is not None:
             frm_tiers.destroy()
@@ -177,9 +179,20 @@ def OpenOrderList():
             'due_date':entries[2].get(),
             'cake_colour/s':entries[3].get(),
             'cake_type':entries[4].get(),
-            'cake_shape':entries[5].get()
+            'cake_shape':entries[5].get(),
+            'decor':txt_decor.get("1.0", tk.END),
+            'tiers':ent_tiers.get()
         }
         
+        tier_labels = ['tier', 'layer', 'size']
+
+        ts = 0
+
+        for tn in range(int(ent_tiers.get())):
+            for td in range(3):
+                order_details[f'{tier_labels[td]} {tn}'] = tier_entries[ts].get()
+                ts += 1
+
         with open(f'{entries[0].get()}.json', 'w') as f:
             json.dump(order_details, f, indent=4)
 
