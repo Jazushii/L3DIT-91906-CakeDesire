@@ -177,8 +177,8 @@ def OpenOrderList():
         for ep in range(6):
             if entries[ep].get() == '':
                 blank = 1
-            digit = sum(a.isdigit() for a in entries[ep])
-            if digit != 0:
+            sum_digit = sum(a.isdigit() for a in entries[ep].get())
+            if sum_digit != 0:
                 digit = 1
         if blank == 1:
             print('blank error')
@@ -189,7 +189,7 @@ def OpenOrderList():
     def save_order():
         
         error_prev()
-
+        
         order_details = {
             'customer_details':entries[0].get(),
             'cake_flavour':entries[1].get(),
