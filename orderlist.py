@@ -170,8 +170,25 @@ def OpenOrderList():
     txt_decor = tk.Text(frm_txt_decor, font=('Arial', 12), bg='#FEF8A0')
     txt_decor.pack(fill='both', expand=True)
 
+    # Task 2.4.3
+    def error_prev():
+        blank = 0
+        digit = 0
+        for ep in range(6):
+            if entries[ep].get() == '':
+                blank = 1
+            digit = sum(a.isdigit() for a in entries[ep])
+            if digit != 0:
+                digit = 1
+        if blank == 1:
+            print('blank error')
+        if digit == 1:
+            print('digit error')
+
     # Task 2.4.1
     def save_order():
+        
+        error_prev()
 
         order_details = {
             'customer_details':entries[0].get(),
@@ -190,7 +207,7 @@ def OpenOrderList():
 
         for tn in range(int(ent_tiers.get())):
             for td in range(3):
-                order_details[f'{tier_labels[td]} {tn}'] = tier_entries[ts].get()
+                order_details[f'{tier_labels[td]} {tn+1}'] = tier_entries[ts].get()
                 ts += 1
 
         with open(f'{entries[0].get()}.json', 'w') as f:
