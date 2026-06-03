@@ -173,19 +173,29 @@ def OpenOrderList():
     # Task 2.4.3
     def error_prev():
         global error
-        global blank
-        global digit
         error = 0
         blank = 0
         digit = 0
-        for ep in range(6):
-            if entries[ep].get() == '':
+
+        for eep in range(6):
+            if entries[eep].get() == '':
                 error = 1
                 blank = 1
-            sum_digit = sum(a.isdigit() for a in entries[ep].get())
+            sum_digit = sum(a.isdigit() for a in entries[eep].get())
             if sum_digit != 0:
                 error = 1
                 digit = 1
+
+        tc = 0
+
+        for tn in range(int(ent_tiers.get())):
+            for tep in range(3):
+                if tier_entries[tc].get() == '':
+                    error = 1
+                    blank = 1
+                
+                tc += 1
+
         if blank == 1:
             print('blank error')
         if digit == 1:
