@@ -172,13 +172,19 @@ def OpenOrderList():
 
     # Task 2.4.3
     def error_prev():
+        global error
+        global blank
+        global digit
+        error = 0
         blank = 0
         digit = 0
         for ep in range(6):
             if entries[ep].get() == '':
+                error = 1
                 blank = 1
             sum_digit = sum(a.isdigit() for a in entries[ep].get())
             if sum_digit != 0:
+                error = 1
                 digit = 1
         if blank == 1:
             print('blank error')
@@ -187,9 +193,7 @@ def OpenOrderList():
 
     # Task 2.4.1
     def save_order():
-        
-        error_prev()
-        
+
         order_details = {
             'customer_details':entries[0].get(),
             'cake_flavour':entries[1].get(),
@@ -215,12 +219,16 @@ def OpenOrderList():
 
         print('Saving...')
 
+    def save_button_pressed():
+        error_prev()
+        if error == 0:
+            save_order()
 
     # Task 2.4.2
     frm_save = tk.Frame(content, width=150, height=30, bg='#FFB253')
     frm_save.place(x=410, y=440)
     frm_save.pack_propagate(False)
-    btn_save = tk.Button(frm_save, text='Confirm Order', font=('Segoe Print', 11), bg='#FFB253', activebackground='#FFB253', command=save_order)
+    btn_save = tk.Button(frm_save, text='Confirm Order', font=('Segoe Print', 11), bg='#FFB253', activebackground='#FFB253', command=save_button_pressed)
     btn_save.pack(fill='both', expand=True)
 
     # Task 1.1
