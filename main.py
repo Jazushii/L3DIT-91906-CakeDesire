@@ -23,13 +23,17 @@ def interface(type):
     navbar.place(x=0, y=60)
     navbar.pack_propagate(False)
 
-    navbar_inven = tk.Frame(navbar, height=160, bg='#FEF67F')
+    inven_colour = '#FFC957' if type == 'inventory' else '#FEF67F'
+    order_colour = '#FFC957' if type == 'orderlist' else '#FEF67F'
+    calen_colour = '#FFC957' if type == 'calendar' else '#FEF67F'
+
+    navbar_inven = tk.Frame(navbar, height=160, bg=inven_colour)
     navbar_inven.pack(fill=tk.X)
     navbar_inven.pack_propagate(False)
-    navbar_order = tk.Frame(navbar, height=160, bg='#FFC957')
+    navbar_order = tk.Frame(navbar, height=160, bg=order_colour)
     navbar_order.pack(fill=tk.X)
     navbar_order.pack_propagate(False)
-    navbar_calen = tk.Frame(navbar, height=160, bg='#FEF67F')
+    navbar_calen = tk.Frame(navbar, height=160, bg=calen_colour)
     navbar_calen.pack(fill=tk.X)
     navbar_calen.pack_propagate(False)
 
