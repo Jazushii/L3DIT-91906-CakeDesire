@@ -1,13 +1,8 @@
 import tkinter as tk
 import json
 
-def open_orderlist(main):
-    # Task 2.2
-    content = tk.Frame(main, width=850, height=480)
-    content.place(x=110, y=60)
-    content.pack_propagate(False)
-
-    labels = [
+def open_orderlist(content):
+    detail_labels = [
         'Customer Name:',
         'Cake Flavour:',
         'Due Date:',
@@ -16,20 +11,20 @@ def open_orderlist(main):
         'Cake Shape:'
     ]
 
-    le = 0
+    detail_num = 0
 
-    entries = []
+    detail_ents = []
 
-    for re in range(3):
-        for ce in range(2):
+    for dr in range(3):
+        for dc in range(2):
             frame = tk.Frame(content, width=265, height=62, bd=1.5, relief='groove')
-            frame.grid(row=re, column=ce)
-            frame.place(x=20+(ce*275), y=20+(re*70))
+            frame.grid(row=dr, column=dc)
+            frame.place(x=20+(dc*275), y=20+(dr*70))
             frame.pack_propagate(False)
-            label = tk.Label(frame, text=labels[le], font=('Segoe Print', 12))
+            label = tk.Label(frame, text=detail_labels[detail_num], font=('Segoe Print', 12))
             label.place(x=5, y=-1)
-            if le == 2:
-                entries.append(tk.Entry(frame, width=20, font=('Arial', 12), bg='white'))
+            if detail_num == 2:
+                detail_num.append(tk.Entry(frame, width=20, font=('Arial', 12), bg='white'))
                 frm_icon = tk.Frame(frame, width=20, height=20, bg='#FEF8A0')
                 frm_icon.place(x=168, y=31)
                 frm_icon.pack_propagate(False)
@@ -37,17 +32,14 @@ def open_orderlist(main):
                 img_icon = tk.Label(frm_icon, image=icon, bg='#FEF8A0')
                 img_icon.pack(fill="both", expand=True)
             else:
-                entries.append(tk.Entry(frame, width=20, font=('Arial', 12), bg='#FEF8A0'))
-            entries[le].place(x=5, y=30)
-            le += 1
+                detail_ents.append(tk.Entry(frame, width=20, font=('Arial', 12), bg='#FEF8A0'))
+            detail_ents[detail_num].place(x=5, y=30)
+            detail_num += 1
     
     # Task 2.3.1
     frm_tiers = None
 
     def tiers_table(rnum):
-        global ent_tiers
-        global tier_entries
-        nonlocal frm_tiers
         if frm_tiers is not None:
             frm_tiers.destroy()
 
@@ -61,35 +53,33 @@ def open_orderlist(main):
         ent_tiers.insert(0, rnum)
 
         # Task 2.3.2
-        tier_txt = [
+        tier_lbls = [
             'Tier:',
             'Layers:',
             'Size (In.):'
         ]
 
-        tier_entries = []
+        tier_ents = []
 
-        tt = 0
-        et = 0
+        tier_num = 0
 
-        for rt in range(int(rnum)):
-            tt = 0
-            for ct in range(3):
-                frame = tk.Frame(frm_tiers, width=84, height=38, bd=1.5, relief='groove', bg='#FEF8A0')
-                frame.grid(row=0, column=ct)
-                frame.place(x=4+(ct*84), y=60)
-                frame.pack_propagate(False)
-                label = tk.Label(frame, text=tier_txt[tt], font=('Segoe Print', 12), bg='#FEF8A0')
-                label.place(x=0, y=-1)
-                tt += 1
+        for tr in range(int(rnum)):
+            for tc in range(3):
+                if tr == 0:
+                    frame = tk.Frame(frm_tiers, width=84, height=38, bd=1.5, relief='groove', bg='#FEF8A0')
+                    frame.grid(row=0, column=tc)
+                    frame.place(x=4+(tc*84), y=60)
+                    frame.pack_propagate(False)
+                    label = tk.Label(frame, text=tier_lbls[tier_num], font=('Segoe Print', 12), bg='#FEF8A0')
+                    label.place(x=0, y=-1)
 
                 frame = tk.Frame(frm_tiers, width=84, height=25)
-                frame.grid(row=rt+1, column=ct)
-                frame.place(x=4+(ct*84), y=98+((rt)*25))
+                frame.grid(row=tr+1, column=tc)
+                frame.place(x=4+(tc*84), y=98+((tr)*25))
                 frame.pack_propagate(False)
-                tier_entries.append(tk.Entry(frame, font=('Arial', 12), bd=1.5, relief='groove'))
-                tier_entries[et].pack(fill='both', expand=True)
-                et += 1
+                tier_ents.append(tk.Entry(frame, font=('Arial', 12), bd=1.5, relief='groove'))
+                tier_ents[tier_num].pack(fill='both', expand=True)
+                tier_num += 1
 
         # Task 2.3.1
         frm_btn_tiers = tk.Frame(frm_tiers, width=22, height=22, bg='#FEF8A0')
@@ -186,9 +176,3 @@ def open_orderlist(main):
     frm_save.pack_propagate(False)
     btn_save = tk.Button(frm_save, text='Confirm Order', font=('Segoe Print', 11), bg='#FFB253', activebackground='#FFB253', command=save_button_pressed)
     btn_save.pack(fill='both', expand=True)
-
-    # Task 1.1
-    orderlist.mainloop()
-
-if __name__ == "__main__":
-    OpenOrderList()

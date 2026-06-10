@@ -1,4 +1,4 @@
 import tkinter as tk
 
-def open_inventory(main):
+def open_inventory(content):
     return
