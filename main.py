@@ -23,6 +23,8 @@ def interface(type):
     navbar.place(x=0, y=60)
     navbar.pack_propagate(False)
 
+    print(type)
+
     inven_colour = '#FFC957' if type == 'inventory' else '#FEF67F'
     order_colour = '#FFC957' if type == 'orderlist' else '#FEF67F'
     calen_colour = '#FFC957' if type == 'calendar' else '#FEF67F'
@@ -54,11 +56,11 @@ def interface(type):
         if switch == 'calendar':
             interface('calendar')
 
-    btn_inven = tk.Button(navbar_inven, text='Inventory', font=('Segoe Print', 14), bg='#FEF67F', activebackground='#FFC957', command=lambda:switch('inventory'))
+    btn_inven = tk.Button(navbar_inven, text='Inventory', font=('Segoe Print', 14), bg=inven_colour, activebackground='#FFC957', command=lambda:switch('inventory'))
     btn_inven.pack(fill="both", expand=True)
-    btn_order = tk.Button(navbar_order, text='Order\nList', font=('Segoe Print', 14, 'bold'), bg='#FFC957', activebackground='#FFC957', command=lambda:switch('orderlist'))
+    btn_order = tk.Button(navbar_order, text='Order\nList', font=('Segoe Print', 14, 'bold'), bg=order_colour, activebackground='#FFC957', command=lambda:switch('orderlist'))
     btn_order.pack(fill="both", expand=True)
-    btn_calen = tk.Button(navbar_calen, text='Calendar', font=('Segoe Print', 14), bg='#FEF67F', activebackground='#FFC957', command=lambda:switch('calendar'))
+    btn_calen = tk.Button(navbar_calen, text='Calendar', font=('Segoe Print', 14), bg=calen_colour, activebackground='#FFC957', command=lambda:switch('calendar'))
     btn_calen.pack(fill="both", expand=True)
 
     root.mainloop()
