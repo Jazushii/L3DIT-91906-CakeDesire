@@ -11,9 +11,9 @@ def open_orderlist(content):
         'Cake Shape:'
     ]
 
-    detail_num = 0
-
     detail_ents = []
+
+    detail_num = 0
 
     for dr in range(3):
         for dc in range(2):
@@ -24,22 +24,45 @@ def open_orderlist(content):
             label = tk.Label(frame, text=detail_labels[detail_num], font=('Segoe Print', 12))
             label.place(x=5, y=-1)
             if detail_num == 2:
-                detail_num.append(tk.Entry(frame, width=20, font=('Arial', 12), bg='white'))
-                frm_icon = tk.Frame(frame, width=20, height=20, bg='#FEF8A0')
-                frm_icon.place(x=168, y=31)
+                frm_dd = tk.Frame(frame, width=200, height=30)
+                frm_dd.place(x=5, y=30)
+                due_date = []
+                dd_placeholders = ['DD', 'MM', 'YYYY']
+
+                def create_placeholder(event, dd):
+                    if due_date[dd].get() == dd_placeholders[dd]:
+                        due_date[dd].delete(0, tk.END)
+
+                def delete_placeholder(event, dd):
+                    if due_date[dd].get() == '':
+                        due_date[dd].insert(0, dd_placeholders[dd])
+
+                for dd in range(3):
+                    due_date.append(tk.Entry(frm_dd, width=5, font=('Arial', 12), bg='white'))
+                    due_date[dd].pack(side='left')
+                    due_date[dd].insert(0, dd_placeholders[dd])
+
+                    due_date[dd].bind('<FocusIn>', create_placeholder(dd))
+                    due_date[dd].bind('<FocusOut>', delete_placeholder(dd))
+
+                frm_icon = tk.Frame(frame, width=21, height=21, bg='#FEF8A0')
+                frm_icon.place(x=167, y=30)
                 frm_icon.pack_propagate(False)
                 icon = tk.PhotoImage(file='date-icon.png')
                 img_icon = tk.Label(frm_icon, image=icon, bg='#FEF8A0')
                 img_icon.pack(fill="both", expand=True)
             else:
                 detail_ents.append(tk.Entry(frame, width=20, font=('Arial', 12), bg='#FEF8A0'))
-            detail_ents[detail_num].place(x=5, y=30)
+                detail_ents[detail_num].place(x=5, y=30)
             detail_num += 1
     
     # Task 2.3.1
     frm_tiers = None
 
-    def tiers_table(rnum):
+    def create_tiers_table(rnum):
+        nonlocal frm_tiers
+        global tier_ents
+        global ent_tiers
         if frm_tiers is not None:
             frm_tiers.destroy()
 
@@ -85,13 +108,12 @@ def open_orderlist(content):
         frm_btn_tiers = tk.Frame(frm_tiers, width=22, height=22, bg='#FEF8A0')
         frm_btn_tiers.place(x=27, y=30)
         frm_btn_tiers.pack_propagate(False)
-        btn_tiers = tk.Button(frm_btn_tiers, text='▼', font=('Arial', 10, 'bold'), bg='#FEF8A0', activebackground='#FEF8A0', command=lambda: tiers_table(ent_tiers.get()))
+        btn_tiers = tk.Button(frm_btn_tiers, text='▼', font=('Arial', 10, 'bold'), bg='#FEF8A0', activebackground='#FEF8A0', command=lambda: create_tiers_table(ent_tiers.get()))
         btn_tiers.pack(fill='both', expand=True)
 
-    tiers_table(1)
+    create_tiers_table(1)
 
     # Task 2.3.1
-    # height=231
     frm_decor = tk.Frame(content, width=265, height=201, bd=1.5, relief='groove')
     frm_decor.place(x=295, y=230)
     frm_decor.pack_propagate(False)
@@ -99,7 +121,6 @@ def open_orderlist(content):
     lbl_decor.place(x=5, y=-1)
 
     # Task 2.3.3
-    # height=190
     frm_txt_decor = tk.Frame(frm_decor, width=250, height=160, bd=1.5, relief='groove', bg='#FEF8A0')
     frm_txt_decor.place(x=5, y=30)
     frm_txt_decor.pack_propagate(False)
@@ -113,11 +134,11 @@ def open_orderlist(content):
         blank = 0
         digit = 0
 
-        for eep in range(6):
-            if entries[eep].get() == '':
+        for de in range(6):
+            if detail_ents[de].get() == '':
                 error = 1
                 blank = 1
-            sum_digit = sum(a.isdigit() for a in entries[eep].get())
+            sum_digit = sum(a.isdigit() for a in detail_ents[de].get())
             if sum_digit != 0:
                 error = 1
                 digit = 1
@@ -126,7 +147,7 @@ def open_orderlist(content):
 
         for tn in range(int(ent_tiers.get())):
             for tep in range(3):
-                if tier_entries[tc].get() == '':
+                if tier_ents[tc].get() == '':
                     error = 1
                     blank = 1
                 
