@@ -32,19 +32,23 @@ def open_orderlist(content):
                 def create_placeholder(event, dd):
                     if due_date[dd].get() == dd_placeholders[dd]:
                         due_date[dd].delete(0, tk.END)
+                        due_date[dd].config(fg='black')
 
                 def delete_placeholder(event, dd):
                     if due_date[dd].get() == '':
                         due_date[dd].insert(0, dd_placeholders[dd])
+                        due_date[dd].config(fg='gray')
 
                 for dd in range(3):
-                    due_date.append(tk.Entry(frm_dd, width=5, font=('Arial', 12), bg='white'))
+                    due_date.append(tk.Entry(frm_dd, width=6, font=('Arial', 12), bg='white'))
                     due_date[dd].pack(side='left')
                     due_date[dd].insert(0, dd_placeholders[dd])
+                    due_date[dd].config(fg='gray')
 
-                    due_date[dd].bind('<FocusIn>', create_placeholder(dd))
-                    due_date[dd].bind('<FocusOut>', delete_placeholder(dd))
+                    due_date[dd].bind('<FocusIn>', lambda event, dd=dd: create_placeholder(event, dd))
+                    due_date[dd].bind('<FocusOut>', lambda event, dd=dd: delete_placeholder(event, dd))
 
+                detail_ents.append(due_date)
                 frm_icon = tk.Frame(frame, width=21, height=21, bg='#FEF8A0')
                 frm_icon.place(x=167, y=30)
                 frm_icon.pack_propagate(False)
