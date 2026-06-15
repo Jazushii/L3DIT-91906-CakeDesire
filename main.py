@@ -60,8 +60,7 @@ def interface(type):
     btn_order.pack(fill="both", expand=True)
     btn_calen = tk.Button(navbar_calen, text='Calendar', font=('Segoe Print', 14), bg=calen_colour, activebackground='#FFC957', command=lambda:switch('calendar'))
     btn_calen.pack(fill="both", expand=True)
-
-    # Task 2.2
+    
     content = tk.Frame(main, width=850, height=480)
     content.place(x=110, y=60)
     content.pack_propagate(False)

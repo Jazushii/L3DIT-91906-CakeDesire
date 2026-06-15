@@ -2,6 +2,7 @@ import tkinter as tk
 import json
 
 def open_orderlist(content):
+    # Task 2.2
     detail_labels = [
         'Customer Name:',
         'Cake Flavour:',
@@ -47,13 +48,15 @@ def open_orderlist(content):
 
                     due_date[dd].bind('<FocusIn>', lambda event, dd=dd: create_placeholder(event, dd))
                     due_date[dd].bind('<FocusOut>', lambda event, dd=dd: delete_placeholder(event, dd))
-
+                
                 detail_ents.append(due_date)
+
                 frm_icon = tk.Frame(frame, width=21, height=21, bg='#FEF8A0')
                 frm_icon.place(x=167, y=30)
                 frm_icon.pack_propagate(False)
                 icon = tk.PhotoImage(file='date-icon.png')
                 img_icon = tk.Label(frm_icon, image=icon, bg='#FEF8A0')
+                img_icon.image = icon
                 img_icon.pack(fill="both", expand=True)
             else:
                 detail_ents.append(tk.Entry(frame, width=20, font=('Arial', 12), bg='#FEF8A0'))
@@ -93,20 +96,34 @@ def open_orderlist(content):
         for tr in range(int(rnum)):
             for tc in range(3):
                 if tr == 0:
-                    frame = tk.Frame(frm_tiers, width=84, height=38, bd=1.5, relief='groove', bg='#FEF8A0')
-                    frame.grid(row=0, column=tc)
-                    frame.place(x=4+(tc*84), y=60)
-                    frame.pack_propagate(False)
-                    label = tk.Label(frame, text=tier_lbls[tier_num], font=('Segoe Print', 12), bg='#FEF8A0')
-                    label.place(x=0, y=-1)
+                    frm_lbl = tk.Frame(frm_tiers, width=84, height=38, bd=1.5, relief='groove', bg='#FEF8A0')
+                    frm_lbl.grid(row=0, column=tc)
+                    frm_lbl.place(x=4+(tc*84), y=60)
+                    frm_lbl.pack_propagate(False)
+                    lbl = tk.Label(frm_lbl, text=tier_lbls[tc], font=('Segoe Print', 12), bg='#FEF8A0')
+                    lbl.place(x=0, y=-1)
 
                 frame = tk.Frame(frm_tiers, width=84, height=25)
                 frame.grid(row=tr+1, column=tc)
                 frame.place(x=4+(tc*84), y=98+((tr)*25))
                 frame.pack_propagate(False)
-                tier_ents.append(tk.Entry(frame, font=('Arial', 12), bd=1.5, relief='groove'))
-                tier_ents[tier_num].pack(fill='both', expand=True)
-                tier_num += 1
+                if tc == 0:
+                    lbl_tier = tk.Label(frame, text=f'Tier {tr+1}', font=('Segoe Print', 12), bg='white', bd=1.5, relief='groove')
+                    lbl_tier.pack(fill='both', expand=True)
+                elif tc == 1: 
+                    tier_ents.append(tk.Entry(frame, font=('Arial', 12), bd=1.5, relief='groove'))
+                    tier_ents[tier_num].pack(fill='both', expand=True)
+                    tier_num += 1
+                elif tc == 2:
+                    size = []
+                    for s in range(2):
+                        frm_s = tk.Frame(frame, width=42, height=25, bg='red', bd=1, relief='solid')
+                        frm_s.place(x=42*s, y=0)
+                        frame.pack_propagate(False)
+                        #size.append(tk.Entry(frm_s, font=('Arial', 12), bd=1.5, relief='groove'))
+                        #size[s].pack(fill='both', expand=True)
+                    tier_ents.append(size)
+                    tier_num += 1
 
         # Task 2.3.1
         frm_btn_tiers = tk.Frame(frm_tiers, width=22, height=22, bg='#FEF8A0')
@@ -125,7 +142,7 @@ def open_orderlist(content):
     lbl_decor.place(x=5, y=-1)
 
     # Task 2.3.3
-    frm_txt_decor = tk.Frame(frm_decor, width=250, height=160, bd=1.5, relief='groove', bg='#FEF8A0')
+    frm_txt_decor = tk.Frame(frm_decor, width=250, height=160, bg='#FEF8A0')
     frm_txt_decor.place(x=5, y=30)
     frm_txt_decor.pack_propagate(False)
     txt_decor = tk.Text(frm_txt_decor, font=('Arial', 12), bg='#FEF8A0')
@@ -201,3 +218,7 @@ def open_orderlist(content):
     frm_save.pack_propagate(False)
     btn_save = tk.Button(frm_save, text='Confirm Order', font=('Segoe Print', 11), bg='#FFB253', activebackground='#FFB253', command=save_button_pressed)
     btn_save.pack(fill='both', expand=True)
+
+    print(detail_ents)
+    print(due_date)
+    print(tier_ents)
