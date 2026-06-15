@@ -2,8 +2,8 @@ import tkinter as tk
 import json
 
 def open_orderlist(content):
-    # Task 2.2
-    detail_labels = [
+    # Task 2.2 Details & Entry Boxes
+    detail_lbls = [
         'Customer Name:',
         'Cake Flavour:',
         'Due Date:',
@@ -22,34 +22,34 @@ def open_orderlist(content):
             frame.grid(row=dr, column=dc)
             frame.place(x=20+(dc*275), y=20+(dr*70))
             frame.pack_propagate(False)
-            label = tk.Label(frame, text=detail_labels[detail_num], font=('Segoe Print', 12))
+            label = tk.Label(frame, text=detail_lbls[detail_num], font=('Segoe Print', 12))
             label.place(x=5, y=-1)
             if detail_num == 2:
                 frm_dd = tk.Frame(frame, width=200, height=30)
                 frm_dd.place(x=5, y=30)
-                due_date = []
+                due_date_ents = []
                 dd_placeholders = ['DD', 'MM', 'YYYY']
 
                 def create_placeholder(event, dd):
-                    if due_date[dd].get() == dd_placeholders[dd]:
-                        due_date[dd].delete(0, tk.END)
-                        due_date[dd].config(fg='black')
+                    if due_date_ents[dd].get() == dd_placeholders[dd]:
+                        due_date_ents[dd].delete(0, tk.END)
+                        due_date_ents[dd].config(fg='black')
 
                 def delete_placeholder(event, dd):
-                    if due_date[dd].get() == '':
-                        due_date[dd].insert(0, dd_placeholders[dd])
-                        due_date[dd].config(fg='gray')
+                    if due_date_ents[dd].get() == '':
+                        due_date_ents[dd].insert(0, dd_placeholders[dd])
+                        due_date_ents[dd].config(fg='gray')
 
                 for dd in range(3):
-                    due_date.append(tk.Entry(frm_dd, width=6, font=('Arial', 12), bg='white'))
-                    due_date[dd].pack(side='left')
-                    due_date[dd].insert(0, dd_placeholders[dd])
-                    due_date[dd].config(fg='gray')
+                    due_date_ents.append(tk.Entry(frm_dd, width=6, font=('Arial', 12), bg='white'))
+                    due_date_ents[dd].pack(side='left')
+                    due_date_ents[dd].insert(0, dd_placeholders[dd])
+                    due_date_ents[dd].config(fg='gray')
 
-                    due_date[dd].bind('<FocusIn>', lambda event, dd=dd: create_placeholder(event, dd))
-                    due_date[dd].bind('<FocusOut>', lambda event, dd=dd: delete_placeholder(event, dd))
+                    due_date_ents[dd].bind('<FocusIn>', lambda event, dd=dd: create_placeholder(event, dd))
+                    due_date_ents[dd].bind('<FocusOut>', lambda event, dd=dd: delete_placeholder(event, dd))
                 
-                detail_ents.append(due_date)
+                detail_ents.append(due_date_ents)
 
                 frm_icon = tk.Frame(frame, width=21, height=21, bg='#FEF8A0')
                 frm_icon.place(x=167, y=30)
@@ -70,6 +70,7 @@ def open_orderlist(content):
         nonlocal frm_tiers
         global tier_ents
         global ent_tiers
+        global size_ents
         if frm_tiers is not None:
             frm_tiers.destroy()
 
@@ -108,25 +109,25 @@ def open_orderlist(content):
                 frame.place(x=4+(tc*84), y=98+((tr)*25))
                 frame.pack_propagate(False)
                 if tc == 0:
-                    lbl_tier = tk.Label(frame, text=f'Tier {tr+1}', font=('Segoe Print', 12), bg='white', bd=1.5, relief='groove')
+                    lbl_tier = tk.Label(frame, text=f'Tier {tr+1}', font=('Segoe Print', 12), bd=1.5, relief='groove')
                     lbl_tier.pack(fill='both', expand=True)
                 elif tc == 1: 
                     tier_ents.append(tk.Entry(frame, font=('Arial', 12), bd=1.5, relief='groove'))
                     tier_ents[tier_num].pack(fill='both', expand=True)
                     tier_num += 1
                 elif tc == 2:
-                    size = []
+                    size_ents = []
                     for s in range(2):
                         frm_size = tk.Frame(frame, width=42, height=25)
                         frm_size.place(x=42*s, y=0)
                         frm_size.pack_propagate(False)
-                        size.append(tk.Entry(frm_size, font=('Arial', 12), bd=1.5, relief='groove'))
-                        size[s].pack(fill='both', expand=True)
-                    tier_ents.append(size)
+                        size_ents.append(tk.Entry(frm_size, font=('Arial', 12), bd=1.5, relief='groove'))
+                        size_ents[s].pack(fill='both', expand=True)
+                    tier_ents.append(size_ents)
                     tier_num += 1
 
         # Task 2.3.1
-        frm_btn_tiers = tk.Frame(frm_tiers, width=22, height=22, bg='#FEF8A0')
+        frm_btn_tiers = tk.Frame(frm_tiers, width=22, height=22)
         frm_btn_tiers.place(x=27, y=30)
         frm_btn_tiers.pack_propagate(False)
         btn_tiers = tk.Button(frm_btn_tiers, text='▼', font=('Arial', 10, 'bold'), bg='#FEF8A0', activebackground='#FEF8A0', command=lambda: create_tiers_table(ent_tiers.get()))
@@ -142,13 +143,42 @@ def open_orderlist(content):
     lbl_decor.place(x=5, y=-1)
 
     # Task 2.3.3
-    frm_txt_decor = tk.Frame(frm_decor, width=250, height=160, bg='#FEF8A0')
+    frm_txt_decor = tk.Frame(frm_decor, width=250, height=160)
     frm_txt_decor.place(x=5, y=30)
     frm_txt_decor.pack_propagate(False)
     txt_decor = tk.Text(frm_txt_decor, font=('Arial', 12), bg='#FEF8A0')
     txt_decor.pack(fill='both', expand=True)
 
-    # Task 2.4.3
+    # Task 2.4.1 File Set-up
+    def save_order():
+
+        order_details = {}
+        
+        # Saving Details
+        detail_lbls = ['Customer_details', 'cake_flavour', 'due_date', 'cake_colours', 'cake_type', 'cake_shape']
+
+        for dsave in range(6):
+            order_details[detail_lbls[dsave]] = detail_ents[dsave].get
+
+        # Saving Tiers Table
+        tier_lbls = ['tier', 'layer', 'size']
+
+        tsave = 0
+
+        for tnum in range(int(ent_tiers.get())):
+            for td in range(3):
+                order_details[f'{tier_lbls[td]} {tnum+1}'] = detail_ents[tsave].get()
+                tsave += 1
+
+        # Saving Decorations / Toppings
+        order_details['decor'] = txt_decor.get("1.0", tk.END)
+
+        with open(f'{detail_ents[0].get()}.json', 'w') as f:
+            json.dump(order_details, f, indent=4)
+
+        print('Saving...')
+
+    # Task 2.4.3 Error Prevention
     def error_prev():
         global error
         error = 0
@@ -179,34 +209,6 @@ def open_orderlist(content):
         if digit == 1:
             print('digit error')
 
-    # Task 2.4.1
-    def save_order():
-
-        order_details = {
-            'customer_details':entries[0].get(),
-            'cake_flavour':entries[1].get(),
-            'due_date':entries[2].get(),
-            'cake_colour/s':entries[3].get(),
-            'cake_type':entries[4].get(),
-            'cake_shape':entries[5].get(),
-            'decor':txt_decor.get("1.0", tk.END),
-            'tiers':ent_tiers.get()
-        }
-        
-        tier_labels = ['tier', 'layer', 'size']
-
-        ts = 0
-
-        for tn in range(int(ent_tiers.get())):
-            for td in range(3):
-                order_details[f'{tier_labels[td]} {tn+1}'] = tier_entries[ts].get()
-                ts += 1
-
-        with open(f'{entries[0].get()}.json', 'w') as f:
-            json.dump(order_details, f, indent=4)
-
-        print('Saving...')
-
     def save_button_pressed():
         error_prev()
         if error == 0:
@@ -220,5 +222,6 @@ def open_orderlist(content):
     btn_save.pack(fill='both', expand=True)
 
     print(detail_ents)
-    print(due_date)
+    print(due_date_ents)
     print(tier_ents)
+    print(size_ents)
