@@ -117,11 +117,11 @@ def open_orderlist(content):
                 elif tc == 2:
                     size = []
                     for s in range(2):
-                        frm_s = tk.Frame(frame, width=42, height=25, bg='red', bd=1, relief='solid')
-                        frm_s.place(x=42*s, y=0)
-                        frame.pack_propagate(False)
-                        #size.append(tk.Entry(frm_s, font=('Arial', 12), bd=1.5, relief='groove'))
-                        #size[s].pack(fill='both', expand=True)
+                        frm_size = tk.Frame(frame, width=42, height=25)
+                        frm_size.place(x=42*s, y=0)
+                        frm_size.pack_propagate(False)
+                        size.append(tk.Entry(frm_size, font=('Arial', 12), bd=1.5, relief='groove'))
+                        size[s].pack(fill='both', expand=True)
                     tier_ents.append(size)
                     tier_num += 1
 

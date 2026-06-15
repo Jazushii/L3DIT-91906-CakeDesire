@@ -23,17 +23,13 @@ def interface(type):
     navbar.place(x=0, y=60)
     navbar.pack_propagate(False)
 
-    inven_colour = '#FFC957' if type == 'inventory' else '#FEF67F'
-    order_colour = '#FFC957' if type == 'orderlist' else '#FEF67F'
-    calen_colour = '#FFC957' if type == 'calendar' else '#FEF67F'
-
-    navbar_inven = tk.Frame(navbar, height=160, bg=inven_colour)
+    navbar_inven = tk.Frame(navbar, height=160)
     navbar_inven.pack(fill=tk.X)
     navbar_inven.pack_propagate(False)
-    navbar_order = tk.Frame(navbar, height=160, bg=order_colour)
+    navbar_order = tk.Frame(navbar, height=160)
     navbar_order.pack(fill=tk.X)
     navbar_order.pack_propagate(False)
-    navbar_calen = tk.Frame(navbar, height=160, bg=calen_colour)
+    navbar_calen = tk.Frame(navbar, height=160)
     navbar_calen.pack(fill=tk.X)
     navbar_calen.pack_propagate(False)
 
@@ -54,11 +50,19 @@ def interface(type):
         if switch == 'calendar':
             interface('calendar')
 
-    btn_inven = tk.Button(navbar_inven, text='Inventory', font=('Segoe Print', 14), bg=inven_colour, activebackground='#FFC957', command=lambda:switch('inventory'))
+    inven_font = ('Segoe Print', 14, 'bold') if type == 'inventory' else ('Segoe Print', 14)
+    order_font = ('Segoe Print', 14, 'bold') if type == 'orderlist' else ('Segoe Print', 14)
+    calen_font = ('Segoe Print', 14, 'bold') if type == 'calendar' else ('Segoe Print', 14)
+
+    inven_colour = '#FFC957' if type == 'inventory' else '#FEF67F'
+    order_colour = '#FFC957' if type == 'orderlist' else '#FEF67F'
+    calen_colour = '#FFC957' if type == 'calendar' else '#FEF67F'
+
+    btn_inven = tk.Button(navbar_inven, text='Inventory', font=inven_font, bg=inven_colour, activebackground='#FFC957', command=lambda:switch('inventory'))
     btn_inven.pack(fill="both", expand=True)
-    btn_order = tk.Button(navbar_order, text='Order\nList', font=('Segoe Print', 14), bg=order_colour, activebackground='#FFC957', command=lambda:switch('orderlist'))
+    btn_order = tk.Button(navbar_order, text='Order\nList', font=order_font, bg=order_colour, activebackground='#FFC957', command=lambda:switch('orderlist'))
     btn_order.pack(fill="both", expand=True)
-    btn_calen = tk.Button(navbar_calen, text='Calendar', font=('Segoe Print', 14), bg=calen_colour, activebackground='#FFC957', command=lambda:switch('calendar'))
+    btn_calen = tk.Button(navbar_calen, text='Calendar', font=calen_font, bg=calen_colour, activebackground='#FFC957', command=lambda:switch('calendar'))
     btn_calen.pack(fill="both", expand=True)
     
     content = tk.Frame(main, width=850, height=480)
