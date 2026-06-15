@@ -7,6 +7,8 @@ def open_orderlist(content):
         'Customer Name:',
         'Cake Flavour:',
         'Due Date:',
+        '',
+        '',
         'Cake Colour/s:',
         'Cake Type:',
         'Cake Shape:'
@@ -27,29 +29,27 @@ def open_orderlist(content):
             if detail_num == 2:
                 frm_dd = tk.Frame(frame, width=200, height=30)
                 frm_dd.place(x=5, y=30)
-                due_date_ents = []
                 dd_placeholders = ['DD', 'MM', 'YYYY']
 
-                def create_placeholder(event, dd):
-                    if due_date_ents[dd].get() == dd_placeholders[dd]:
-                        due_date_ents[dd].delete(0, tk.END)
-                        due_date_ents[dd].config(fg='black')
+                def create_placeholder(event, d):
+                    if detail_ents[d].get() == dd_placeholders[d]:
+                        detail_ents[d].delete(0, tk.END)
+                        detail_ents[d].config(fg='black')
 
-                def delete_placeholder(event, dd):
-                    if due_date_ents[dd].get() == '':
-                        due_date_ents[dd].insert(0, dd_placeholders[dd])
-                        due_date_ents[dd].config(fg='gray')
+                def delete_placeholder(event, d):
+                    if detail_ents[d].get() == '':
+                        detail_ents[d].insert(0, dd_placeholders[d])
+                        detail_ents[d].config(fg='gray')
 
                 for dd in range(3):
-                    due_date_ents.append(tk.Entry(frm_dd, width=6, font=('Arial', 12), bg='white'))
-                    due_date_ents[dd].pack(side='left')
-                    due_date_ents[dd].insert(0, dd_placeholders[dd])
-                    due_date_ents[dd].config(fg='gray')
+                    detail_ents.append(tk.Entry(frm_dd, width=6, font=('Arial', 12), bg='white'))
+                    detail_ents[detail_num].pack(side='left')
+                    detail_ents[detail_num].insert(0, dd_placeholders[dd])
+                    detail_ents[detail_num].config(fg='gray')
 
-                    due_date_ents[dd].bind('<FocusIn>', lambda event, dd=dd: create_placeholder(event, dd))
-                    due_date_ents[dd].bind('<FocusOut>', lambda event, dd=dd: delete_placeholder(event, dd))
-                
-                detail_ents.append(due_date_ents)
+                    detail_ents[detail_num].bind('<FocusIn>', lambda event, d=dd: create_placeholder(event, d))
+                    detail_ents[detail_num].bind('<FocusOut>', lambda event, d=dd: delete_placeholder(event, d))
+                    detail_num += 1
 
                 frm_icon = tk.Frame(frame, width=21, height=21, bg='#FEF8A0')
                 frm_icon.place(x=167, y=30)
@@ -61,7 +61,7 @@ def open_orderlist(content):
             else:
                 detail_ents.append(tk.Entry(frame, width=20, font=('Arial', 12), bg='#FEF8A0'))
                 detail_ents[detail_num].place(x=5, y=30)
-            detail_num += 1
+                detail_num += 1
     
     # Task 2.3.1
     frm_tiers = None
@@ -83,11 +83,13 @@ def open_orderlist(content):
         ent_tiers.place(x=5, y=30)
         ent_tiers.insert(0, rnum)
 
-        # Task 2.3.2
+        # Task 2.3.2 Tiers Table
+        # List of labels for the table
         tier_lbls = [
             'Tier:',
             'Layers:',
-            'Size (In.):'
+            'Size (In.):',
+            ''
         ]
 
         tier_ents = []
@@ -116,15 +118,13 @@ def open_orderlist(content):
                     tier_ents[tier_num].pack(fill='both', expand=True)
                     tier_num += 1
                 elif tc == 2:
-                    size_ents = []
                     for s in range(2):
                         frm_size = tk.Frame(frame, width=42, height=25)
                         frm_size.place(x=42*s, y=0)
                         frm_size.pack_propagate(False)
-                        size_ents.append(tk.Entry(frm_size, font=('Arial', 12), bd=1.5, relief='groove'))
-                        size_ents[s].pack(fill='both', expand=True)
-                    tier_ents.append(size_ents)
-                    tier_num += 1
+                        tier_ents.append(tk.Entry(frm_size, font=('Arial', 12), bd=1.5, relief='groove'))
+                        tier_ents[tier_num].pack(fill='both', expand=True)
+                        tier_num += 1
 
         # Task 2.3.1
         frm_btn_tiers = tk.Frame(frm_tiers, width=22, height=22)
