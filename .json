@@ -1,13 +1,14 @@
 {
     "customer_details": "",
     "cake_flavour": "",
-    "due_date": "2",
-    "cake_colour/s": "",
+    "due_day": "DD",
+    "due_month": "MM",
+    "due_year": "YYYY",
+    "cake_colours": "",
     "cake_type": "",
     "cake_shape": "",
-    "decor": "\n",
-    "tiers": "1",
-    "tier 1": "",
-    "layer 1": "",
-    "size 1": ""
+    "tier1_layer": "",
+    "tier1_size_a": "",
+    "tier1_size_b": "",
+    "decor": "\n"
 }

@@ -32,13 +32,13 @@ def open_orderlist(content):
                 dd_placeholders = ['DD', 'MM', 'YYYY']
 
                 def create_placeholder(event, d):
-                    if detail_ents[d].get() == dd_placeholders[d]:
+                    if detail_ents[d].get() == dd_placeholders[d-2]:
                         detail_ents[d].delete(0, tk.END)
                         detail_ents[d].config(fg='black')
 
                 def delete_placeholder(event, d):
                     if detail_ents[d].get() == '':
-                        detail_ents[d].insert(0, dd_placeholders[d])
+                        detail_ents[d].insert(0, dd_placeholders[d-2])
                         detail_ents[d].config(fg='gray')
 
                 for dd in range(3):
@@ -47,8 +47,8 @@ def open_orderlist(content):
                     detail_ents[detail_num].insert(0, dd_placeholders[dd])
                     detail_ents[detail_num].config(fg='gray')
 
-                    detail_ents[detail_num].bind('<FocusIn>', lambda event, d=dd: create_placeholder(event, d))
-                    detail_ents[detail_num].bind('<FocusOut>', lambda event, d=dd: delete_placeholder(event, d))
+                    detail_ents[detail_num].bind('<FocusIn>', lambda event, d=detail_num: create_placeholder(event, d))
+                    detail_ents[detail_num].bind('<FocusOut>', lambda event, d=detail_num: delete_placeholder(event, d))
                     detail_num += 1
 
                 frm_icon = tk.Frame(frame, width=21, height=21, bg='#FEF8A0')
@@ -165,7 +165,7 @@ def open_orderlist(content):
                        ]
 
         for dsave in range(8):
-            order_details[detail_lbls[dsave]] = detail_ents[dsave].get
+            order_details[detail_lbls[dsave]] = detail_ents[dsave].get()
 
         # Saving Tiers Table
         tier_lbls = ['layer', 'size_a', 'size_b']
@@ -186,49 +186,61 @@ def open_orderlist(content):
 
     # Task 2.4.3 Error Prevention
     def error_prev():
-        global error
-        error = False
+        global has_error
+        global d_errors
 
+        has_error = False
+        d_errors = {}
+
+        # searching for errors in details
         for de in range(8):
             # checking for blank entries
             if detail_ents[de].get() == '':
-                error = True
+                has_error = True
+                d_errors['blank'] = de
                 print(f'blank error at d{de}')
 
             # checking for digit entries for 0, 1, 5, 6, 7
             if de < 2 or de > 4:
                 dsum_digit = sum(a.isnumeric() for a in detail_ents[de].get())
                 if dsum_digit != 0:
-                    error = True
+                    has_error = True
                     print(f'digit error at d{de}')
 
             # checking for alpha entries for 2, 3, 4
-            if de > 1 and de < 5:
+            if 1 < de < 5:
                 dsum_alpha = sum(a.isalpha() for a in detail_ents[de].get())
                 if dsum_alpha != 0:
-                    error = True
+                    has_error = True
                     print(f'alpha error at d{de}')
 
+        # searching for errors in tiers
         t = 0
-
         for tnum in range(int(ent_tiers.get())):
             for te in range(3):
                 # checking for blank entries
                 if tier_ents[t].get() == '':
-                    error = True
+                    has_error = True
                     print(f'blank error at t{t}')
                 
                 # checking for alpha entires
                 tsum_alpha = sum(a.isalpha() for a in tier_ents[t].get())
                 if tsum_alpha != 0:
-                    error = True
+                    has_error = True
                     print(f'alpha error at t{t}')
                 
                 t += 1
 
+    def resolve_error():
+        for type, num in d_errors.items():
+            if type == 'blank':
+                detail_ents[num].insert(0, 'required')
+
     def save_button_pressed():
         error_prev()
-        if error == 0:
+        if has_error == True:
+            resolve_error()
+        elif has_error == False:
             save_order()
 
     # Task 2.4.2
@@ -237,6 +249,3 @@ def open_orderlist(content):
     frm_save.pack_propagate(False)
     btn_save = tk.Button(frm_save, text='Confirm Order', font=('Segoe Print', 11), bg='#FFB253', activebackground='#FFB253', command=save_button_pressed)
     btn_save.pack(fill='both', expand=True)
-
-    print(detail_ents)
-    print(tier_ents)
