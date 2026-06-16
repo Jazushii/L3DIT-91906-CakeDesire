@@ -70,7 +70,6 @@ def open_orderlist(content):
         nonlocal frm_tiers
         global tier_ents
         global ent_tiers
-        global size_ents
         if frm_tiers is not None:
             frm_tiers.destroy()
 
@@ -155,19 +154,26 @@ def open_orderlist(content):
         order_details = {}
         
         # Saving Details
-        detail_lbls = ['Customer_details', 'cake_flavour', 'due_date', 'cake_colours', 'cake_type', 'cake_shape']
+        detail_lbls = ['customer_details',
+                       'cake_flavour',
+                       'due_day',
+                       'due_month',
+                       'due_year',
+                       'cake_colours',
+                       'cake_type',
+                       'cake_shape'
+                       ]
 
-        for dsave in range(6):
+        for dsave in range(8):
             order_details[detail_lbls[dsave]] = detail_ents[dsave].get
 
         # Saving Tiers Table
-        tier_lbls = ['tier', 'layer', 'size']
-
+        tier_lbls = ['layer', 'size_a', 'size_b']
         tsave = 0
 
         for tnum in range(int(ent_tiers.get())):
             for td in range(3):
-                order_details[f'{tier_lbls[td]} {tnum+1}'] = detail_ents[tsave].get()
+                order_details[f'tier{tnum+1}_{tier_lbls[td]}'] = tier_ents[tsave].get()
                 tsave += 1
 
         # Saving Decorations / Toppings
@@ -181,33 +187,44 @@ def open_orderlist(content):
     # Task 2.4.3 Error Prevention
     def error_prev():
         global error
-        error = 0
-        blank = 0
-        digit = 0
+        error = False
 
-        for de in range(6):
+        for de in range(8):
+            # checking for blank entries
             if detail_ents[de].get() == '':
-                error = 1
-                blank = 1
-            sum_digit = sum(a.isdigit() for a in detail_ents[de].get())
-            if sum_digit != 0:
-                error = 1
-                digit = 1
+                error = True
+                print(f'blank error at d{de}')
 
-        tc = 0
+            # checking for digit entries for 0, 1, 5, 6, 7
+            if de < 2 or de > 4:
+                dsum_digit = sum(a.isnumeric() for a in detail_ents[de].get())
+                if dsum_digit != 0:
+                    error = True
+                    print(f'digit error at d{de}')
 
-        for tn in range(int(ent_tiers.get())):
-            for tep in range(3):
-                if tier_ents[tc].get() == '':
-                    error = 1
-                    blank = 1
+            # checking for alpha entries for 2, 3, 4
+            if de > 1 and de < 5:
+                dsum_alpha = sum(a.isalpha() for a in detail_ents[de].get())
+                if dsum_alpha != 0:
+                    error = True
+                    print(f'alpha error at d{de}')
+
+        t = 0
+
+        for tnum in range(int(ent_tiers.get())):
+            for te in range(3):
+                # checking for blank entries
+                if tier_ents[t].get() == '':
+                    error = True
+                    print(f'blank error at t{t}')
                 
-                tc += 1
-
-        if blank == 1:
-            print('blank error')
-        if digit == 1:
-            print('digit error')
+                # checking for alpha entires
+                tsum_alpha = sum(a.isalpha() for a in tier_ents[t].get())
+                if tsum_alpha != 0:
+                    error = True
+                    print(f'alpha error at t{t}')
+                
+                t += 1
 
     def save_button_pressed():
         error_prev()
@@ -222,6 +239,4 @@ def open_orderlist(content):
     btn_save.pack(fill='both', expand=True)
 
     print(detail_ents)
-    print(due_date_ents)
     print(tier_ents)
-    print(size_ents)
