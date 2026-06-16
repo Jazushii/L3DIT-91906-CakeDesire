@@ -31,15 +31,20 @@ def open_orderlist(content):
                 frm_dd.place(x=5, y=30)
                 dd_placeholders = ['dd', 'mm', 'yyyy']
 
+                def delete_placeholder(event, d, error):
+                    if error == False:
+                        if detail_ents[d].get() == dd_placeholders[d-2]:
+                            detail_ents[d].delete(0, tk.END)
+                            detail_ents[d].config(fg='black')
+                    elif error == True:
+                        if detail_ents[d].get() == dd_placeholders[d-2]:
+                            detail_ents[d].delete(0, tk.END)
+                        detail_ents[d].config(fg='black')
+
                 def create_placeholder(event, d):
                     if detail_ents[d].get() == '':
                         detail_ents[d].insert(0, dd_placeholders[d-2])
                         detail_ents[d].config(fg='gray')
-
-                def delete_placeholder(event, d):
-                    if detail_ents[d].get() == dd_placeholders[d-2]:
-                        detail_ents[d].delete(0, tk.END)
-                        detail_ents[d].config(fg='black')
 
                 for dd in range(3):
                     detail_ents.append(tk.Entry(frm_dd, width=6, font=('Arial', 12), bg='white'))
@@ -47,7 +52,7 @@ def open_orderlist(content):
                     detail_ents[detail_num].insert(0, dd_placeholders[dd])
                     detail_ents[detail_num].config(fg='gray')
 
-                    detail_ents[detail_num].bind('<FocusIn>', lambda event, d=detail_num: delete_placeholder(event, d))
+                    detail_ents[detail_num].bind('<FocusIn>', lambda event, d=detail_num: delete_placeholder(event, d, False))
                     detail_ents[detail_num].bind('<FocusOut>', lambda event, d=detail_num: create_placeholder(event, d))
                     detail_num += 1
 
@@ -238,36 +243,46 @@ def open_orderlist(content):
                 t += 1
 
     def resolve_error():
-        def delete_required(event, num):
-            if detail_ents[num].get() == '*':
-                detail_ents[num].delete(0, tk.END)
-                detail_ents[num].config(fg='black')
-                content.focus_set()
+        def delete_required(event, type, num):
+            if type == 'd':
+                if detail_ents[num].get() == '*':
+                    detail_ents[num].delete(0, tk.END)
+                    detail_ents[num].config(fg='black')
+                    content.focus_set()
+
+            if type == 't':
+                if tier_ents[num].get() == '*':
+                    tier_ents[num].delete(0, tk.END)
+                    tier_ents[num].config(fg='black')
+                    content.focus_set()
         
-        def make_black(event, num):
-            detail_ents[num].config(fg='black')
+        def make_black(event, type, num):
+            if type == 'd':
+                detail_ents[num].config(fg='black')
+            if type == 't':
+                tier_ents[num].config(fg='black')
 
         for type, num in d_errors.items():
             if type == f'blank{num}':
                 detail_ents[num].delete(0, 'end')
                 detail_ents[num].insert(0, '*')
                 detail_ents[num].config(fg='red')
-                detail_ents[num].bind('<FocusIn>', lambda event, num=num: delete_required(event, num))
+                detail_ents[num].bind('<FocusIn>', lambda event, num=num: delete_required(event, 'd', num))
             if type == f'digit{num}':
                 detail_ents[num].config(fg='red')
-                detail_ents[num].bind('<FocusIn>', lambda event, num=num: make_black(event, num))
+                detail_ents[num].bind('<FocusIn>', lambda event, num=num: make_black(event, 'd', num))
             if type == f'alpha{num}':
                 detail_ents[num].config(fg='red')
-                detail_ents[num].bind('<FocusIn>', lambda event, num=num: make_black(event, num))
+                detail_ents[num].bind('<FocusIn>', lambda event, d=num: delete_placeholder(event, d, True))
         for type, num in t_errors.items():
             if type == f'blank{num}':
                 tier_ents[num].delete(0, 'end')
                 tier_ents[num].insert(0, '*')
                 tier_ents[num].config(fg='red')
-                tier_ents[num].bind('<FocusIn>', lambda event, num=num: delete_required(event, num))
+                tier_ents[num].bind('<FocusIn>', lambda event, num=num: delete_required(event, 't', num))
             if type == f'alpha{num}':
                 tier_ents[num].config(fg='red')
-                tier_ents[num].bind('<FocusIn>', lambda event, num=num: make_black(event, num))
+                tier_ents[num].bind('<FocusIn>', lambda event, num=num: make_black(event, 't', num))
 
     def save_button_pressed():
         error_prev()
