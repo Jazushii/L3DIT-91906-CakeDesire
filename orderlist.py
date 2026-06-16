@@ -29,17 +29,17 @@ def open_orderlist(content):
             if detail_num == 2:
                 frm_dd = tk.Frame(frame, width=200, height=30)
                 frm_dd.place(x=5, y=30)
-                dd_placeholders = ['DD', 'MM', 'YYYY']
+                dd_placeholders = ['dd', 'mm', 'yyyy']
 
                 def create_placeholder(event, d):
-                    if detail_ents[d].get() == dd_placeholders[d-2]:
-                        detail_ents[d].delete(0, tk.END)
-                        detail_ents[d].config(fg='black')
-
-                def delete_placeholder(event, d):
                     if detail_ents[d].get() == '':
                         detail_ents[d].insert(0, dd_placeholders[d-2])
                         detail_ents[d].config(fg='gray')
+
+                def delete_placeholder(event, d):
+                    if detail_ents[d].get() == dd_placeholders[d-2]:
+                        detail_ents[d].delete(0, tk.END)
+                        detail_ents[d].config(fg='black')
 
                 for dd in range(3):
                     detail_ents.append(tk.Entry(frm_dd, width=6, font=('Arial', 12), bg='white'))
@@ -47,8 +47,8 @@ def open_orderlist(content):
                     detail_ents[detail_num].insert(0, dd_placeholders[dd])
                     detail_ents[detail_num].config(fg='gray')
 
-                    detail_ents[detail_num].bind('<FocusIn>', lambda event, d=detail_num: create_placeholder(event, d))
-                    detail_ents[detail_num].bind('<FocusOut>', lambda event, d=detail_num: delete_placeholder(event, d))
+                    detail_ents[detail_num].bind('<FocusIn>', lambda event, d=detail_num: delete_placeholder(event, d))
+                    detail_ents[detail_num].bind('<FocusOut>', lambda event, d=detail_num: create_placeholder(event, d))
                     detail_num += 1
 
                 frm_icon = tk.Frame(frame, width=21, height=21, bg='#FEF8A0')
@@ -188,23 +188,26 @@ def open_orderlist(content):
     def error_prev():
         global has_error
         global d_errors
+        global t_errors
 
         has_error = False
         d_errors = {}
+        t_errors = {}
 
         # searching for errors in details
         for de in range(8):
             # checking for blank entries
-            if detail_ents[de].get() == '':
+            if detail_ents[de].get() == '' or detail_ents[de].get() == '*':
                 has_error = True
-                d_errors['blank'] = de
+                d_errors[f'blank{de}'] = de
                 print(f'blank error at d{de}')
 
             # checking for digit entries for 0, 1, 5, 6, 7
             if de < 2 or de > 4:
-                dsum_digit = sum(a.isnumeric() for a in detail_ents[de].get())
+                dsum_digit = sum(a.isdigit() for a in detail_ents[de].get())
                 if dsum_digit != 0:
                     has_error = True
+                    d_errors[f'digit{de}'] = de
                     print(f'digit error at d{de}')
 
             # checking for alpha entries for 2, 3, 4
@@ -212,6 +215,7 @@ def open_orderlist(content):
                 dsum_alpha = sum(a.isalpha() for a in detail_ents[de].get())
                 if dsum_alpha != 0:
                     has_error = True
+                    d_errors[f'alpha{de}'] = de
                     print(f'alpha error at d{de}')
 
         # searching for errors in tiers
@@ -219,22 +223,51 @@ def open_orderlist(content):
         for tnum in range(int(ent_tiers.get())):
             for te in range(3):
                 # checking for blank entries
-                if tier_ents[t].get() == '':
+                if tier_ents[t].get() == '' or detail_ents[de].get() == '*':
                     has_error = True
+                    t_errors[f'blank{t}'] = t
                     print(f'blank error at t{t}')
                 
                 # checking for alpha entires
                 tsum_alpha = sum(a.isalpha() for a in tier_ents[t].get())
                 if tsum_alpha != 0:
                     has_error = True
+                    t_errors[f'alpha{t}'] = t
                     print(f'alpha error at t{t}')
                 
                 t += 1
 
     def resolve_error():
+        def delete_required(event, num):
+            if detail_ents[num].get() == '*':
+                detail_ents[num].delete(0, tk.END)
+                detail_ents[num].config(fg='black')
+                content.focus_set()
+        
+        def make_black(event, num):
+            detail_ents[num].config(fg='black')
+
         for type, num in d_errors.items():
-            if type == 'blank':
-                detail_ents[num].insert(0, 'required')
+            if type == f'blank{num}':
+                detail_ents[num].delete(0, 'end')
+                detail_ents[num].insert(0, '*')
+                detail_ents[num].config(fg='red')
+                detail_ents[num].bind('<FocusIn>', lambda event, num=num: delete_required(event, num))
+            if type == f'digit{num}':
+                detail_ents[num].config(fg='red')
+                detail_ents[num].bind('<FocusIn>', lambda event, num=num: make_black(event, num))
+            if type == f'alpha{num}':
+                detail_ents[num].config(fg='red')
+                detail_ents[num].bind('<FocusIn>', lambda event, num=num: make_black(event, num))
+        for type, num in t_errors.items():
+            if type == f'blank{num}':
+                tier_ents[num].delete(0, 'end')
+                tier_ents[num].insert(0, '*')
+                tier_ents[num].config(fg='red')
+                tier_ents[num].bind('<FocusIn>', lambda event, num=num: delete_required(event, num))
+            if type == f'alpha{num}':
+                tier_ents[num].config(fg='red')
+                tier_ents[num].bind('<FocusIn>', lambda event, num=num: make_black(event, num))
 
     def save_button_pressed():
         error_prev()
