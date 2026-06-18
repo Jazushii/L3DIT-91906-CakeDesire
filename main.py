@@ -52,6 +52,8 @@ def interface(type):
     lbl_title.pack(fill="both", expand=True)
 
     def switch(switch):
+        #if change == False:
+           # confirm('change')
         root.destroy()
         if switch == 'inventory':
             interface('inventory')

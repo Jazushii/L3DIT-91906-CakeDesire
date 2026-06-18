@@ -282,7 +282,9 @@ def open_orderlist(content):
                 tier_ents[num].bind('<FocusIn>', lambda event, num=num: make_black(event, 't', num))
 
     # Task 2.4.4 Confirmation Pop-up
-    def confirm():
+    global confirm
+    def confirm(type):
+        # type = save / change
         root = tk.Tk()
         root.title('Confirmation')
 
@@ -297,12 +299,15 @@ def open_orderlist(content):
         frame.pack()
         frame.pack_propagate(False)
 
-        label = tk.Label(frame, text='Confirm order?', font=('Segoe Print', 12))
+        if type == 'save':
+            label = tk.Label(frame, text='Confirm order?', font=('Segoe Print', 12))
+        elif type == 'change':
+            label = tk.Label(frame, text='Save order?', font=('Segoe Print', 12))
         label.place(x=(root_w/2)-65, y=5)
 
         btns = ['Cancel', 'Confirm']
         bg = ['#FFC957', '#FFB253']
-        cmd = [root.destroy(), save_order()]
+        cmd = [root.destroy, save_order]
 
         for b in range(2):
             print('frm_btn working')
@@ -312,7 +317,7 @@ def open_orderlist(content):
             frm_btn.pack_propagate(False)
 
             btn = tk.Button(frm_btn, text=btns[b], font=('Segoe Print', 10), bg=bg[b],
-                            activebackground=bg[b], command=lambda:cmd[b])
+                            activebackground=bg[b], command=lambda b=b: cmd[b]())
             btn.pack(fill='both', expand=True)
 
         root.mainloop()
@@ -323,7 +328,7 @@ def open_orderlist(content):
         if has_error == True:
             resolve_error()
         elif has_error == False:
-            confirm()
+            confirm('save')
 
     # Task 2.4.2
     frm_save = tk.Frame(content, width=150, height=30, bg='#FFB253')
@@ -333,10 +338,11 @@ def open_orderlist(content):
                          activebackground='#FFB253', command=save_button_pressed)
     btn_save.pack(fill='both', expand=True)
 
-    #error = tk.Tk()
-    #ent_error = tk.Entry(error)
-    #ent_error.pack()
-    #ent_error.insert(0, e)
-    #error.mainloop()
-
-    confirm()
+    # Task 2.4.4 Change Pop-Up - PAUSED, CONTINUE LATER
+    global change
+    for a in range(8):
+        if detail_ents[a] != '':
+            change = False
+    for a in range(3):
+        if tier_ents[a] != '':
+            change = False
