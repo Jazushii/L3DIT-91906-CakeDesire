@@ -205,7 +205,6 @@ def open_orderlist(content):
             if detail_ents[de].get() == '' or detail_ents[de].get() == '*':
                 has_error = True
                 d_errors[f'blank{de}'] = de
-                print(f'blank error at d{de}')
 
             # checking for digit entries for 0, 1, 5, 6, 7
             if de < 2 or de > 4:
@@ -213,7 +212,6 @@ def open_orderlist(content):
                 if dsum_digit != 0:
                     has_error = True
                     d_errors[f'digit{de}'] = de
-                    print(f'digit error at d{de}')
 
             # checking for alpha entries for 2, 3, 4
             if 1 < de < 5:
@@ -221,7 +219,6 @@ def open_orderlist(content):
                 if dsum_alpha != 0:
                     has_error = True
                     d_errors[f'alpha{de}'] = de
-                    print(f'alpha error at d{de}')
 
         # searching for errors in tiers
         t = 0
@@ -231,14 +228,12 @@ def open_orderlist(content):
                 if tier_ents[t].get() == '' or detail_ents[de].get() == '*':
                     has_error = True
                     t_errors[f'blank{t}'] = t
-                    print(f'blank error at t{t}')
                 
                 # checking for alpha entires
                 tsum_alpha = sum(a.isalpha() for a in tier_ents[t].get())
                 if tsum_alpha != 0:
                     has_error = True
                     t_errors[f'alpha{t}'] = t
-                    print(f'alpha error at t{t}')
                 
                 t += 1
 
@@ -259,8 +254,10 @@ def open_orderlist(content):
         def make_black(event, type, num):
             if type == 'd':
                 detail_ents[num].config(fg='black')
+                content.focus_set()
             if type == 't':
                 tier_ents[num].config(fg='black')
+                content.focus_set()
 
         for type, num in d_errors.items():
             if type == f'blank{num}':
@@ -284,16 +281,62 @@ def open_orderlist(content):
                 tier_ents[num].config(fg='red')
                 tier_ents[num].bind('<FocusIn>', lambda event, num=num: make_black(event, 't', num))
 
+    # Task 2.4.4 Confirmation Pop-up
+    def confirm():
+        root = tk.Tk()
+        root.title('Confirmation')
+
+        root_w = 175
+        root_h = 85
+        center_x = int(root.winfo_screenwidth() / 2 - root_w / 2)
+        center_y = int((root.winfo_screenheight() / 2 - root_h / 2) - 35)
+        root.geometry(f'{root_w}x{root_h}+{center_x}+{center_y}')
+        root.resizable(False, False)
+
+        frame = tk.Frame(root, width=root_w, height=root_h)
+        frame.pack()
+        frame.pack_propagate(False)
+
+        label = tk.Label(frame, text='Confirm order?', font=('Segoe Print', 12))
+        label.place(x=(root_w/2)-65, y=5)
+
+        btns = ['Cancel', 'Confirm']
+        bg = ['#FFC957', '#FFB253']
+        cmd = [root.destroy(), save_order()]
+
+        for b in range(2):
+            print('frm_btn working')
+            frm_btn = tk.Frame(frame, width=60, height=30, bg='red')
+            frm_btn.grid(row=0, column=b)
+            frm_btn.place(x=((root_w/2)-68)+(b*70), y=40)
+            frm_btn.pack_propagate(False)
+
+            btn = tk.Button(frm_btn, text=btns[b], font=('Segoe Print', 10), bg=bg[b],
+                            activebackground=bg[b], command=lambda:cmd[b])
+            btn.pack(fill='both', expand=True)
+
+        root.mainloop()
+
     def save_button_pressed():
+        content.focus_set()
         error_prev()
         if has_error == True:
             resolve_error()
         elif has_error == False:
-            save_order()
+            confirm()
 
     # Task 2.4.2
     frm_save = tk.Frame(content, width=150, height=30, bg='#FFB253')
     frm_save.place(x=410, y=440)
     frm_save.pack_propagate(False)
-    btn_save = tk.Button(frm_save, text='Confirm Order', font=('Segoe Print', 11), bg='#FFB253', activebackground='#FFB253', command=save_button_pressed)
+    btn_save = tk.Button(frm_save, text='Confirm Order', font=('Segoe Print', 11), bg='#FFB253',
+                         activebackground='#FFB253', command=save_button_pressed)
     btn_save.pack(fill='both', expand=True)
+
+    #error = tk.Tk()
+    #ent_error = tk.Entry(error)
+    #ent_error.pack()
+    #ent_error.insert(0, e)
+    #error.mainloop()
+
+    confirm()

@@ -3,14 +3,24 @@ from inventory import *
 from orderlist import *
 from calendar import *
 
+# #FFD333
+# #FFC957
+# #FFB253
+
 def interface(type):
     # Task 1.1 & 1.2
+
     root = tk.Tk()
     root.title('Cake Desire')
-    root.geometry('960x540+195+75')
+
+    root_w = 960
+    root_h = 540
+    center_x = int(root.winfo_screenwidth() / 2 - root_w / 2)
+    center_y = int((root.winfo_screenheight() / 2 - root_h / 2) - 35)
+    root.geometry(f'{root_w}x{root_h}+{center_x}+{center_y}')
     root.resizable(False, False)
 
-    main = tk.Frame(root, width=960, height=540)
+    main = tk.Frame(root, width=root_w, height=root_h)
     main.pack()
     main.pack_propagate(False)
 
@@ -58,11 +68,14 @@ def interface(type):
     order_colour = '#FFC957' if type == 'orderlist' else '#FEF67F'
     calen_colour = '#FFC957' if type == 'calendar' else '#FEF67F'
 
-    btn_inven = tk.Button(navbar_inven, text='Inventory', font=inven_font, bg=inven_colour, activebackground='#FFC957', command=lambda:switch('inventory'))
+    btn_inven = tk.Button(navbar_inven, text='Inventory', font=inven_font, bg=inven_colour,
+                          activebackground='#FFC957', command=lambda:switch('inventory'))
     btn_inven.pack(fill="both", expand=True)
-    btn_order = tk.Button(navbar_order, text='Order\nList', font=order_font, bg=order_colour, activebackground='#FFC957', command=lambda:switch('orderlist'))
+    btn_order = tk.Button(navbar_order, text='Order\nList', font=order_font, bg=order_colour,
+                          activebackground='#FFC957', command=lambda:switch('orderlist'))
     btn_order.pack(fill="both", expand=True)
-    btn_calen = tk.Button(navbar_calen, text='Calendar', font=calen_font, bg=calen_colour, activebackground='#FFC957', command=lambda:switch('calendar'))
+    btn_calen = tk.Button(navbar_calen, text='Calendar', font=calen_font, bg=calen_colour,
+                          activebackground='#FFC957', command=lambda:switch('calendar'))
     btn_calen.pack(fill="both", expand=True)
     
     content = tk.Frame(main, width=850, height=480)

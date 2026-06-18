@@ -1,9 +1,9 @@
 {
     "customer_details": "",
     "cake_flavour": "",
-    "due_day": "DD",
-    "due_month": "MM",
-    "due_year": "YYYY",
+    "due_day": "dd",
+    "due_month": "mm",
+    "due_year": "yyyy",
     "cake_colours": "",
     "cake_type": "",
     "cake_shape": "",
