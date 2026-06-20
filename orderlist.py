@@ -346,3 +346,30 @@ def open_orderlist(content):
     for a in range(3):
         if tier_ents[a] != '':
             change = False
+
+
+    # Task 2.5 & 2.6 Frame
+    frm_orderlist = tk.Frame(content, width=270, height=480)
+    frm_orderlist.place(x=580, y=0)
+    frm_orderlist.pack_propagate(False)
+
+    border_orderlist = tk.Frame(content, width=1, height=480, bg='black')
+    border_orderlist.place(x=580, y=0)
+
+    # Task 2.5 New Order Button
+    frm_new_order = tk.Frame(frm_orderlist, width=270, height=50)
+    frm_new_order.place(x=0, y=0)
+    frm_new_order.pack_propagate(False)
+
+    border_new = tk.Frame(frm_orderlist, width=270, height=1, bg='black')
+    border_new.place(x=0, y=50)
+
+    frm_btn = tk.Frame(frm_new_order, width=200, height=30, bg='red')
+    frm_btn.place(x=(270/2)-(200/2), y=(50/2)-(30/2))
+    frm_btn.pack_propagate(False)
+
+    icon = tk.PhotoImage(file='list.png')
+    btn_new = tk.Button(frm_btn, text='Create New Order ', font=('Segoe Print', 12), image=icon, compound='right',
+                        bg='#FFB253')
+    btn_new.image = icon
+    btn_new.pack(fill='both', expand=True)
