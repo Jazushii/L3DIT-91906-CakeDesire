@@ -349,20 +349,20 @@ def open_orderlist(content):
 
 
     # Task 2.5 & 2.6 Frame
-    frm_orderlist = tk.Frame(content, width=270, height=480)
-    frm_orderlist.place(x=580, y=0)
-    frm_orderlist.pack_propagate(False)
+    frm_container = tk.Frame(content, width=270, height=429)
+    frm_container.place(x=580, y=51)
+    frm_container.pack_propagate(False)
 
     border_orderlist = tk.Frame(content, width=1, height=480, bg='black')
     border_orderlist.place(x=580, y=0)
 
     # Task 2.5 New Order Button
-    frm_new_order = tk.Frame(frm_orderlist, width=270, height=50)
-    frm_new_order.place(x=0, y=0)
+    frm_new_order = tk.Frame(content, width=270, height=50)
+    frm_new_order.place(x=581, y=0)
     frm_new_order.pack_propagate(False)
 
-    border_new = tk.Frame(frm_orderlist, width=270, height=1, bg='black')
-    border_new.place(x=0, y=50)
+    border_new = tk.Frame(content, width=270, height=1, bg='black')
+    border_new.place(x=580, y=50)
 
     frm_btn = tk.Frame(frm_new_order, width=200, height=30, bg='red')
     frm_btn.place(x=(270/2)-(200/2), y=(50/2)-(30/2))
@@ -373,3 +373,20 @@ def open_orderlist(content):
                         bg='#FFB253')
     btn_new.image = icon
     btn_new.pack(fill='both', expand=True)
+
+    cvs_scroll = tk.Canvas(frm_container, width=270, height=430)
+    cvs_scroll.place(x=0, y=0)
+
+    scrollbar = tk.Scrollbar(frm_container, orient='vertical', command=cvs_scroll.yview)
+    scrollbar.pack(side='right', fill='y')
+
+    cvs_scroll.configure(yscrollcommand=scrollbar.set)
+
+    frm_orderlist = tk.Frame(cvs_scroll)
+    frm_orderlist.bind('<Configure>', lambda event: cvs_scroll.configure
+                       (scrollregion=cvs_scroll.bbox("all")))
+    
+    cvs_scroll.create_window((0, 0), window=frm_orderlist, anchor='nw')
+
+    for i in range(50):
+        tk.Button(frm_orderlist, text=f'Order {i+1}').pack(fill='x')
