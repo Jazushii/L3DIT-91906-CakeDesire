@@ -347,16 +347,10 @@ def open_orderlist(content):
         if tier_ents[a] != '':
             change = False
 
-
-    # Task 2.5 & 2.6 Frame
-    frm_container = tk.Frame(content, width=270, height=429)
-    frm_container.place(x=580, y=51)
-    frm_container.pack_propagate(False)
-
+    # Task 2.5 New Order Button
     border_orderlist = tk.Frame(content, width=1, height=480, bg='black')
     border_orderlist.place(x=580, y=0)
 
-    # Task 2.5 New Order Button
     frm_new_order = tk.Frame(content, width=270, height=50)
     frm_new_order.place(x=581, y=0)
     frm_new_order.pack_propagate(False)
@@ -374,13 +368,25 @@ def open_orderlist(content):
     btn_new.image = icon
     btn_new.pack(fill='both', expand=True)
 
+    # Task 2.6.1
+    frm_container = tk.Frame(content, width=270, height=429)
+    frm_container.place(x=581, y=51)
+    frm_container.pack_propagate(False)
+
     cvs_scroll = tk.Canvas(frm_container, width=270, height=430)
     cvs_scroll.place(x=0, y=0)
+
+    # Task 2.6.2
+    def mouse_scrollbar(event):
+        cvs_scroll.yview_scroll(int(-event.delta / 120), "units")
+
 
     scrollbar = tk.Scrollbar(frm_container, orient='vertical', command=cvs_scroll.yview)
     scrollbar.pack(side='right', fill='y')
 
     cvs_scroll.configure(yscrollcommand=scrollbar.set)
+    cvs_scroll.bind('<Enter>', lambda event: cvs_scroll.bind_all('<MouseWheel>', mouse_scrollbar))
+    cvs_scroll.bind('<Leave>', lambda event: cvs_scroll.unbind_all('<MouseWheel>'))
 
     frm_orderlist = tk.Frame(cvs_scroll)
     frm_orderlist.bind('<Configure>', lambda event: cvs_scroll.configure
@@ -388,5 +394,6 @@ def open_orderlist(content):
     
     cvs_scroll.create_window((0, 0), window=frm_orderlist, anchor='nw')
 
+    # Task 2.6.3
     for i in range(50):
         tk.Button(frm_orderlist, text=f'Order {i+1}').pack(fill='x')
