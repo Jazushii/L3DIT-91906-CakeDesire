@@ -6,10 +6,11 @@ import os
 def open_orderlist(content):
     create_details(content)
     create_decor(content)
-    load_order(content, 'Jae')
+    load_order(content, 'Thanapn M')
     create_confirm_btn(content)
     create_new_order_btn(content)
     create_order_list(content)
+    check_files()
 
 dd_placeholders = ['dd', 'mm', 'yyyy']
 
@@ -145,7 +146,8 @@ def create_tiers_table(content, rnum):
     frm_btn_tiers = tk.Frame(frm_tiers, width=22, height=22)
     frm_btn_tiers.place(x=27, y=30)
     frm_btn_tiers.pack_propagate(False)
-    btn_tiers = tk.Button(frm_btn_tiers, text='▼', font=('Arial', 10, 'bold'), bg='#FEF8A0', activebackground='#FEF8A0', command=lambda: create_tiers_table(ent_tiers.get()))
+    btn_tiers = tk.Button(frm_btn_tiers, text='▼', font=('Arial', 10, 'bold'), bg='#FEF8A0',
+                          activebackground='#FEF8A0', command=lambda: create_tiers_table(content, ent_tiers.get()))
     btn_tiers.pack(fill='both', expand=True)
 
 detail_save_lbls = ['customer_details',
@@ -411,7 +413,13 @@ def check_files():
     files = []
     for f in os.listdir(path):
         if f.endswith('.json'):
-            files.append(f)
+            with open(f, 'r') as file:
+                order = json.load(file)
+                
+            files.append((f, order))
+
+    files.sort(key=lambda x:(int(x[1]['due_year']), int(x[1]['due_month']), int(x[1]['due_day'])))
+
     print(files)
 
 def create_order_list(content):
