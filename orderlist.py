@@ -7,10 +7,6 @@ def open_orderlist(content):
     create_details(content)
     create_decor(content)
     load_order(content, 'Jae')
-    for i in range(3):
-        if detail_ents[i+2].get() == '':
-            detail_ents[i+2].insert(0, dd_placeholders[i])
-            detail_ents[i+2].config(fg='gray')
     create_confirm_btn(content)
     create_new_order_btn(content)
     create_order_list(content)
@@ -20,13 +16,12 @@ dd_placeholders = ['dd', 'mm', 'yyyy']
 def delete_placeholder(event, d, error):
     if error == False:
         if detail_ents[d].get() == dd_placeholders[d-2]:
-            detail_ents[d].delete(0, tk.END)
+            detail_ents[d].delete(0, 'end')
             detail_ents[d].config(fg='black')
     elif error == True:
         if detail_ents[d].get() == dd_placeholders[d-2]:
-            detail_ents[d].delete(0, tk.END)
+            detail_ents[d].delete(0, 'end')
             detail_ents[d].config(fg='black')
-
 
 def create_placeholder(event, d):
     if detail_ents[d].get() == '':
@@ -178,6 +173,8 @@ def load_order(content, file_name):
             for tl in range(3):
                 tier_ents[tload].insert(0, order[f'tier{tnum+1}_{tier_save_lbls[tl]}'])
                 tload += 1
+        
+        txt_decor.insert(1.0, order['decor'])
 
 # Task 2.3.1 & 2.3.3 Decoration
 def create_decor(content):
@@ -346,7 +343,6 @@ def confirm(type):
     cmd = [root.destroy, save_order]
 
     for b in range(2):
-        print('frm_btn working')
         frm_btn = tk.Frame(frame, width=60, height=30, bg='red')
         frm_btn.grid(row=0, column=b)
         frm_btn.place(x=((root_w/2)-68)+(b*70), y=40)
@@ -376,6 +372,16 @@ def create_confirm_btn(content):
     btn_save.pack(fill='both', expand=True)
 
 # Task 2.5 New Order Button
+def new_order(content):
+    for i in range(8):
+        detail_ents[i].delete(0, 'end')
+    for i in range(3):
+        if detail_ents[i+2].get() == '':
+            detail_ents[i+2].insert(0, dd_placeholders[i])
+            detail_ents[i+2].config(fg='gray')
+    create_tiers_table(content, 1)
+    txt_decor.delete(1.0, 'end')
+
 def create_new_order_btn(content):
     # Task 2.5 New Order Button
     border_orderlist = tk.Frame(content, width=1, height=480, bg='black')
@@ -394,19 +400,19 @@ def create_new_order_btn(content):
 
     icon = tk.PhotoImage(file='list.png')
     btn_new = tk.Button(frm_btn, text='Create New Order ', font=('Segoe Print', 12), image=icon, compound='right',
-                        bg='#FFB253')
+                        bg='#FFB253', command=lambda: new_order(content))
     btn_new.image = icon
     btn_new.pack(fill='both', expand=True)
 
 # Task 2.6
+path = os.getcwd()
 def check_files():
-        global files
-        path = os.getcwd()
-        files = []
-        for f in os.listdir(path):
-            if f.endswith('.json'):
-                files.append(f)
-        print(files)
+    global files
+    files = []
+    for f in os.listdir(path):
+        if f.endswith('.json'):
+            files.append(f)
+    print(files)
 
 def create_order_list(content):
     # Task 2.6.1
@@ -436,6 +442,6 @@ def create_order_list(content):
     cvs_scroll.create_window((0, 0), window=frm_orderlist, anchor='nw')
 
     # Task 2.6.3
-    for i in range(4):
+    for i in range(sum(f.endswith('.json') for f in os.listdir(path))):
         frm_order = tk.Frame(frm_orderlist, width=100, height=30, bd=1.5, relief='groove')
         frm_order.pack(padx=80, pady=5)
