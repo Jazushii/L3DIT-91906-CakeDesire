@@ -320,7 +320,7 @@ def resolve_error(content):
             tier_ents[num].bind('<FocusIn>', lambda event, num=num: make_black(event, 't', num))
 
 # Task 2.4.4 Confirmation Pop-up
-def confirm(type):
+def confirm(content, type):
     # type = save / change
     global root
     root = tk.Tk()
@@ -354,7 +354,7 @@ def confirm(type):
         frm_btn.pack_propagate(False)
 
         btn = tk.Button(frm_btn, text=btns[b], font=('Segoe Print', 10), bg=bg[b],
-                        activebackground=bg[b], command=lambda b=b: cmd[b]())
+                        activebackground=bg[b], command=lambda b=b: (cmd[b](), create_order_list(content)))
         btn.pack(fill='both', expand=True)
 
     root.mainloop()
@@ -365,7 +365,7 @@ def save_btn_pressed(content):
     if has_error == True:
         resolve_error(content)
     elif has_error == False:
-        confirm('save')
+        confirm(content, 'save')
 
 def create_confirm_btn(content):
     # Task 2.4.2
@@ -413,6 +413,7 @@ def create_new_order_btn(content):
 path = os.getcwd()
 files = []
 def check_files():
+    files.clear()
     for f in os.listdir(path):
         if f.endswith('.json'):
             with open(f, 'r') as file:
@@ -420,11 +421,14 @@ def check_files():
                 
             files.append((f, order))
 
-    files.sort(key=lambda x:(int(x[1]['due_year']), int(x[1]['due_month']), int(x[1]['due_day'])))
+    files.sort(key=lambda x:(int(x[1]['due_year']),
+                             int(x[1]['due_month']),
+                             int(x[1]['due_day'])))
 
-order_list_created = False
+frm_orderlist = None
 def create_order_list(content):
-    if order_list_created == False:
+    global frm_orderlist
+    if frm_orderlist is None:
         # Task 2.6.1
         frm_container = tk.Frame(content, width=270, height=429)
         frm_container.place(x=581, y=51)
@@ -451,12 +455,12 @@ def create_order_list(content):
         
         cvs_scroll.create_window((0, 0), window=frm_orderlist, anchor='nw')
 
-        order_list_created == True
-
     # Task 2.6.3
     check_files()
+
     for widget in frm_orderlist.winfo_children():
         widget.destroy()
+
     for i in range(sum(f.endswith('.json') for f in os.listdir(path))):
         frm_order = tk.Frame(frm_orderlist, width=150, height=25, bd=1.5, relief='groove')
         frm_order.pack(padx=55, pady=5)
@@ -465,8 +469,8 @@ def create_order_list(content):
         frm_btn = tk.Frame(frm_order, width=125, height=25)
         frm_btn.pack(side='right')
         frm_btn.pack_propagate(False)
-        print(files[i][0].replace('.json', ''))
+
         btn_order = tk.Button(frm_btn, text=f'{files[i][1]['due_day']} - {files[i][1]['customer_name']}',
-                              anchor='w', command=lambda i=i:
+                              anchor='w', command=lambda i=i: 
                               load_order(content, files[i][0].replace('.json', '')))
         btn_order.pack(fill='both', expand=True)
