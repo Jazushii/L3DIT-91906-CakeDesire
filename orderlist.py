@@ -6,7 +6,7 @@ import os
 def open_orderlist(content):
     create_details(content)
     create_decor(content)
-    load_order(content, 'Thanapn M')
+    load_order(content, 'Jae')
     create_confirm_btn(content)
     create_new_order_btn(content)
     create_order_list(content)
@@ -150,7 +150,7 @@ def create_tiers_table(content, rnum):
                           activebackground='#FEF8A0', command=lambda: create_tiers_table(content, ent_tiers.get()))
     btn_tiers.pack(fill='both', expand=True)
 
-detail_save_lbls = ['customer_details',
+detail_save_lbls = ['customer_name',
                     'cake_flavour',
                     'due_day',
                    'due_month',
@@ -163,9 +163,11 @@ detail_save_lbls = ['customer_details',
 tier_save_lbls = ['layer', 'size_a', 'size_b']
 
 def load_order(content, file_name):
+    print(file_name)
     with open(f'{file_name}.json', 'r') as file:
         order = json.load(file)
         for dl in range(8):
+            detail_ents[dl].delete(0, 'end')
             detail_ents[dl].insert(0, order[detail_save_lbls[dl]])
 
         create_tiers_table(content, int(order['tier_num']))
@@ -176,6 +178,7 @@ def load_order(content, file_name):
                 tier_ents[tload].insert(0, order[f'tier{tnum+1}_{tier_save_lbls[tl]}'])
                 tload += 1
         
+        txt_decor.delete(1.0, 'end')
         txt_decor.insert(1.0, order['decor'])
 
 # Task 2.3.1 & 2.3.3 Decoration
@@ -260,7 +263,7 @@ def error_prev():
     for tnum in range(int(ent_tiers.get())):
         for te in range(3):
             # checking for blank entries
-            if tier_ents[t].get() == '' or detail_ents[de].get() == '*':
+            if tier_ents[t].get() == '' or tier_ents[t].get() == '*':
                 has_error = True
                 t_errors[f'blank{t}'] = t
                 
@@ -408,9 +411,8 @@ def create_new_order_btn(content):
 
 # Task 2.6
 path = os.getcwd()
+files = []
 def check_files():
-    global files
-    files = []
     for f in os.listdir(path):
         if f.endswith('.json'):
             with open(f, 'r') as file:
@@ -420,36 +422,51 @@ def check_files():
 
     files.sort(key=lambda x:(int(x[1]['due_year']), int(x[1]['due_month']), int(x[1]['due_day'])))
 
-    print(files)
-
+order_list_created = False
 def create_order_list(content):
-    # Task 2.6.1
-    frm_container = tk.Frame(content, width=270, height=429)
-    frm_container.place(x=581, y=51)
-    frm_container.pack_propagate(False)
+    if order_list_created == False:
+        # Task 2.6.1
+        frm_container = tk.Frame(content, width=270, height=429)
+        frm_container.place(x=581, y=51)
+        frm_container.pack_propagate(False)
 
-    cvs_scroll = tk.Canvas(frm_container, width=270, height=430)
-    cvs_scroll.place(x=0, y=0)
+        cvs_scroll = tk.Canvas(frm_container, width=270, height=430)
+        cvs_scroll.place(x=0, y=0)
 
-    # Task 2.6.2
-    def mouse_scrollbar(event):
-        cvs_scroll.yview_scroll(int(-event.delta / 120), "units")
+        # Task 2.6.2
+        def mouse_scrollbar(event):
+            cvs_scroll.yview_scroll(int(-event.delta / 120), "units")
 
 
-    scrollbar = tk.Scrollbar(frm_container, orient='vertical', command=cvs_scroll.yview)
-    scrollbar.pack(side='right', fill='y')
+        scrollbar = tk.Scrollbar(frm_container, orient='vertical', command=cvs_scroll.yview)
+        scrollbar.pack(side='right', fill='y')
 
-    cvs_scroll.configure(yscrollcommand=scrollbar.set)
-    cvs_scroll.bind('<Enter>', lambda event: cvs_scroll.bind_all('<MouseWheel>', mouse_scrollbar))
-    cvs_scroll.bind('<Leave>', lambda event: cvs_scroll.unbind_all('<MouseWheel>'))
+        cvs_scroll.configure(yscrollcommand=scrollbar.set)
+        cvs_scroll.bind('<Enter>', lambda event: cvs_scroll.bind_all('<MouseWheel>', mouse_scrollbar))
+        cvs_scroll.bind('<Leave>', lambda event: cvs_scroll.unbind_all('<MouseWheel>'))
 
-    frm_orderlist = tk.Frame(cvs_scroll, width=270)
-    frm_orderlist.bind('<Configure>', lambda event: cvs_scroll.configure
-                       (scrollregion=cvs_scroll.bbox('all')))
-    
-    cvs_scroll.create_window((0, 0), window=frm_orderlist, anchor='nw')
+        frm_orderlist = tk.Frame(cvs_scroll, width=270)
+        frm_orderlist.bind('<Configure>', lambda event: cvs_scroll.configure
+                        (scrollregion=cvs_scroll.bbox('all')))
+        
+        cvs_scroll.create_window((0, 0), window=frm_orderlist, anchor='nw')
+
+        order_list_created == True
 
     # Task 2.6.3
+    check_files()
+    for widget in frm_orderlist.winfo_children():
+        widget.destroy()
     for i in range(sum(f.endswith('.json') for f in os.listdir(path))):
-        frm_order = tk.Frame(frm_orderlist, width=100, height=30, bd=1.5, relief='groove')
-        frm_order.pack(padx=80, pady=5)
+        frm_order = tk.Frame(frm_orderlist, width=150, height=25, bd=1.5, relief='groove')
+        frm_order.pack(padx=55, pady=5)
+        frm_order.pack_propagate(False)
+
+        frm_btn = tk.Frame(frm_order, width=125, height=25)
+        frm_btn.pack(side='right')
+        frm_btn.pack_propagate(False)
+        print(files[i][0].replace('.json', ''))
+        btn_order = tk.Button(frm_btn, text=f'{files[i][1]['due_day']} - {files[i][1]['customer_name']}',
+                              anchor='w', command=lambda i=i:
+                              load_order(content, files[i][0].replace('.json', '')))
+        btn_order.pack(fill='both', expand=True)
