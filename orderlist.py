@@ -460,8 +460,26 @@ def create_order_list(content):
 
     for widget in frm_orderlist.winfo_children():
         widget.destroy()
+    
+    order_dates = []
+    order_years = []
+    for i in range(len(files)):
+        if i == 0:
+            order_years.append(files[i][1]['due_year'])
+        elif i != 0:
+            if files[i][1]['due_year'] != files[i-1][1]['due_year']:
+                order_years.append(files[i][1]['due_year'])
+    
+    for i in range(len(order_years)):
+        order_months = []
+        for ii in range(len(files)):
+            if files[ii][1]['due_year'] == order_years[i]:
+                order_months.append(files[ii][1]['due_month'])
+        order_dates.append((order_years[i], order_months))
 
-    for i in range(sum(f.endswith('.json') for f in os.listdir(path))):
+    print(order_dates)
+
+    for i in range(len(files)):
         frm_order = tk.Frame(frm_orderlist, width=150, height=25, bd=1.5, relief='groove')
         frm_order.pack(padx=55, pady=5)
         frm_order.pack_propagate(False)
