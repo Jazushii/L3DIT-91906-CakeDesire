@@ -1,7 +1,7 @@
 {
     "customer_name": "Nidhi Chandra",
     "cake_flavour": "Chocolate",
-    "due_day": "1",
+    "due_day": "01",
     "due_month": "07",
     "due_year": "2026",
     "cake_colours": "blue, pink, purple",
@@ -11,5 +11,5 @@
     "tier1_layer": "3",
     "tier1_size_a": "3",
     "tier1_size_b": "8",
-    "decor": "-\n"
+    "decor": "-\n\n"
 }

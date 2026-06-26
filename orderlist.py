@@ -206,7 +206,13 @@ def save_order():
     # Saving Details
 
     for dsave in range(8):
-        order_details[detail_save_lbls[dsave]] = detail_ents[dsave].get()
+        if 1 < dsave < 4:
+            if len(detail_ents[dsave].get()) == 1:
+                    order_details[detail_save_lbls[dsave]] = f'0{detail_ents[dsave].get()}'
+            else:
+                order_details[detail_save_lbls[dsave]] = detail_ents[dsave].get()
+        else: 
+            order_details[detail_save_lbls[dsave]] = detail_ents[dsave].get()
 
     # Saving Tiers Table
     tsave = 0
@@ -441,8 +447,9 @@ def create_order_list(content):
         def mouse_scrollbar(event):
             cvs_scroll.yview_scroll(int(-event.delta / 120), "units")
 
-
-        scrollbar = tk.Scrollbar(frm_container, orient='vertical', command=cvs_scroll.yview)
+        scrollbar = tk.Scrollbar(frm_container, orient='vertical', command=cvs_scroll.yview, bg='#FFB253',
+    activebackground='red',
+    troughcolor='yellow')
         scrollbar.pack(side='right', fill='y')
 
         cvs_scroll.configure(yscrollcommand=scrollbar.set)
@@ -472,23 +479,52 @@ def create_order_list(content):
     
     for i in range(len(order_years)):
         order_months = []
+
         for ii in range(len(files)):
             if files[ii][1]['due_year'] == order_years[i]:
-                order_months.append(files[ii][1]['due_month'])
+                if ii == 0:
+                    order_months.append(files[ii][1]['due_month'])
+                elif ii != 0:
+                    if files[ii][1]['due_month'] != files[ii-1][1]['due_month']:
+                        order_months.append(files[ii][1]['due_month'])
+
         order_dates.append((order_years[i], order_months))
 
     print(order_dates)
 
-    for i in range(len(files)):
-        frm_order = tk.Frame(frm_orderlist, width=150, height=25, bd=1.5, relief='groove')
-        frm_order.pack(padx=55, pady=5)
-        frm_order.pack_propagate(False)
+    months = ['January', 'February', 'March', 'April', 'May', 'June',
+              'July', 'August', 'September', 'October', 'November', 'December']
+    for i in range(len(order_dates)):
+        for a in range(len(order_dates[i][1])):
+            if i+a != 0:
+                frm_space = tk.Frame(frm_orderlist, width=270, height=10)
+                frm_space.pack()
 
-        frm_btn = tk.Frame(frm_order, width=125, height=25)
-        frm_btn.pack(side='right')
-        frm_btn.pack_propagate(False)
+                frm_border = tk.Frame(frm_orderlist, width=270, height=1, bd=1, relief='solid', bg='black')
+                frm_border.pack()
 
-        btn_order = tk.Button(frm_btn, text=f'{files[i][1]['due_day']} - {files[i][1]['customer_name']}',
-                              anchor='w', command=lambda i=i: 
-                              load_order(content, files[i][0].replace('.json', '')))
-        btn_order.pack(fill='both', expand=True)
+            frm_label = tk.Frame(frm_orderlist, width=270, height=25)
+            frm_label.pack(padx=0, pady=5)
+
+            lbl_order = tk.Label(frm_label, text=f'{months[int(order_dates[i][1][a])]} of {order_years[i]}',
+                                font=('Segoe Print', 12))
+            lbl_order.pack()
+
+            for b in range(len(files)):
+                if files[b][1]['due_year'] == order_dates[i][0]:
+                    if files[b][1]['due_month'] == order_dates[i][1][a]:
+                        frm_order = tk.Frame(frm_orderlist, width=150, height=25, bd=1.5, relief='groove')
+                        frm_order.pack(padx=55, pady=5)
+                        frm_order.pack_propagate(False)
+                                
+                        frm_btn = tk.Frame(frm_order, width=125, height=25)
+                        frm_btn.pack(side='right')
+                        frm_btn.pack_propagate(False)
+
+                        btn_order = tk.Button(frm_btn,
+                                              text=f'{files[b][1]['due_day']} - {files[b][1]['customer_name']}',
+                                              anchor='w', command=lambda b=b: 
+                                              load_order(content, files[b][0].replace('.json', '')))
+                        btn_order.pack(fill='both', expand=True)
+    frm_space = tk.Frame(frm_orderlist, width=270, height=15)
+    frm_space.pack()

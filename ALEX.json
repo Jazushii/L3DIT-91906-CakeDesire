@@ -2,7 +2,7 @@
     "customer_name": "ALEX",
     "cake_flavour": "Biscoff",
     "due_day": "05",
-    "due_month": "2",
+    "due_month": "02",
     "due_year": "2200",
     "cake_colours": "blue",
     "cake_type": "Ice cream",
@@ -11,5 +11,5 @@
     "tier1_layer": "2",
     "tier1_size_a": "6",
     "tier1_size_b": "7",
-    "decor": "Alex\n"
+    "decor": "Alex\n\n"
 }
