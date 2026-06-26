@@ -514,11 +514,19 @@ def create_order_list(content):
                 if files[b][1]['due_year'] == order_dates[i][0]:
                     if files[b][1]['due_month'] == order_dates[i][1][a]:
                         frm_order = tk.Frame(frm_orderlist, width=150, height=25, bd=1.5, relief='groove')
-                        frm_order.pack(padx=55, pady=5)
+                        frm_order.pack(padx=20, pady=5)
                         frm_order.pack_propagate(False)
-                                
+                        
+                        frm_chk = tk.Frame(frm_order, width=25, height=25)
+                        frm_chk.place(x=-2, y=-2)
+                        frm_chk.pack_propagate(False)
+
+                        completed = tk.BooleanVar()
+                        check_box = tk.Checkbutton(frm_chk, variable=completed, width=25, height=25)
+                        check_box.pack(fill='both', expand=True)
+
                         frm_btn = tk.Frame(frm_order, width=125, height=25)
-                        frm_btn.pack(side='right')
+                        frm_btn.place(x=23, y=-2)
                         frm_btn.pack_propagate(False)
 
                         btn_order = tk.Button(frm_btn,
