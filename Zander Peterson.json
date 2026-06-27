@@ -17,5 +17,6 @@
     "tier3_layer": "3",
     "tier3_size_a": "8",
     "tier3_size_b": "8",
-    "decor": "''e''\n"
+    "decor": "''e''",
+    "completed": false
 }

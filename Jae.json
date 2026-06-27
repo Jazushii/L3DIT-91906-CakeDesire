@@ -14,5 +14,6 @@
     "tier2_layer": "3",
     "tier2_size_a": "4",
     "tier2_size_b": "6",
-    "decor": "My beloved wife\n"
+    "decor": "My beloved wife",
+    "completed": false
 }

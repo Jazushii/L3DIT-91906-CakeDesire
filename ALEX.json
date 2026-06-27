@@ -11,5 +11,6 @@
     "tier1_layer": "2",
     "tier1_size_a": "6",
     "tier1_size_b": "7",
-    "decor": "Alex\n\n"
+    "decor": "Alex",
+    "completed": false
 }

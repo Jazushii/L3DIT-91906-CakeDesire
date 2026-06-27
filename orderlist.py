@@ -225,7 +225,9 @@ def save_order():
             tsave += 1
 
     # Saving Decorations / Toppings
-    order_details['decor'] = txt_decor.get("1.0", tk.END)
+    order_details['decor'] = txt_decor.get("1.0", tk.END).rstrip('\n')
+
+    order_details['completed'] = False
 
     with open(f'{detail_ents[0].get()}.json', 'w') as f:
         json.dump(order_details, f, indent=4)
@@ -431,6 +433,11 @@ def check_files():
                              int(x[1]['due_month']),
                              int(x[1]['due_day'])))
 
+def update_status(i, status):
+    files[i][1]['completed'] = status.get()
+    with open(files[i][0], "w") as f:
+        json.dump(files[i][1], f, indent=4)
+
 frm_orderlist = None
 def create_order_list(content):
     global frm_orderlist
@@ -447,9 +454,7 @@ def create_order_list(content):
         def mouse_scrollbar(event):
             cvs_scroll.yview_scroll(int(-event.delta / 120), "units")
 
-        scrollbar = tk.Scrollbar(frm_container, orient='vertical', command=cvs_scroll.yview, bg='#FFB253',
-    activebackground='red',
-    troughcolor='yellow')
+        scrollbar = tk.Scrollbar(frm_container, orient='vertical', command=cvs_scroll.yview)
         scrollbar.pack(side='right', fill='y')
 
         cvs_scroll.configure(yscrollcommand=scrollbar.set)
@@ -492,7 +497,7 @@ def create_order_list(content):
 
     print(order_dates)
 
-    months = ['January', 'February', 'March', 'April', 'May', 'June',
+    months = ['', 'January', 'February', 'March', 'April', 'May', 'June',
               'July', 'August', 'September', 'October', 'November', 'December']
     for i in range(len(order_dates)):
         for a in range(len(order_dates[i][1])):
@@ -522,7 +527,9 @@ def create_order_list(content):
                         frm_chk.pack_propagate(False)
 
                         completed = tk.BooleanVar()
-                        check_box = tk.Checkbutton(frm_chk, variable=completed, width=25, height=25)
+                        completed.set(files[b][1]['completed'])
+                        check_box = tk.Checkbutton(frm_chk, variable=completed, width=25, height=25,
+                                                   command=lambda b=b, status=completed: update_status(b, status))
                         check_box.pack(fill='both', expand=True)
 
                         frm_btn = tk.Frame(frm_order, width=125, height=25)

@@ -11,5 +11,6 @@
     "tier1_layer": "234",
     "tier1_size_a": "234",
     "tier1_size_b": "234",
-    "decor": "sdfs\n"
+    "decor": "sdfs",
+    "completed": false
 }
