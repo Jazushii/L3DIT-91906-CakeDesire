@@ -3,14 +3,17 @@ import json
 import os
 
 # Task 2.2
-def open_orderlist(content):
+def open_orderlist(content, switch):
+    global frm_tiers
+    global frm_orderlist
+    frm_tiers = None
+    frm_orderlist = None
     create_details(content)
     create_decor(content)
     load_order(content, 'Jae')
-    create_confirm_btn(content)
+    create_confirm_btn(content, switch)
     create_new_order_btn(content)
     create_order_list(content)
-    check_files()
 
 dd_placeholders = ['dd', 'mm', 'yyyy']
 
@@ -82,7 +85,6 @@ def create_details(content):
                 detail_num += 1
 
 # Task 2.3
-frm_tiers = None
 def create_tiers_table(content, rnum):
     global frm_tiers
     if frm_tiers is not None:
@@ -163,23 +165,22 @@ detail_save_lbls = ['customer_name',
 tier_save_lbls = ['layer', 'size_a', 'size_b']
 
 def load_order(content, file_name):
-    print(file_name)
     with open(f'{file_name}.json', 'r') as file:
         order = json.load(file)
-        for dl in range(8):
-            detail_ents[dl].delete(0, 'end')
-            detail_ents[dl].insert(0, order[detail_save_lbls[dl]])
+    for dl in range(8):
+        detail_ents[dl].delete(0, 'end')
+        detail_ents[dl].insert(0, order[detail_save_lbls[dl]])
 
-        create_tiers_table(content, int(order['tier_num']))
+    create_tiers_table(content, int(order['tier_num']))
 
-        tload = 0
-        for tnum in range(int(order['tier_num'])):
-            for tl in range(3):
-                tier_ents[tload].insert(0, order[f'tier{tnum+1}_{tier_save_lbls[tl]}'])
-                tload += 1
+    tload = 0
+    for tnum in range(int(order['tier_num'])):
+        for tl in range(3):
+            tier_ents[tload].insert(0, order[f'tier{tnum+1}_{tier_save_lbls[tl]}'])
+            tload += 1
         
-        txt_decor.delete(1.0, 'end')
-        txt_decor.insert(1.0, order['decor'])
+    txt_decor.delete(1.0, 'end')
+    txt_decor.insert(1.0, order['decor'])
 
 # Task 2.3.1 & 2.3.3 Decoration
 def create_decor(content):
@@ -233,7 +234,8 @@ def save_order():
         json.dump(order_details, f, indent=4)
 
     print('Saving...')
-    root.destroy()
+    popup.destroy()
+    return
 
 # Task 2.4.3 Error Prevention
 def error_prev():
@@ -328,60 +330,101 @@ def resolve_error(content):
             tier_ents[num].bind('<FocusIn>', lambda event, num=num: make_black(event, 't', num))
 
 # Task 2.4.4 Confirmation Pop-up
-def confirm(content, type):
+def check_changes(content, switch):
+    change = 0
+    try:
+        with open(f'{detail_ents[0].get()}.json', 'r') as file:
+            order = json.load(file)
+
+        for i in range(8):
+            print(f'{detail_ents[i].get()} = {order[detail_save_lbls[i]]}')
+            if detail_ents[i].get() != order[detail_save_lbls[i]]:
+                change = 1
+        
+        if ent_tiers.get() != order['tier_num']:
+            change = 1
+
+        tcheck = 0
+        for tnum in range(int(order['tier_num'])):
+            for tl in range(3):
+                if tier_ents[tcheck].get() != order[f'tier{tnum+1}_{tier_save_lbls[tl]}']:
+                    change = 1
+                tcheck += 1
+
+        if txt_decor.get(1.0, 'end').rstrip('\n') != order['decor']:
+            change = 1
+
+    except:
+        change = 1
+
+    if change == 1:
+        confirm(content, 'change', lambda: switch(content, 'orderlist'))
+
+    return
+
+def confirm(content, type, switch):
     # type = save / change
-    global root
-    root = tk.Tk()
-    root.title('Confirmation')
+    global popup
+    popup = tk.Tk()
+    popup.title('Confirmation')
 
-    root_w = 175
-    root_h = 85
-    center_x = int(root.winfo_screenwidth() / 2 - root_w / 2)
-    center_y = int((root.winfo_screenheight() / 2 - root_h / 2) - 35)
-    root.geometry(f'{root_w}x{root_h}+{center_x}+{center_y}')
-    root.resizable(False, False)
+    popup_w = 175
+    popup_h = 85
+    center_x = int(popup.winfo_screenwidth() / 2 - popup_w / 2)
+    center_y = int((popup.winfo_screenheight() / 2 - popup_h / 2) - 35)
+    popup.geometry(f'{popup_w}x{popup_h}+{center_x}+{center_y}')
+    popup.resizable(False, False)
 
-    frame = tk.Frame(root, width=root_w, height=root_h)
+    frame = tk.Frame(popup, width=popup_w, height=popup_h)
     frame.pack()
     frame.pack_propagate(False)
 
     if type == 'save':
         label = tk.Label(frame, text='Confirm order?', font=('Segoe Print', 12))
+        label.place(x=(popup_w/2)-63, y=5)
     elif type == 'change':
         label = tk.Label(frame, text='Save order?', font=('Segoe Print', 12))
-    label.place(x=(root_w/2)-65, y=5)
+        label.place(x=(popup_w/2)-45, y=5)
 
     btns = ['Cancel', 'Confirm']
     bg = ['#FFC957', '#FFB253']
-    cmd = [root.destroy, save_order]
+    def cmd(b):
+        if b == 0:
+            popup.destroy()
+            switch()
+        
+        if b == 1:
+            save_order()
+            create_order_list(content)
+            switch()
 
     for b in range(2):
         frm_btn = tk.Frame(frame, width=60, height=30, bg='red')
         frm_btn.grid(row=0, column=b)
-        frm_btn.place(x=((root_w/2)-68)+(b*70), y=40)
+        frm_btn.place(x=((popup_w/2)-65)+(b*70), y=40)
         frm_btn.pack_propagate(False)
 
         btn = tk.Button(frm_btn, text=btns[b], font=('Segoe Print', 10), bg=bg[b],
-                        activebackground=bg[b], command=lambda b=b: (cmd[b](), create_order_list(content)))
+                        activebackground=bg[b], command=lambda b=b: cmd(b))
         btn.pack(fill='both', expand=True)
 
-    root.mainloop()
+    popup.mainloop()
 
-def save_btn_pressed(content):
+def save_btn_pressed(content, switch):
     content.focus_set()
     error_prev()
     if has_error == True:
         resolve_error(content)
     elif has_error == False:
-        confirm(content, 'save')
+        confirm(content, 'save', lambda: switch(content, 'orderlist'))
 
-def create_confirm_btn(content):
+def create_confirm_btn(content, switch):
     # Task 2.4.2
     frm_save = tk.Frame(content, width=150, height=30, bg='#FFB253')
     frm_save.place(x=410, y=440)
     frm_save.pack_propagate(False)
     btn_save = tk.Button(frm_save, text='Confirm Order', font=('Segoe Print', 11), bg='#FFB253',
-                         activebackground='#FFB253', command=lambda: save_btn_pressed(content))
+                         activebackground='#FFB253', command=lambda: save_btn_pressed(content, switch))
     btn_save.pack(fill='both', expand=True)
 
 # Task 2.5 New Order Button
@@ -420,7 +463,7 @@ def create_new_order_btn(content):
 # Task 2.6
 path = os.getcwd()
 files = []
-def check_files():
+def scan_files():
     files.clear()
     for f in os.listdir(path):
         if f.endswith('.json'):
@@ -438,7 +481,6 @@ def update_status(i, status):
     with open(files[i][0], "w") as f:
         json.dump(files[i][1], f, indent=4)
 
-frm_orderlist = None
 def create_order_list(content):
     global frm_orderlist
     if frm_orderlist is None:
@@ -468,7 +510,7 @@ def create_order_list(content):
         cvs_scroll.create_window((0, 0), window=frm_orderlist, anchor='nw')
 
     # Task 2.6.3
-    check_files()
+    scan_files()
 
     for widget in frm_orderlist.winfo_children():
         widget.destroy()
