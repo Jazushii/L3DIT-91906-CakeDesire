@@ -8,17 +8,20 @@ from calendar import *
 # #FFB253
 
 in_orderlist = False
+root = None
 def interface(type):
     # Task 1.1 & 1.2
-    root = tk.Tk()
-    root.title('Cake Desire')
+    global root
+    if root is None:
+        root = tk.Tk()
+        root.title('Cake Desire')
 
-    root_w = 960
-    root_h = 540
-    center_x = int(root.winfo_screenwidth() / 2 - root_w / 2)
-    center_y = int((root.winfo_screenheight() / 2 - root_h / 2) - 35)
-    root.geometry(f'{root_w}x{root_h}+{center_x}+{center_y}')
-    root.resizable(False, False)
+        root_w = 960
+        root_h = 540
+        center_x = int(root.winfo_screenwidth() / 2 - root_w / 2)
+        center_y = int((root.winfo_screenheight() / 2 - root_h / 2) - 35)
+        root.geometry(f'{root_w}x{root_h}+{center_x}+{center_y}')
+        root.resizable(False, False)
 
     main = tk.Frame(root, width=root_w, height=root_h)
     main.pack()
@@ -59,37 +62,6 @@ def interface(type):
     order_colour = '#FFC957' if type == 'orderlist' else '#FEF67F'
     calen_colour = '#FFC957' if type == 'calendar' else '#FEF67F'
 
-    def switch(content, switch_to):
-        global in_orderlist
-        global change
-        if in_orderlist == True:
-            print('checking changes')
-            check_changes()
-            import orderlist
-            if orderlist.change == 1:
-                confirm(content, 'change', switch_to)
-                
-            else: 
-                in_orderlist = False
-                do_switch(switch_to)
-
-        else: 
-            do_switch(switch_to)
-
-    def do_switch(switch_to):
-        global in_orderlist
-        print('switching')
-        for widget in root.winfo_children():
-            widget.destroy()
-        root.destroy()
-        if switch_to == 'inventory':
-            interface('inventory')
-        if switch_to == 'orderlist':
-            in_orderlist = True
-            interface('orderlist')
-        if switch_to == 'calendar':
-            interface('calendar')
-
     btn_inven = tk.Button(navbar_inven, text='Inventory', font=inven_font, bg=inven_colour,
                           activebackground='#FFC957', command=lambda:switch(content, 'inventory'))
     btn_inven.pack(fill="both", expand=True)
@@ -114,6 +86,38 @@ def interface(type):
         print('calendar')
         open_calendar(content)
 
+    root = True
     root.mainloop()
+
+def switch(content, switch_to):
+        global in_orderlist
+        global change
+        if in_orderlist == True:
+            print('checking changes')
+            check_changes()
+            import orderlist
+            if orderlist.change == 1:
+                confirm(content, 'change', switch_to)
+                
+            else: 
+                in_orderlist = False
+                do_switch(switch_to)
+
+        else: 
+            do_switch(switch_to)
+
+def do_switch(switch_to):
+        global in_orderlist
+        print('switching')
+        for widget in root.winfo_children():
+            widget.destroy()
+        if switch_to == 'inventory':
+            interface('inventory')
+        if switch_to == 'orderlist':
+            in_orderlist = True
+            interface('orderlist')
+        if switch_to == 'calendar':
+            interface('calendar')
+        print(__name__, root)
 
 interface('inventory')
