@@ -59,22 +59,35 @@ def interface(type):
     order_colour = '#FFC957' if type == 'orderlist' else '#FEF67F'
     calen_colour = '#FFC957' if type == 'calendar' else '#FEF67F'
 
-    def switch(content, switch):
+    def switch(content, switch_to):
         global in_orderlist
+        global change
         if in_orderlist == True:
-            check_changes(content, switch)
-            in_orderlist = False
+            print('checking changes')
+            check_changes()
+            import orderlist
+            if orderlist.change == 1:
+                confirm(content, 'change', switch_to)
+                
+            else: 
+                in_orderlist = False
+                do_switch(switch_to)
 
+        else: 
+            do_switch(switch_to)
+
+    def do_switch(switch_to):
+        global in_orderlist
         print('switching')
         for widget in root.winfo_children():
             widget.destroy()
         root.destroy()
-        if switch == 'inventory':
+        if switch_to == 'inventory':
             interface('inventory')
-        if switch == 'orderlist':
+        if switch_to == 'orderlist':
             in_orderlist = True
             interface('orderlist')
-        if switch == 'calendar':
+        if switch_to == 'calendar':
             interface('calendar')
 
     btn_inven = tk.Button(navbar_inven, text='Inventory', font=inven_font, bg=inven_colour,
@@ -96,7 +109,7 @@ def interface(type):
         open_inventory(content)
     if type == 'orderlist':
         print('orderlist')
-        open_orderlist(content, switch)
+        open_orderlist(content)
     if type == 'calendar':
         print('calendar')
         open_calendar(content)

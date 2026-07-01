@@ -3,7 +3,7 @@ import json
 import os
 
 # Task 2.2
-def open_orderlist(content, switch):
+def open_orderlist(content):
     global frm_tiers
     global frm_orderlist
     frm_tiers = None
@@ -11,7 +11,7 @@ def open_orderlist(content, switch):
     create_details(content)
     create_decor(content)
     load_order(content, 'Jae')
-    create_confirm_btn(content, switch)
+    create_confirm_btn(content)
     create_new_order_btn(content)
     create_order_list(content)
 
@@ -234,8 +234,6 @@ def save_order():
         json.dump(order_details, f, indent=4)
 
     print('Saving...')
-    popup.destroy()
-    return
 
 # Task 2.4.3 Error Prevention
 def error_prev():
@@ -330,14 +328,14 @@ def resolve_error(content):
             tier_ents[num].bind('<FocusIn>', lambda event, num=num: make_black(event, 't', num))
 
 # Task 2.4.4 Confirmation Pop-up
-def check_changes(content, switch):
+def check_changes():
+    global change
     change = 0
     try:
         with open(f'{detail_ents[0].get()}.json', 'r') as file:
             order = json.load(file)
 
         for i in range(8):
-            print(f'{detail_ents[i].get()} = {order[detail_save_lbls[i]]}')
             if detail_ents[i].get() != order[detail_save_lbls[i]]:
                 change = 1
         
@@ -358,14 +356,14 @@ def check_changes(content, switch):
         change = 1
 
     if change == 1:
-        confirm(content, 'change', lambda: switch(content, 'orderlist'))
+        print('yes changes')
+    elif change == 0:
+        print('no changes')
 
-    return
-
-def confirm(content, type, switch):
+def confirm(content, type, switch_to):
+    print(f'running confirm({type})')
     # type = save / change
-    global popup
-    popup = tk.Tk()
+    popup = tk.Toplevel()
     popup.title('Confirmation')
 
     popup_w = 175
@@ -388,15 +386,22 @@ def confirm(content, type, switch):
 
     btns = ['Cancel', 'Confirm']
     bg = ['#FFC957', '#FFB253']
+
     def cmd(b):
         if b == 0:
             popup.destroy()
-            switch()
+            if type == 'change':
+                import main
+                main.do_switch(switch_to)
         
         if b == 1:
             save_order()
-            create_order_list(content)
-            switch()
+            popup.destroy()
+            if type == 'save':
+                create_order_list(content)
+            elif type == 'change':
+                import main
+                main.do_switch(switch_to)
 
     for b in range(2):
         frm_btn = tk.Frame(frame, width=60, height=30, bg='red')
@@ -408,23 +413,21 @@ def confirm(content, type, switch):
                         activebackground=bg[b], command=lambda b=b: cmd(b))
         btn.pack(fill='both', expand=True)
 
-    popup.mainloop()
-
-def save_btn_pressed(content, switch):
+def save_btn_pressed(content):
     content.focus_set()
     error_prev()
     if has_error == True:
         resolve_error(content)
     elif has_error == False:
-        confirm(content, 'save', lambda: switch(content, 'orderlist'))
+        confirm(content, 'save', '')
 
-def create_confirm_btn(content, switch):
+def create_confirm_btn(content):
     # Task 2.4.2
     frm_save = tk.Frame(content, width=150, height=30, bg='#FFB253')
     frm_save.place(x=410, y=440)
     frm_save.pack_propagate(False)
     btn_save = tk.Button(frm_save, text='Confirm Order', font=('Segoe Print', 11), bg='#FFB253',
-                         activebackground='#FFB253', command=lambda: save_btn_pressed(content, switch))
+                         activebackground='#FFB253', command=lambda: save_btn_pressed(content))
     btn_save.pack(fill='both', expand=True)
 
 # Task 2.5 New Order Button
@@ -536,8 +539,6 @@ def create_order_list(content):
                         order_months.append(files[ii][1]['due_month'])
 
         order_dates.append((order_years[i], order_months))
-
-    print(order_dates)
 
     months = ['', 'January', 'February', 'March', 'April', 'May', 'June',
               'July', 'August', 'September', 'October', 'November', 'December']
