@@ -34,6 +34,7 @@ def create_window():
     frm_inventory = tk.Frame(root, width=root_w, height=root_h)
     frm_inventory.place(x=0, y=0)
     frm_inventory.pack_propagate(False)
+    interface(frm_inventory, 'inventory')
 
     # loops and actually runs the window
     root.mainloop()
@@ -94,6 +95,7 @@ def interface(main, type):
     btn_calen.pack(fill="both", expand=True)
     
     # creates the frame for the content
+    global content
     content = tk.Frame(main, width=850, height=480)
     content.place(x=110, y=60)
     content.pack_propagate(False)
@@ -104,8 +106,10 @@ def interface(main, type):
         open_orderlist(content)
     if type == 'calendar':
         open_calendar(content)
+    
 
 def switch_check(content, switch_to):
+    
     global in_orderlist, change
     if in_orderlist == True:
         print('checking changes')
@@ -123,6 +127,9 @@ def switch_check(content, switch_to):
 
 def do_switch(switch_to):
     global in_orderlist
+
+    for widget in content.winfo_children():
+        widget.destroy()
 
     if switch_to == 'inventory':
         in_orderlist = False
