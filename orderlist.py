@@ -391,8 +391,8 @@ def confirm(content, type, switch_to):
         if b == 0:
             popup.destroy()
             if type == 'change':
-                import main
-                main.do_switch(switch_to)
+                import __main__
+                __main__.do_switch(switch_to)
         
         if b == 1:
             save_order()
@@ -400,8 +400,8 @@ def confirm(content, type, switch_to):
             if type == 'save':
                 create_order_list(content)
             elif type == 'change':
-                import main
-                main.do_switch(switch_to)
+                import __main__
+                __main__.do_switch(switch_to)
 
     for b in range(2):
         frm_btn = tk.Frame(frame, width=60, height=30, bg='red')
