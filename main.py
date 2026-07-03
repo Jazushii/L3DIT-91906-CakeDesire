@@ -45,7 +45,7 @@ def interface(main, type):
 
     # TASK 1.2
     # creates the title block / frame
-    title = tk.Frame(main, height=60, bg='#FFD333', bd=1, relief='solid')
+    title = tk.Frame(main, height=60, bd=1, relief='solid')
     title.pack(fill=tk.X)
     title.pack_propagate(False)
 
