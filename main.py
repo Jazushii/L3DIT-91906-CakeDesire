@@ -105,8 +105,7 @@ def interface(main, type):
     if type == 'orderlist':
         open_orderlist(content)
     if type == 'calendar':
-        open_calendar(content)
-    
+        open_calendar(content)   
 
 def switch_check(content, switch_to):
     

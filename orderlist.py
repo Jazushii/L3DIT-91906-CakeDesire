@@ -152,15 +152,8 @@ def create_tiers_table(content, rnum):
                           activebackground='#FEF8A0', command=lambda: create_tiers_table(content, ent_tiers.get()))
     btn_tiers.pack(fill='both', expand=True)
 
-detail_save_lbls = ['customer_name',
-                    'cake_flavour',
-                    'due_day',
-                   'due_month',
-                   'due_year',
-                   'cake_colours',
-                   'cake_type',
-                   'cake_shape'
-                   ]
+detail_save_lbls = ['customer_name', 'cake_flavour', 'due_day', 'due_month',
+                   'due_year', 'cake_colours', 'cake_type','cake_shape']
 
 tier_save_lbls = ['layer', 'size_a', 'size_b']
 

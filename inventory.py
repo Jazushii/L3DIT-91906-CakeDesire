@@ -4,16 +4,21 @@ import math
 from fractions import Fraction
 
 def open_inventory(content):
-    load_details('Thanapn M')
+    load_details('Lei Jin')
     create_header(content)
     create_ingredients_table(content)
     create_equipments_table(content)
     create_decor_table(content)
+    create_inven_stock(content)
 
 def load_details(file_name):
     with open(f'{file_name}.json', 'r') as file:
         global order
         order = json.load(file)
+
+    with open('inventory_stock.json', 'r') as file:
+        global stock
+        stock = json.load(file)
 
     cake_vol = 0
     for i in range(int(order['tier_num'])):
@@ -78,6 +83,8 @@ def create_ingredients_table(content):
         ingredients_lbls.append(f'{ingred_formula['vanilla extract']} tsp of Vanilla Extract')
     if order['cake_flavour'] == 'Chocolate':
         ingredients_lbls.append(f'{ingred_formula['cocoa powder']} g of Cocoa Powder')
+    if order['cake_flavour'] == 'Ube':
+        ingredients_lbls.append(f'{ingred_formula['ube extract']} tsp of Ube Extract')
 
     for r in range(len(ingredients_lbls)):
         frame = tk.Frame(content, width=180, height=30, bd=1.5, relief='groove', bg='#FEF8A0')
@@ -133,3 +140,96 @@ def create_decor_table(content):
     text.pack(fill='both', expand=True)
     text.insert(1.0, order['decor'])
     text.config(state='disabled')
+
+stock_lbls = ['Eggs:', 'Milk:', 'Oil:', 'Butter:', 'Flour:', 'Sugar:', 'Salt:', 
+              'Baking Powder:', 'Vanilla Extract:', 'Cocoa Powder:', 'Ube Extract:']
+
+stock_ents = []
+
+def create_inven_stock(content):
+    stock_frame = tk.Frame(content, width=220, height=480)
+    stock_frame.place(x=630, y=0)
+    stock_frame.pack_propagate(False)
+
+    stock_border = tk.Frame(stock_frame, width=1, height=480, bg='black')
+    stock_border.place(x=0, y=0)
+
+    frm_title = tk.Frame(stock_frame, width=180, height=40, bd=1.5, relief='groove', bg='#FFC957')
+    frm_title.place(x=20, y=25)
+    frm_title.pack_propagate(False)
+
+    lbl_title = tk.Label(frm_title, text='Inventory Stock:', font=('Segoe Print', 12, 'bold'), bg='#FFC957')
+    lbl_title.pack()
+
+    for r in range(11):
+        for c in range(2):
+            frame = tk.Frame(stock_frame, width=90, height=30, bd=1.5, relief='groove')
+            frame.place(x=20+90*c, y=65+30*r)
+            frame.pack_propagate(False)
+
+            if c == 0:
+                frame.config(bg='#FEF8A0')
+
+                label = tk.Label(frame, text=stock_lbls[r], font=('Arial', 12), bg='#FEF8A0')
+                label.place(x=0, y=0)
+
+    add_frm = tk.Frame(stock_frame, width=180, height=40, bd=1.5, relief='groove', bg='#FFC957')
+    add_frm.place(x=20, y=415)
+    add_frm.pack_propagate(False)
+
+    add_btn = tk.Button(add_frm, text='Add to Inventory', font=('Segoe Print', 12), bg='#FFC957', command=lambda: add_stock())
+    add_btn.pack(fill='both', expand=True)
+
+def add_stock():
+    add_root = tk.Toplevel()
+    add_root.title('Add to Inventory')
+    
+    add_root_w = 220
+    add_root_h = 480
+    center_x = int((add_root.winfo_screenheight() / 2 - add_root_w / 2) + 450)
+    center_y = int((add_root.winfo_screenheight() / 2 - add_root_h / 2) - 5)
+    add_root.geometry(f'{add_root_w}x{add_root_h}+{center_x}+{center_y}')
+    add_root.resizable(False, False)
+
+    frm_title = tk.Frame(add_root, width=180, height=40, bd=1.5, relief='groove', bg='#FFC957')
+    frm_title.place(x=20, y=25)
+    frm_title.pack_propagate(False)
+    
+    lbl_title = tk.Label(frm_title, text='Add to Inventory:', font=('Segoe Print', 12, 'bold'), bg='#FFC957')
+    lbl_title.pack()
+
+    for r in range(11):
+        for c in range(2):
+            frame = tk.Frame(add_root, width=90, height=30, bd=1.5, relief='groove')
+            frame.place(x=20+90*c, y=65+30*r)
+            frame.pack_propagate(False)
+    
+            if c == 0:
+                frame.config(bg='#FEF8A0')
+
+                label = tk.Label(frame, text=stock_lbls[r], font=('Arial', 12), bg='#FEF8A0')
+                label.place(x=0, y=0)
+
+            elif c == 1:
+                stock_ents.append(tk.Entry(frame, font=('Arial', 12)))
+                stock_ents[r].pack(fill='both', expand=True)
+
+    for i in range(2):
+        frame = tk.Frame(add_root, width=85, height=40, bd=1.5, relief='groove', bg='#FFC957')
+        frame.place(x=20+95*i, y=415)
+        frame.pack_propagate(False)
+
+        btn_lbls = ['Cancel', 'Confirm']
+        btn_cmds = [add_root.destroy, add_to_stock]
+
+        button = tk.Button(frame, text=btn_lbls[i], font=('Segoe Print', 12), bg='#FFC957', command=lambda: btn_cmds[i]())
+        button.pack(fill='both', expand=True)
+
+    add_root.mainloop()
+
+stock_save_lbls = ['eggs', 'milk', 'oil', 'butter', 'flour', 'sugar', 'salt',
+                   'baking_powder', 'vanilla_extract', 'cocoa_powder', 'ube_extract']
+
+def add_to_stock():
+    for i in range(11):
+        stock[stock_save_lbls[i]] = int(stock[stock_save_lbls[i]]) + int(stock_ents[i])
