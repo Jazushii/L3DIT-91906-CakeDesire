@@ -52,7 +52,7 @@ def load_details(file_name):
     print(cake_vol)
 
 def create_header(content):
-    frm_header = tk.Frame(content, width=400, height=50, bd=1.5, relief='groove')
+    frm_header = tk.Frame(content, width=400, height=50, bd=1.5, relief='groove', bg='#FFC957')
     frm_header.place(x=100, y=10)
     frm_header.pack_propagate(False)
 
