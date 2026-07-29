@@ -28,9 +28,11 @@ def create_window():
     frm_calendar = tk.Frame(root, width=root_w, height=root_h)
     frm_calendar.place(x=0, y=0)
     frm_calendar.pack_propagate(False)
+    interface(frm_calendar, 'calendar')
     frm_orderlist = tk.Frame(root, width=root_w, height=root_h)
     frm_orderlist.place(x=0, y=0)
     frm_orderlist.pack_propagate(False)
+    interface(frm_orderlist, 'orderlist')
     frm_inventory = tk.Frame(root, width=root_w, height=root_h)
     frm_inventory.place(x=0, y=0)
     frm_inventory.pack_propagate(False)
@@ -127,20 +129,16 @@ def switch_check(content, switch_to):
 def do_switch(switch_to):
     global in_orderlist
 
-    for widget in content.winfo_children():
-        widget.destroy()
-
     if switch_to == 'inventory':
         in_orderlist = False
         frm_inventory.tkraise()
-        interface(frm_inventory, 'inventory')
     if switch_to == 'orderlist':
         in_orderlist = True
         frm_orderlist.tkraise()
-        interface(frm_orderlist, 'orderlist')
     if switch_to == 'calendar':
         in_orderlist = False
         frm_calendar.tkraise()
-        interface(frm_calendar, 'calendar')
+
+    print(len(frm_inventory.winfo_children()))
 
 create_window()

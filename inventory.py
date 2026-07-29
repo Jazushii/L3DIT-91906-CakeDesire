@@ -76,19 +76,23 @@ def create_ingredients_table(content):
         f'{ingred_formula['flour/sugar']} g of Flour',
         f'{ingred_formula['flour/sugar']} g of Sugar',
         f'{ingred_formula['salt']} tsp of Salt',
-        f'{ingred_formula['baking powder']} tsp of Baking Powder',
+        f'{ingred_formula['baking powder']} tsp of\nBaking Powder',
     ]
 
     if order['cake_flavour'] == 'Vanilla':
-        ingredients_lbls.append(f'{ingred_formula['vanilla extract']} tsp of Vanilla Extract')
+        ingredients_lbls.append(f'{ingred_formula['vanilla extract']} tsp of\nVanilla Extract')
     if order['cake_flavour'] == 'Chocolate':
-        ingredients_lbls.append(f'{ingred_formula['cocoa powder']} g of Cocoa Powder')
+        ingredients_lbls.append(f'{ingred_formula['cocoa powder']} g of\nCocoa Powder')
     if order['cake_flavour'] == 'Ube':
-        ingredients_lbls.append(f'{ingred_formula['ube extract']} tsp of Ube Extract')
+        ingredients_lbls.append(f'{ingred_formula['ube extract']} tsp of\nUbe Extract')
 
     for r in range(len(ingredients_lbls)):
-        frame = tk.Frame(content, width=180, height=30, bd=1.5, relief='groove', bg='#FEF8A0')
-        frame.place(x=20, y=110+30*r)
+        if r < 7:
+            frame = tk.Frame(content, width=180, height=30, bd=1.5, relief='groove', bg='#FEF8A0')
+            frame.place(x=20, y=110+30*r)
+        else:
+            frame = tk.Frame(content, width=180, height=47, bd=1.5, relief='groove', bg='#FEF8A0')
+            frame.place(x=20, y=110+30*7+47*(r-7))
         frame.pack_propagate(False)
 
         label = tk.Label(frame, text=ingredients_lbls[r], font=('Arial', 12), bg='#FEF8A0')
@@ -141,12 +145,18 @@ def create_decor_table(content):
     text.insert(1.0, order['decor'])
     text.config(state='disabled')
 
-stock_lbls = ['Eggs:', 'Milk:', 'Oil:', 'Butter:', 'Flour:', 'Sugar:', 'Salt:', 
-              'Baking Powder:', 'Vanilla Extract:', 'Cocoa Powder:', 'Ube Extract:']
+stock_lbls = ['Eggs:', 'Milk (ml):', 'Oil (ml):', 'Butter (g):', 'Flour (g):', 'Sugar (g):', 'Salt (tsp):', 
+              'Baking\nPowder (tsp):', 'Vanilla\nExtract (tsp):', 'Cocoa\nPowder (tsp):', 'Ube\nExtract (tsp):']
 
 stock_ents = []
 
+stock_frame = None
+
 def create_inven_stock(content):
+    global stock_frame
+    if stock_frame is not None:
+        stock_frame.destroy()
+
     stock_frame = tk.Frame(content, width=220, height=480)
     stock_frame.place(x=630, y=0)
     stock_frame.pack_propagate(False)
@@ -155,7 +165,7 @@ def create_inven_stock(content):
     stock_border.place(x=0, y=0)
 
     frm_title = tk.Frame(stock_frame, width=180, height=40, bd=1.5, relief='groove', bg='#FFC957')
-    frm_title.place(x=20, y=25)
+    frm_title.place(x=20, y=18)
     frm_title.pack_propagate(False)
 
     lbl_title = tk.Label(frm_title, text='Inventory Stock:', font=('Segoe Print', 12, 'bold'), bg='#FFC957')
@@ -163,24 +173,42 @@ def create_inven_stock(content):
 
     for r in range(11):
         for c in range(2):
-            frame = tk.Frame(stock_frame, width=90, height=30, bd=1.5, relief='groove')
-            frame.place(x=20+90*c, y=65+30*r)
-            frame.pack_propagate(False)
-
+            frame = tk.Frame(stock_frame, bd=1.5, relief='groove', bg='#FEF8A0')
             if c == 0:
-                frame.config(bg='#FEF8A0')
+                frame.config(width=110)
+                if r < 7:
+                    frame.config(height=30)
+                    frame.place(x=20, y=58+30*r)
+                else:
+                    frame.config(height=47)
+                    frame.place(x=20, y=58+30*6+47*(r-7))
+                frame.pack_propagate(False)
 
                 label = tk.Label(frame, text=stock_lbls[r], font=('Arial', 12), bg='#FEF8A0')
                 label.place(x=0, y=0)
 
+            elif c == 1:
+                frame.config(width=70)
+                if r < 7:
+                    frame.config(height=30)
+                    frame.place(x=130, y=58+30*r)
+                else:
+                    frame.config(height=47)
+                    frame.place(x=130, y=58+30*6+47*(r-7))
+                frame.pack_propagate(False)
+
+                in_stock = tk.Label(frame, text=stock[stock_save_lbls[r]], font=('Arial', 12))
+                in_stock.pack(fill='both', expand=True)
+
     add_frm = tk.Frame(stock_frame, width=180, height=40, bd=1.5, relief='groove', bg='#FFC957')
-    add_frm.place(x=20, y=415)
+    add_frm.place(x=20, y=425)
     add_frm.pack_propagate(False)
 
-    add_btn = tk.Button(add_frm, text='Add to Inventory', font=('Segoe Print', 12), bg='#FFC957', command=lambda: add_stock())
+    add_btn = tk.Button(add_frm, text='Add to Inventory', font=('Segoe Print', 12),
+                        bg='#FFC957', command=lambda: add_stock(content))
     add_btn.pack(fill='both', expand=True)
 
-def add_stock():
+def add_stock(content):
     add_root = tk.Toplevel()
     add_root.title('Add to Inventory')
     
@@ -192,44 +220,68 @@ def add_stock():
     add_root.resizable(False, False)
 
     frm_title = tk.Frame(add_root, width=180, height=40, bd=1.5, relief='groove', bg='#FFC957')
-    frm_title.place(x=20, y=25)
+    frm_title.place(x=20, y=18)
     frm_title.pack_propagate(False)
     
     lbl_title = tk.Label(frm_title, text='Add to Inventory:', font=('Segoe Print', 12, 'bold'), bg='#FFC957')
     lbl_title.pack()
 
+    stock_ents.clear()
+
     for r in range(11):
         for c in range(2):
-            frame = tk.Frame(add_root, width=90, height=30, bd=1.5, relief='groove')
-            frame.place(x=20+90*c, y=65+30*r)
-            frame.pack_propagate(False)
-    
+            frame = tk.Frame(add_root, bd=1.5, relief='groove', bg='#FEF8A0')
             if c == 0:
-                frame.config(bg='#FEF8A0')
+                frame.config(width=110)
+                if r < 7:
+                    frame.config(height=30)
+                    frame.place(x=20, y=58+30*r)
+                else:
+                    frame.config(height=47)
+                    frame.place(x=20, y=58+30*6+47*(r-7))
+                frame.pack_propagate(False)
 
                 label = tk.Label(frame, text=stock_lbls[r], font=('Arial', 12), bg='#FEF8A0')
                 label.place(x=0, y=0)
-
+        
             elif c == 1:
+                frame.config(width=70)
+                if r < 7:
+                    frame.config(height=30)
+                    frame.place(x=130, y=58+30*r)
+                else:
+                    frame.config(height=47)
+                    frame.place(x=130, y=58+30*6+47*(r-7))
+                frame.pack_propagate(False)
+        
                 stock_ents.append(tk.Entry(frame, font=('Arial', 12)))
                 stock_ents[r].pack(fill='both', expand=True)
 
     for i in range(2):
         frame = tk.Frame(add_root, width=85, height=40, bd=1.5, relief='groove', bg='#FFC957')
-        frame.place(x=20+95*i, y=415)
+        frame.place(x=20+95*i, y=425)
         frame.pack_propagate(False)
 
         btn_lbls = ['Cancel', 'Confirm']
-        btn_cmds = [add_root.destroy, add_to_stock]
+        def btn_cmds(content, i):
+            if i == 1:
+                add_to_stock(content)
 
-        button = tk.Button(frame, text=btn_lbls[i], font=('Segoe Print', 12), bg='#FFC957', command=lambda: btn_cmds[i]())
+            add_root.destroy()
+
+        button = tk.Button(frame, text=btn_lbls[i], font=('Segoe Print', 12), bg='#FFC957',
+                           command=lambda i=i: btn_cmds(content, i))
         button.pack(fill='both', expand=True)
-
-    add_root.mainloop()
 
 stock_save_lbls = ['eggs', 'milk', 'oil', 'butter', 'flour', 'sugar', 'salt',
                    'baking_powder', 'vanilla_extract', 'cocoa_powder', 'ube_extract']
 
-def add_to_stock():
+def add_to_stock(content):
     for i in range(11):
-        stock[stock_save_lbls[i]] = int(stock[stock_save_lbls[i]]) + int(stock_ents[i])
+        if stock_ents[i].get() != '':
+            stock[stock_save_lbls[i]] = stock[stock_save_lbls[i]] + int(stock_ents[i].get())
+
+            with open('inventory_stock.json', 'w') as f:
+                json.dump(stock, f, indent=4)
+
+    create_inven_stock(content)

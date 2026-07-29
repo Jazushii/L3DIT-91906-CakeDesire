@@ -463,8 +463,9 @@ def scan_files():
     files.clear()
     for f in os.listdir(path):
         if f.endswith('.json'):
-            with open(f, 'r') as file:
-                order = json.load(file)
+            if f != 'inventory_stock.json':
+                with open(f, 'r') as file:
+                    order = json.load(file)
                 
             files.append((f, order))
 
@@ -474,6 +475,7 @@ def scan_files():
 
 def update_status(i, status):
     files[i][1]['completed'] = status.get()
+
     with open(files[i][0], "w") as f:
         json.dump(files[i][1], f, indent=4)
 
@@ -577,5 +579,6 @@ def create_order_list(content):
                                               anchor='w', command=lambda b=b: 
                                               load_order(content, files[b][0].replace('.json', '')))
                         btn_order.pack(fill='both', expand=True)
+
     frm_space = tk.Frame(frm_orderlist, width=270, height=15)
     frm_space.pack()

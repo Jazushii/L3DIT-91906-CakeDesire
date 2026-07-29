@@ -1,13 +1,13 @@
 {
-    "eggs": "0",
-    "milk": "0",
-    "oil": "0",
-    "butter": "0",
-    "flour": "0",
-    "sugar": "0",
-    "salt": "0",
-    "baking_powder": "0",
-    "vanilla_extract": "0",
-    "cocoa_powder": "0",
-    "ube_extract": "0"
+    "eggs": 5,
+    "milk": 100,
+    "oil": 0,
+    "butter": 0,
+    "flour": 0,
+    "sugar": 0,
+    "salt": 0,
+    "baking_powder": 0,
+    "vanilla_extract": 0,
+    "cocoa_powder": 0,
+    "ube_extract": 0
 }
