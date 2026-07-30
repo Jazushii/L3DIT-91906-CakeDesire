@@ -115,8 +115,8 @@ def switch_check(content, switch_to):
     if in_orderlist == True:
         print('checking changes')
         check_changes()
-        import orderlist_interface
-        if orderlist_interface.change == 1:
+        import orderlist
+        if orderlist.change == 1:
             confirm(content, 'change', switch_to)
                 
         else: 
