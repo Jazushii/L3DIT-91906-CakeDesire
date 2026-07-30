@@ -1,4 +1,5 @@
 import tkinter as tk
+from calculations import *
 
 def open_calendar(content):
     create_title(content)
@@ -9,7 +10,7 @@ def create_title(content):
     frm_title.place(x=0, y=0)
     frm_title.pack_propagate(False)
 
-    lbl_title = tk.Label(frm_title, text='July 30, 2026', font=('Segoe Print', 16, 'bold'), bg='#FFB253')
+    lbl_title = tk.Label(frm_title, text=f'{current_mth} {current_yr}', font=('Segoe Print', 16, 'bold'), bg='#FFB253')
     lbl_title.pack(fill='both', expand=True)
 
     title_border = tk.Frame(content, width=850, height=1, bd=1, relief='solid', bg='black')

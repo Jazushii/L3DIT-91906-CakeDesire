@@ -1,7 +1,7 @@
 import tkinter as tk
-from inventory import *
-from orderlist import *
-from calendar import *
+from inventory_interface import *
+from orderlist_interface import *
+from calendar_interface import *
 
 # #FFD333
 # #FFC957
@@ -138,7 +138,5 @@ def do_switch(switch_to):
     if switch_to == 'calendar':
         in_orderlist = False
         frm_calendar.tkraise()
-
-    print(len(frm_inventory.winfo_children()))
 
 create_window()
