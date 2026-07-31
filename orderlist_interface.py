@@ -1,6 +1,6 @@
 import tkinter as tk
 import json
-import os
+from calculations import *
 
 # Task 2.2
 def open_orderlist(content):
@@ -457,22 +457,6 @@ def create_new_order_btn(content):
     btn_new.pack(fill='both', expand=True)
 
 # Task 2.6
-path = os.getcwd()
-files = []
-def scan_files():
-    files.clear()
-    for f in os.listdir(path):
-        if f.endswith('.json'):
-            if f != 'inventory_stock.json':
-                with open(f, 'r') as file:
-                    order = json.load(file)
-                
-            files.append((f, order))
-
-    files.sort(key=lambda x:(int(x[1]['due_year']),
-                             int(x[1]['due_month']),
-                             int(x[1]['due_day'])))
-
 def update_status(i, status):
     files[i][1]['completed'] = status.get()
 
@@ -582,3 +566,6 @@ def create_order_list(content):
 
     frm_space = tk.Frame(frm_orderlist, width=270, height=15)
     frm_space.pack()
+
+    for i in range(len(files)):
+        print(files[i][0])

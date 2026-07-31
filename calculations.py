@@ -1,7 +1,24 @@
 import json
+import os
 import math
 import datetime
 import calendar
+
+path = os.getcwd()
+files = []
+def scan_files():
+    files.clear()
+    for f in os.listdir(path):
+        if f.endswith('.json'):
+            if f != 'inventory_stock.json':
+                with open(f, 'r') as file:
+                    order = json.load(file)
+                
+            files.append((f, order))
+
+    files.sort(key=lambda x:(int(x[1]['due_year']),
+                             int(x[1]['due_month']),
+                             int(x[1]['due_day'])))
 
 # CALENDAR INTERFACE
 today = datetime.date.today()

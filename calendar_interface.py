@@ -52,7 +52,6 @@ def create_calendar(content):
 
             # labeling the current month's days
             if calculations.day_num >= calculations.first_day and calculations.day_track <= calculations.total_days:
-                frame.config(bg='red')
                 day.config(text=calculations.day_track)
                 calculations.day_track += 1
 
