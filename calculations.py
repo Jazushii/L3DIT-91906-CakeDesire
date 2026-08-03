@@ -14,7 +14,7 @@ def scan_files():
                 with open(f, 'r') as file:
                     order = json.load(file)
                 
-            files.append((f, order))
+                files.append((f, order))
 
     files.sort(key=lambda x:(int(x[1]['due_year']),
                              int(x[1]['due_month']),
