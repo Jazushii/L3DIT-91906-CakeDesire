@@ -6,8 +6,7 @@ from calculations import *
 import calculations
 
 def open_inventory(content):
-    calculations.scan_files()
-    load_details('Lei Jin')
+    load_details(incoming_order)
     create_header(content)
     create_ingredients_table(content)
     create_equipments_table(content)
@@ -15,6 +14,9 @@ def open_inventory(content):
     create_inven_stock(content)
 
 def load_details(file_name):
+    with open(f'{file_name}.json', 'r') as file:
+        global order
+        order = json.load(file)
     cake_vol = 0
     for i in range(int(order['tier_num'])):
         if order['cake_shape'] == 'Round':

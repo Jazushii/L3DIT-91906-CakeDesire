@@ -10,7 +10,7 @@ def open_orderlist(content):
     frm_orderlist = None
     create_details(content)
     create_decor(content)
-    load_order(content, 'Jae')
+    load_order(content, incoming_order)
     create_confirm_btn(content)
     create_new_order_btn(content)
     create_order_list(content)
@@ -524,8 +524,6 @@ def create_order_list(content):
 
         order_dates.append((order_years[i], order_months))
 
-    months = ['', 'January', 'February', 'March', 'April', 'May', 'June',
-              'July', 'August', 'September', 'October', 'November', 'December']
     for i in range(len(order_dates)):
         for a in range(len(order_dates[i][1])):
             if i+a != 0:
@@ -571,6 +569,3 @@ def create_order_list(content):
 
     frm_space = tk.Frame(frm_orderlist, width=270, height=15)
     frm_space.pack()
-
-    for i in range(len(files)):
-        print(files[i][0])
