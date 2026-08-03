@@ -2,8 +2,11 @@ import tkinter as tk
 import json
 import math
 from fractions import Fraction
+from calculations import *
+import calculations
 
 def open_inventory(content):
+    calculations.scan_files()
     load_details('Lei Jin')
     create_header(content)
     create_ingredients_table(content)
@@ -12,14 +15,6 @@ def open_inventory(content):
     create_inven_stock(content)
 
 def load_details(file_name):
-    with open(f'{file_name}.json', 'r') as file:
-        global order
-        order = json.load(file)
-
-    with open('inventory_stock.json', 'r') as file:
-        global stock
-        stock = json.load(file)
-
     cake_vol = 0
     for i in range(int(order['tier_num'])):
         if order['cake_shape'] == 'Round':
@@ -49,7 +44,6 @@ def load_details(file_name):
                     ingred_formula[ingred] = f'{int((num*cake_vol)/(6*6*4))} {Fraction(((num*cake_vol)/(6*6*4))-int((num*cake_vol)/(6*6*4))).limit_denominator(4)}'
         else:
             ingred_formula[ingred] = round((num*cake_vol)/(6*6*4))
-    print(cake_vol)
 
 def create_header(content):
     frm_header = tk.Frame(content, width=400, height=50, bd=1.5, relief='groove', bg='#FFC957')
@@ -272,9 +266,6 @@ def add_stock(content):
         button = tk.Button(frame, text=btn_lbls[i], font=('Segoe Print', 12), bg='#FFC957',
                            command=lambda i=i: btn_cmds(content, i))
         button.pack(fill='both', expand=True)
-
-stock_save_lbls = ['eggs', 'milk', 'oil', 'butter', 'flour', 'sugar', 'salt',
-                   'baking_powder', 'vanilla_extract', 'cocoa_powder', 'ube_extract']
 
 def add_to_stock(content):
     for i in range(11):

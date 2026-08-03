@@ -20,6 +20,15 @@ def scan_files():
                              int(x[1]['due_month']),
                              int(x[1]['due_day'])))
 
+with open('inventory_stock.json', 'r') as file:
+    stock = json.load(file)
+
+# INVENTORY INTERFACE
+stock_save_lbls = ['eggs', 'milk', 'oil', 'butter', 'flour', 'sugar', 'salt',
+                   'baking_powder', 'vanilla_extract', 'cocoa_powder', 'ube_extract']
+
+
+
 # CALENDAR INTERFACE
 today = datetime.date.today()
 

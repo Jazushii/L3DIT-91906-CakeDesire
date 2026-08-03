@@ -223,6 +223,11 @@ def save_order():
 
     order_details['completed'] = False
 
+    # saving ingredient details
+    for s in range(11):
+        order_details[stock_save_lbls[s]] = 0
+
+    # create / save into json file
     with open(f'{detail_ents[0].get()}.json', 'w') as f:
         json.dump(order_details, f, indent=4)
 
