@@ -18,5 +18,17 @@
     "tier3_size_a": "4",
     "tier3_size_b": "2",
     "decor": "Buttercream frosting \nThe outer frost is white then the litttle details will be pink, add bows. \nSwirl buttercream deco\nI want sprinkles and sugar little figures, preferely hello kitty\nMake it look reminence era \nI want each layer to be different shades of pink. Like when cut in its like a gradient. \nTop tier, caramel puddle with blue and orange koi fish",
-    "completed": false
+    "completed": false,
+    "cake_volume": 279.31562378484523,
+    "eggs": 8,
+    "milk": 310,
+    "oil": 155,
+    "butter": 155,
+    "flour": 388,
+    "sugar": 388,
+    "salt": "1/2",
+    "baking_powder": 3,
+    "vanilla_extract": 2,
+    "cocoa_powder": 78,
+    "ube_extract": 4
 }

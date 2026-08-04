@@ -29,9 +29,15 @@ with open('inventory_stock.json', 'r') as file:
 stock_save_lbls = ['eggs', 'milk', 'oil', 'butter', 'flour', 'sugar', 'salt',
                     'baking_powder', 'vanilla_extract', 'cocoa_powder', 'ube_extract']
 
+ratio_formula = {'eggs': 4, 'milk': 160, 'oil': 80, 'butter': 80, 'flour': 200, 'sugar': 200, 'salt': 0.25,
+                       'baking_powder': 1.5, 'vanilla_extract': 1, 'cocoa_powder': 40, 'ube_extract': 2}
+
+ingredients_lbls = ['Eggs', 'ml of Milk', 'ml of Cooking Oil', 'g of Butter', 'g of Flour', 'g of Sugar', 'tsp of Salt',
+                    'tsp of\nBaking Powder', 'tsp of\nVanilla Extract', 'g of\nCocoa Powder', 'tsp of\nUbe Extract']
+
 # ORDERLIST INTERFACE
 months = ['', 'January', 'February', 'March', 'April', 'May', 'June',
-            'July', 'August', 'September', 'October', 'November', 'December']
+          'July', 'August', 'September', 'October', 'November', 'December']
 
 # CALENDAR INTERFACE
 today = datetime.date.today()

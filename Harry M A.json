@@ -6,7 +6,7 @@
     "due_year": "2026",
     "cake_colours": "tank green",
     "cake_type": "birthday",
-    "cake_shape": "panzer",
+    "cake_shape": "Square",
     "tier_num": "2",
     "tier1_layer": "4",
     "tier1_size_a": "10",
@@ -15,5 +15,17 @@
     "tier2_size_a": "6",
     "tier2_size_b": "4",
     "decor": "panzer with buttercream ganash using chocolate cake cuttings and crushed flake for a rough terain base. it will need melted chocolate for the finer detailes and edible airbrush techniques to simulate shells and other fine details such as tracks and hatches.",
-    "completed": false
+    "completed": false,
+    "cake_volume": 844.0,
+    "eggs": 23,
+    "milk": 938,
+    "oil": 469,
+    "butter": 469,
+    "flour": 1172,
+    "sugar": 1172,
+    "salt": "1 1/2",
+    "baking_powder": 9,
+    "vanilla_extract": 6,
+    "cocoa_powder": 234,
+    "ube_extract": 12
 }

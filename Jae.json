@@ -15,5 +15,17 @@
     "tier2_size_a": "4",
     "tier2_size_b": "6",
     "decor": "My beloved wifey",
-    "completed": false
+    "completed": false,
+    "cake_volume": 188.49555921538757,
+    "eggs": 5,
+    "milk": 209,
+    "oil": 105,
+    "butter": 105,
+    "flour": 262,
+    "sugar": 262,
+    "salt": "1/3",
+    "baking_powder": 2,
+    "vanilla_extract": 1,
+    "cocoa_powder": 52,
+    "ube_extract": 3
 }

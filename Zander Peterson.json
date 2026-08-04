@@ -6,7 +6,7 @@
     "due_year": "2026",
     "cake_colours": "Yellow, White, Grey, Purple",
     "cake_type": "Birthday",
-    "cake_shape": "Dumbell",
+    "cake_shape": "Round",
     "tier_num": "3",
     "tier1_layer": "3",
     "tier1_size_a": "8",
@@ -18,5 +18,17 @@
     "tier3_size_a": "8",
     "tier3_size_b": "8",
     "decor": "''e''",
-    "completed": true
+    "completed": false,
+    "cake_volume": 805.0331174823846,
+    "eggs": 22,
+    "milk": 894,
+    "oil": 447,
+    "butter": 447,
+    "flour": 1118,
+    "sugar": 1118,
+    "salt": "1 1/3",
+    "baking_powder": 8,
+    "vanilla_extract": 6,
+    "cocoa_powder": 224,
+    "ube_extract": 11
 }

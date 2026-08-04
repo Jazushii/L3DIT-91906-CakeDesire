@@ -1,6 +1,8 @@
 import tkinter as tk
 import json
 from calculations import *
+import math
+from fractions import Fraction
 
 # Task 2.2
 def open_orderlist(content):
@@ -197,8 +199,7 @@ def save_order():
 
     order_details = {}
         
-    # Saving Details
-
+    # saves the details
     for dsave in range(8):
         if 1 < dsave < 4:
             if len(detail_ents[dsave].get()) == 1:
@@ -208,7 +209,7 @@ def save_order():
         else: 
             order_details[detail_save_lbls[dsave]] = detail_ents[dsave].get()
 
-    # Saving Tiers Table
+    # saves the tiers table
     tsave = 0
 
     order_details['tier_num'] = ent_tiers.get()
@@ -218,14 +219,39 @@ def save_order():
             order_details[f'tier{tnum+1}_{tier_save_lbls[td]}'] = tier_ents[tsave].get()
             tsave += 1
 
-    # Saving Decorations / Toppings
+    # saves the decorations / toppings
     order_details['decor'] = txt_decor.get("1.0", tk.END).rstrip('\n')
 
     order_details['completed'] = False
 
-    # saving ingredient details
-    for s in range(11):
-        order_details[stock_save_lbls[s]] = 0
+    # saves the volume of the cake
+    cake_volume = 0
+    for i in range(int(order_details['tier_num'])):
+        if order_details['cake_shape'] == 'Round':
+            cake_volume += (math.pi*(math.pow((int(order_details[f'tier{i+1}_size_a'])/2), 2))
+                         * int(order_details[f'tier{i+1}_size_b']))
+        if order_details['cake_shape'] == 'Square':
+            cake_volume += (math.pow(int(order_details[f'tier{i+1}_size_a']), 2)
+                         * int(order_details[f'tier{i+1}_size_b']))
+        if order_details['cake_shape'] == 'Heart':
+            cake_volume += ((math.pow(((2*int(order_details[f'tier{i+1}_size_a']))/3), 2)
+                          + (math.pi*math.pow((int(order_details[f'tier{i+1}_size_a'])/3), 2)))
+                          * int(order_details[f'tier{i+1}_size_b']))
+    order_details['cake_volume'] = cake_volume
+
+    # saves the ingredient details using ratio
+    for ingredient, amount in ratio_formula.items():
+        if ingredient == 'salt' or ingredient == 'baking powder' or ingredient == 'vanilla extract' or ingredient == 'ube extract':
+            print(((amount*cake_volume)/(6*6*4)))
+            if int((amount*cake_volume)/(6*6*4)) == 0:
+                order_details[ingredient] = str(Fraction(((amount*cake_volume)/(6*6*4))).limit_denominator(4))
+            else:
+                if Fraction(((amount*cake_volume)/(6*6*4))-int((amount*cake_volume)/(6*6*4))).limit_denominator(4) == 1:
+                    order_details[ingredient] = int((amount*cake_volume)/(6*6*4))+1
+                else:
+                    order_details[ingredient] = f'{int((amount*cake_volume)/(6*6*4))} {Fraction(((amount*cake_volume)/(6*6*4)) - int((amount*cake_volume)/(6*6*4))).limit_denominator(4)}'
+        else:
+            order_details[ingredient] = round((amount*cake_volume)/(6*6*4))
 
     # create / save into json file
     with open(f'{detail_ents[0].get()}.json', 'w') as f:
