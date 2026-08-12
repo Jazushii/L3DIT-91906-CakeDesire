@@ -1,7 +1,6 @@
 import tkinter as tk
 import json
 from calculations import *
-import calculations
 
 def open_inventory(content):
     load_details(incoming_order)
@@ -10,11 +9,6 @@ def open_inventory(content):
     create_equipments_table(content)
     create_decor_table(content)
     create_inven_stock(content)
-
-def load_details(file_name):
-    with open(f'{file_name}.json', 'r') as file:
-        global order
-        order = json.load(file)
 
 def create_header(content):
     frm_header = tk.Frame(content, width=400, height=50, bd=1.5, relief='groove', bg='#FFC957')
@@ -105,12 +99,10 @@ def create_decor_table(content):
     text.insert(1.0, order['decor'])
     text.config(state='disabled')
 
-stock_lbls = ['Eggs:', 'Milk (ml):', 'Oil (ml):', 'Butter (g):', 'Flour (g):', 'Sugar (g):', 'Salt (tsp):', 
-              'Baking\nPowder (tsp):', 'Vanilla\nExtract (tsp):', 'Cocoa\nPowder (tsp):', 'Ube\nExtract (tsp):']
-
-stock_ents = []
-
-stock_frame = None
+def load_details(file_name):
+    with open(f'{file_name}.json', 'r') as file:
+        global order
+        order = json.load(file)
 
 def create_inven_stock(content):
     global stock_frame

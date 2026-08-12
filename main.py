@@ -3,11 +3,12 @@ from inventory_interface import *
 from orderlist_interface import *
 from calendar_interface import *
 
-# #FFD333
-# #FFC957
-# #FFB253
+# Main #FFD333
+# Sub #FFC957
+# Para #FEF8A0
+# Orange #FFB253
 
-# Window Creation
+# window creation function
 def create_window():
 
     # TASK 1.1 & 1.2

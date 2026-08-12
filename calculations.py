@@ -26,14 +26,18 @@ with open('inventory_stock.json', 'r') as file:
 
 
 # INVENTORY INTERFACE
-stock_save_lbls = ['eggs', 'milk', 'oil', 'butter', 'flour', 'sugar', 'salt',
-                    'baking_powder', 'vanilla_extract', 'cocoa_powder', 'ube_extract']
-
 ratio_formula = {'eggs': 4, 'milk': 160, 'oil': 80, 'butter': 80, 'flour': 200, 'sugar': 200, 'salt': 0.25,
                        'baking_powder': 1.5, 'vanilla_extract': 1, 'cocoa_powder': 40, 'ube_extract': 2}
 
 ingredients_lbls = ['Eggs', 'ml of Milk', 'ml of Cooking Oil', 'g of Butter', 'g of Flour', 'g of Sugar', 'tsp of Salt',
                     'tsp of\nBaking Powder', 'tsp of\nVanilla Extract', 'g of\nCocoa Powder', 'tsp of\nUbe Extract']
+
+stock_lbls = ['Eggs:', 'Milk (ml):', 'Oil (ml):', 'Butter (g):', 'Flour (g):', 'Sugar (g):', 'Salt (tsp):', 
+              'Baking\nPowder (tsp):', 'Vanilla\nExtract (tsp):', 'Cocoa\nPowder (tsp):', 'Ube\nExtract (tsp):']
+stock_ents = []
+stock_frame = None
+stock_save_lbls = ['eggs', 'milk', 'oil', 'butter', 'flour', 'sugar', 'salt',
+                    'baking_powder', 'vanilla_extract', 'cocoa_powder', 'ube_extract']
 
 # ORDERLIST INTERFACE
 months = ['', 'January', 'February', 'March', 'April', 'May', 'June',
