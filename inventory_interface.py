@@ -1,9 +1,10 @@
 import tkinter as tk
 import json
 from calculations import *
+import calculations
 
 def open_inventory(content):
-    load_details(incoming_order)
+    load_details(calculations.incoming_order)
     create_header(content)
     create_ingredients_table(content)
     create_equipments_table(content)

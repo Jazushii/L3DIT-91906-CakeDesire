@@ -1,4 +1,5 @@
 import tkinter as tk
+from calculations import *
 from inventory_interface import *
 from orderlist_interface import *
 from calendar_interface import *
@@ -23,6 +24,9 @@ def create_window():
     center_y = int((root.winfo_screenheight() / 2 - root_h / 2) - 35)
     root.geometry(f'{root_w}x{root_h}+{center_x}+{center_y}')
     root.resizable(False, False)
+
+    # getting the incoming order
+    get_incoming_order()
 
     # creating frames for each interface
     global frm_inventory, frm_orderlist, frm_calendar
