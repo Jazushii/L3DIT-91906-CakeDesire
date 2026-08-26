@@ -40,6 +40,11 @@ stock_save_lbls = ['eggs', 'milk', 'oil', 'butter', 'flour', 'sugar', 'salt',
                     'baking_powder', 'vanilla_extract', 'cocoa_powder', 'ube_extract']
 
 # ORDERLIST INTERFACE
+detail_save_lbls = ['customer_name', 'cake_flavour', 'due_day', 'due_month',
+                   'due_year', 'cake_colours', 'cake_type','cake_shape']
+
+tier_save_lbls = ['layer', 'size_a', 'size_b']
+
 months = ['', 'January', 'February', 'March', 'April', 'May', 'June',
           'July', 'August', 'September', 'October', 'November', 'December']
 
@@ -67,7 +72,9 @@ for i in range(len(files)):
     if int(files[i][1]['due_year']) >= current_yr:
         if int(files[i][1]['due_month']) >= current_mth:
             if int(files[i][1]['due_day']) >= current_day:
+                print('day check')
                 if files[i][1]['completed'] == False:
+                    print('completed check')
                     incoming_order = files[i][0].removesuffix('.json')
                     print(files[i][0])
 

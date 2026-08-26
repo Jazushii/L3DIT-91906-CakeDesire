@@ -1,6 +1,7 @@
 import tkinter as tk
 import json
 from calculations import *
+import calculations
 import math
 from fractions import Fraction
 
@@ -12,7 +13,7 @@ def open_orderlist(content):
     frm_orderlist = None
     create_details(content)
     create_decor(content)
-    load_order(content, incoming_order)
+    load_order(content, calculations.incoming_order)
     create_confirm_btn(content)
     create_new_order_btn(content)
     create_order_list(content)
@@ -153,11 +154,6 @@ def create_tiers_table(content, rnum):
     btn_tiers = tk.Button(frm_btn_tiers, text='▼', font=('Arial', 10, 'bold'), bg='#FEF8A0',
                           activebackground='#FEF8A0', command=lambda: create_tiers_table(content, ent_tiers.get()))
     btn_tiers.pack(fill='both', expand=True)
-
-detail_save_lbls = ['customer_name', 'cake_flavour', 'due_day', 'due_month',
-                   'due_year', 'cake_colours', 'cake_type','cake_shape']
-
-tier_save_lbls = ['layer', 'size_a', 'size_b']
 
 def load_order(content, file_name):
     with open(f'{file_name}.json', 'r') as file:
