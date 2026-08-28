@@ -71,14 +71,10 @@ def get_incoming_order():
     global incoming_order
     scan_files()
     for i in range(len(files)):
-        print(files[i][0])
         if int(files[i][1]['due_year']) >= current_yr:
-            print('year check')
             if int(files[i][1]['due_month']) >= current_mth:
-                print('month check')
                 if int(files[i][1]['due_month']) == current_mth:
                     if int(files[i][1]['due_day']) >= current_day:
-                        print('day check')
                         if files[i][1]['completed'] == False:
                             print('completed check')
                             incoming_order = files[i][0].removesuffix('.json')
@@ -86,7 +82,6 @@ def get_incoming_order():
                             break
                 else:
                     if int(files[i][1]['due_day']) >= 1:
-                        print('day check')
                         if files[i][1]['completed'] == False:
                             print('completed check')
                             incoming_order = files[i][0].removesuffix('.json')

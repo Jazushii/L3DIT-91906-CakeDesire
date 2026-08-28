@@ -15,7 +15,7 @@
     "tier2_size_a": "8",
     "tier2_size_b": "4",
     "decor": "rose gold minimalistic decorations",
-    "completed": false,
+    "completed": true,
     "cake_volume": 653.451271946677,
     "eggs": 18,
     "milk": 726,

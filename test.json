@@ -12,7 +12,7 @@
     "tier1_size_a": "234",
     "tier1_size_b": "234",
     "decor": "sdfs",
-    "completed": false,
+    "completed": true,
     "cake_volume": 10167171.230839029,
     "eggs": 282421,
     "milk": 11296857,

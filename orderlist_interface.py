@@ -532,7 +532,7 @@ def create_order_list(content):
         elif i != 0:
             if files[i][1]['due_year'] != files[i-1][1]['due_year']:
                 order_years.append(files[i][1]['due_year'])
-    
+
     for i in range(len(order_years)):
         order_months = []
 
@@ -544,7 +544,12 @@ def create_order_list(content):
                     if files[ii][1]['due_month'] != files[ii-1][1]['due_month']:
                         order_months.append(files[ii][1]['due_month'])
 
+        print(order_months)
+
         order_dates.append((order_years[i], order_months))
+
+    print(order_years)
+    print(order_dates)
 
     for i in range(len(order_dates)):
         for a in range(len(order_dates[i][1])):
