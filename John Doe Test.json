@@ -27,7 +27,7 @@
     "tier6_size_a": "4",
     "tier6_size_b": "4",
     "decor": "",
-    "completed": false,
+    "completed": true,
     "cake_volume": 5322.867057808927,
     "eggs": 148,
     "milk": 5914,

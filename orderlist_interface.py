@@ -18,8 +18,6 @@ def open_orderlist(content):
     create_new_order_btn(content)
     create_order_list(content)
 
-dd_placeholders = ['dd', 'mm', 'yyyy']
-
 def delete_placeholder(event, d, error):
     if error == False:
         if detail_ents[d].get() == dd_placeholders[d-2]:
@@ -540,16 +538,14 @@ def create_order_list(content):
             if files[ii][1]['due_year'] == order_years[i]:
                 if ii == 0:
                     order_months.append(files[ii][1]['due_month'])
-                elif ii != 0:
-                    if files[ii][1]['due_month'] != files[ii-1][1]['due_month']:
+                else:
+                    if files[ii][1]['due_year'] != files[ii-1][1]['due_year']:
                         order_months.append(files[ii][1]['due_month'])
-
-        print(order_months)
+                    if files[ii][1]['due_year'] == files[ii-1][1]['due_year']:
+                        if files[ii][1]['due_month'] != files[ii-1][1]['due_month']:
+                            order_months.append(files[ii][1]['due_month'])
 
         order_dates.append((order_years[i], order_months))
-
-    print(order_years)
-    print(order_dates)
 
     for i in range(len(order_dates)):
         for a in range(len(order_dates[i][1])):

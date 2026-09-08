@@ -40,6 +40,8 @@ stock_save_lbls = ['eggs', 'milk', 'oil', 'butter', 'flour', 'sugar', 'salt',
                     'baking_powder', 'vanilla_extract', 'cocoa_powder', 'ube_extract']
 
 # ORDERLIST INTERFACE
+dd_placeholders = ['dd', 'mm', 'yyyy']
+
 detail_save_lbls = ['customer_name', 'cake_flavour', 'due_day', 'due_month',
                    'due_year', 'cake_colours', 'cake_type','cake_shape']
 
