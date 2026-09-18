@@ -307,23 +307,25 @@ def resolve_error(content):
             if detail_ents[num].get() == '*':
                 detail_ents[num].delete(0, tk.END)
                 detail_ents[num].config(fg='black')
-                content.focus_set()
+                detail_ents[num].unbind('<FocusIn>')
 
         if type == 't':
             if tier_ents[num].get() == '*':
                 tier_ents[num].delete(0, tk.END)
                 tier_ents[num].config(fg='black')
-                content.focus_set()
+                tier_ents[num].unbind('<FocusIn>')
         
     def make_black(event, type, num):
         if type == 'd':
             detail_ents[num].config(fg='black')
-            content.focus_set()
+            detail_ents[num].unbind('<FocusIn>')
+
         if type == 't':
             tier_ents[num].config(fg='black')
-            content.focus_set()
+            tier_ents[num].unbind('<FocusIn>')
 
     for type, num in d_errors.items():
+        detail_ents[num].unbind('<FocusIn>')
         if type == f'blank{num}':
             detail_ents[num].delete(0, 'end')
             detail_ents[num].insert(0, '*')
@@ -335,7 +337,9 @@ def resolve_error(content):
         if type == f'alpha{num}':
             detail_ents[num].config(fg='red')
             detail_ents[num].bind('<FocusIn>', lambda event, d=num: delete_placeholder(event, d, True))
+
     for type, num in t_errors.items():
+        tier_ents[num].unbind('<FocusIn>')
         if type == f'blank{num}':
             tier_ents[num].delete(0, 'end')
             tier_ents[num].insert(0, '*')
