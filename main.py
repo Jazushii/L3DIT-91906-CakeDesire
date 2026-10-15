@@ -4,11 +4,6 @@ from inventory_interface import *
 from orderlist_interface import *
 from calendar_interface import *
 
-# Main #FFD333
-# Sub #FFC957
-# Para #FEF8A0
-# Orange #FFB253
-
 # window creation function
 def create_window():
 

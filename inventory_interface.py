@@ -37,21 +37,23 @@ def create_ingredients_table(content):
         cf = 10
 
     for r in range(8):
-        frame = tk.Frame(content, width=180, bd=1.5, relief='groove', bg='#FEF8A0')
-        if r < 7:
-            frame.config(height=30)
-            frame.place(x=20, y=110+30*r)
-        else:
-            frame.config(height=47)
-            frame.place(x=20, y=110+30*7+47*(r-7))
-        frame.pack_propagate(False)
+        for c in range(2):
+            frame = tk.Frame(content, width=90, height=30, bd=1.5, relief='groove', bg=PARA)
+            frame.place(x=20+90*c, y=110+30*r)
+            frame.pack_propagate(False)
 
-        label = tk.Label(frame, font=('Arial', 12), bg='#FEF8A0')
-        if r == 8:
-            label.config(text=f'{order[stock_save_lbls[r]]} {ingredients_lbls[cf]}')
-        else:
-            label.config(text=f'{order[stock_save_lbls[r]]} {ingredients_lbls[r]}')
-        label.place(x=0, y=1)
+            label = tk.Label(frame, font=('Arial', 12), bg=PARA)
+            if c == 0:
+                if r != 8:
+                    label.config(text=stock_lbls[r])
+                else:
+                    label.config(text=stock_lbls[cf])
+            if c == 1:
+                if r != 8:
+                    label.config(text=order[stock_save_lbls[r]])
+                else:
+                    label.config(text=order[stock_save_lbls[cf]])
+            label.place(x=0, y=1)
 
 def create_equipments_table(content):
 
@@ -124,7 +126,7 @@ def create_inven_stock(content):
     lbl_title = tk.Label(frm_title, text='Inventory Stock:', font=('Segoe Print', 12, 'bold'), bg='#FFC957')
     lbl_title.pack()
 
-    for r in range(11):
+    for r in range(10):
         for c in range(2):
             frame = tk.Frame(stock_frame, bd=1.5, relief='groove', bg='#FEF8A0')
             if c == 0:
@@ -137,7 +139,7 @@ def create_inven_stock(content):
                     frame.place(x=20, y=58+30*6+47*(r-7))
                 frame.pack_propagate(False)
 
-                label = tk.Label(frame, text=stock_lbls[r], font=('Arial', 12), bg='#FEF8A0')
+                label = tk.Label(frame, text=stock_lbls[r], font=('Arial', 12), bg=PARA)
                 label.place(x=0, y=0)
 
             elif c == 1:
@@ -153,7 +155,7 @@ def create_inven_stock(content):
                 in_stock = tk.Label(frame, text=stock[stock_save_lbls[r]], font=('Arial', 12))
                 in_stock.pack(fill='both', expand=True)
 
-    add_frm = tk.Frame(stock_frame, width=180, height=40, bd=1.5, relief='groove', bg='#FFC957')
+    add_frm = tk.Frame(stock_frame, width=180, height=40, bd=1.5, relief='groove', bg=SUB)
     add_frm.place(x=20, y=425)
     add_frm.pack_propagate(False)
 
