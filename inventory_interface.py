@@ -38,22 +38,42 @@ def create_ingredients_table(content):
 
     for r in range(8):
         for c in range(2):
-            frame = tk.Frame(content, width=90, height=30, bd=1.5, relief='groove', bg=PARA)
-            frame.place(x=20+90*c, y=110+30*r)
-            frame.pack_propagate(False)
-
+            frame = tk.Frame(content, bd=1.5, relief='groove', bg=PARA)
             label = tk.Label(frame, font=('Arial', 12), bg=PARA)
+
             if c == 0:
+
+                if r <= 5:
+                    frame.config(width=110, height=30)
+                    frame.place(x=20, y=110+30*r)
+                else:
+                    frame.config(width=110, height=47)
+                    frame.place(x=20, y=290+47*(r-6))
+
                 if r != 8:
                     label.config(text=stock_lbls[r])
                 else:
                     label.config(text=stock_lbls[cf])
-            if c == 1:
+
+                label.place(x=0, y=1)
+
+            elif c == 1:
+
+                if r <= 5:
+                    frame.config(width=70, height=30)
+                    frame.place(x=130, y=110+30*r)
+                else:
+                    frame.config(width=70, height=47)
+                    frame.place(x=130, y=290+47*(r-6))
+
                 if r != 8:
                     label.config(text=order[stock_save_lbls[r]])
                 else:
                     label.config(text=order[stock_save_lbls[cf]])
-            label.place(x=0, y=1)
+                
+                label.pack(fill='both', expand=True)
+
+            frame.pack_propagate(False)
 
 def create_equipments_table(content):
 
@@ -120,7 +140,7 @@ def create_inven_stock(content):
     stock_border.place(x=0, y=0)
 
     frm_title = tk.Frame(stock_frame, width=180, height=40, bd=1.5, relief='groove', bg='#FFC957')
-    frm_title.place(x=20, y=18)
+    frm_title.place(x=20, y=30)
     frm_title.pack_propagate(False)
 
     lbl_title = tk.Label(frm_title, text='Inventory Stock:', font=('Segoe Print', 12, 'bold'), bg='#FFC957')
@@ -129,34 +149,36 @@ def create_inven_stock(content):
     for r in range(10):
         for c in range(2):
             frame = tk.Frame(stock_frame, bd=1.5, relief='groove', bg='#FEF8A0')
-            if c == 0:
-                frame.config(width=110)
-                if r < 7:
-                    frame.config(height=30)
-                    frame.place(x=20, y=58+30*r)
-                else:
-                    frame.config(height=47)
-                    frame.place(x=20, y=58+30*6+47*(r-7))
-                frame.pack_propagate(False)
+            label = tk.Label(frame, text=stock_lbls[r], font=('Arial', 12), bg=PARA)
 
-                label = tk.Label(frame, text=stock_lbls[r], font=('Arial', 12), bg=PARA)
+            if c == 0:
+
+                if r < 7:
+                    frame.config(width=110, height=30)
+                    frame.place(x=20, y=70+30*r)
+                else:
+                    frame.config(width=110, height=47)
+                    frame.place(x=20, y=70+30*6+47*(r-7))
+
+                label.config(text=stock_lbls[r])
                 label.place(x=0, y=0)
 
             elif c == 1:
                 frame.config(width=70)
                 if r < 7:
                     frame.config(height=30)
-                    frame.place(x=130, y=58+30*r)
+                    frame.place(x=130, y=70+30*r)
                 else:
                     frame.config(height=47)
-                    frame.place(x=130, y=58+30*6+47*(r-7))
-                frame.pack_propagate(False)
+                    frame.place(x=130, y=70+30*6+47*(r-7))
 
-                in_stock = tk.Label(frame, text=stock[stock_save_lbls[r]], font=('Arial', 12))
-                in_stock.pack(fill='both', expand=True)
+                label.config(text=stock[stock_save_lbls[r]])
+                label.pack(fill='both', expand=True)
+
+            frame.pack_propagate(False)
 
     add_frm = tk.Frame(stock_frame, width=180, height=40, bd=1.5, relief='groove', bg=SUB)
-    add_frm.place(x=20, y=425)
+    add_frm.place(x=20, y=410)
     add_frm.pack_propagate(False)
 
     add_btn = tk.Button(add_frm, text='Add to Inventory', font=('Segoe Print', 12),
@@ -175,7 +197,7 @@ def add_stock(content):
     add_root.resizable(False, False)
 
     frm_title = tk.Frame(add_root, width=180, height=40, bd=1.5, relief='groove', bg='#FFC957')
-    frm_title.place(x=20, y=18)
+    frm_title.place(x=20, y=30)
     frm_title.pack_propagate(False)
     
     lbl_title = tk.Label(frm_title, text='Add to Inventory:', font=('Segoe Print', 12, 'bold'), bg='#FFC957')
@@ -183,17 +205,17 @@ def add_stock(content):
 
     stock_ents.clear()
 
-    for r in range(11):
+    for r in range(10):
         for c in range(2):
             frame = tk.Frame(add_root, bd=1.5, relief='groove', bg='#FEF8A0')
             if c == 0:
                 frame.config(width=110)
                 if r < 7:
                     frame.config(height=30)
-                    frame.place(x=20, y=58+30*r)
+                    frame.place(x=20, y=70+30*r)
                 else:
                     frame.config(height=47)
-                    frame.place(x=20, y=58+30*6+47*(r-7))
+                    frame.place(x=20, y=70+30*6+47*(r-7))
                 frame.pack_propagate(False)
 
                 label = tk.Label(frame, text=stock_lbls[r], font=('Arial', 12), bg='#FEF8A0')
@@ -203,10 +225,10 @@ def add_stock(content):
                 frame.config(width=70)
                 if r < 7:
                     frame.config(height=30)
-                    frame.place(x=130, y=58+30*r)
+                    frame.place(x=130, y=70+30*r)
                 else:
                     frame.config(height=47)
-                    frame.place(x=130, y=58+30*6+47*(r-7))
+                    frame.place(x=130, y=70+30*6+47*(r-7))
                 frame.pack_propagate(False)
         
                 stock_ents.append(tk.Entry(frame, font=('Arial', 12)))
@@ -214,7 +236,7 @@ def add_stock(content):
 
     for i in range(2):
         frame = tk.Frame(add_root, width=85, height=40, bd=1.5, relief='groove', bg='#FFC957')
-        frame.place(x=20+95*i, y=425)
+        frame.place(x=20+95*i, y=410)
         frame.pack_propagate(False)
 
         btn_lbls = ['Cancel', 'Confirm']
@@ -229,7 +251,7 @@ def add_stock(content):
         button.pack(fill='both', expand=True)
 
 def add_to_stock(content):
-    for i in range(11):
+    for i in range(10):
         if stock_ents[i].get() != '':
             stock[stock_save_lbls[i]] = stock[stock_save_lbls[i]] + int(stock_ents[i].get())
 
