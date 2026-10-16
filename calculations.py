@@ -9,6 +9,7 @@ MAIN = '#FFD333'
 SUB = '#FFC957'
 PARA = '#FEF8A0'
 ORANGE = '#FFB253'
+RED = '#FF5D55'
 
 # File Scanning
 path = os.getcwd()

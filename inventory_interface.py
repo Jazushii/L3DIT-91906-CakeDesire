@@ -11,6 +11,11 @@ def open_inventory(content):
     create_decor_table(content)
     create_inven_stock(content)
 
+def load_details(file_name):
+    with open(f'{file_name}.json', 'r') as file:
+        global order
+        order = json.load(file)
+
 def create_header(content):
     frm_header = tk.Frame(content, width=400, height=50, bd=1.5, relief='groove', bg='#FFC957')
     frm_header.place(x=100, y=10)
@@ -122,11 +127,6 @@ def create_decor_table(content):
     text.insert(1.0, order['decor'])
     text.config(state='disabled')
 
-def load_details(file_name):
-    with open(f'{file_name}.json', 'r') as file:
-        global order
-        order = json.load(file)
-
 def create_inven_stock(content):
     global stock_frame
     if stock_frame is not None:
@@ -148,11 +148,14 @@ def create_inven_stock(content):
 
     for r in range(10):
         for c in range(2):
-            frame = tk.Frame(stock_frame, bd=1.5, relief='groove', bg='#FEF8A0')
+            frame = tk.Frame(stock_frame, bd=1.5, relief='groove', bg=PARA)
             label = tk.Label(frame, text=stock_lbls[r], font=('Arial', 12), bg=PARA)
 
-            if c == 0:
+            if stock[stock_save_lbls[r]] < order[stock_save_lbls[r]]:
+                frame.config(bg=RED)
+                label.config(bg=RED)
 
+            if c == 0:
                 if r < 7:
                     frame.config(width=110, height=30)
                     frame.place(x=20, y=70+30*r)
@@ -164,12 +167,11 @@ def create_inven_stock(content):
                 label.place(x=0, y=0)
 
             elif c == 1:
-                frame.config(width=70)
                 if r < 7:
-                    frame.config(height=30)
+                    frame.config(width=70, height=30)
                     frame.place(x=130, y=70+30*r)
                 else:
-                    frame.config(height=47)
+                    frame.config(width=70, height=47)
                     frame.place(x=130, y=70+30*6+47*(r-7))
 
                 label.config(text=stock[stock_save_lbls[r]])
