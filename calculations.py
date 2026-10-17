@@ -38,16 +38,14 @@ def scan_files():
                     files.append((f, order))
 
 # INVENTORY INTERFACE
+update_inventory = 1
+
 with open('inventory_stock.json', 'r') as file:
     stock = json.load(file)
-
 
 # INVENTORY INTERFACE
 ratio_formula = {'eggs': 4, 'milk': 160, 'oil': 80, 'butter': 80, 'flour': 200, 'sugar': 200,
                        'baking_powder': 1.5, 'vanilla_extract': 1, 'cocoa_powder': 40, 'ube_extract': 2}
-
-ingredients_lbls = ['Eggs', 'ml of Milk', 'ml of Cooking Oil', 'g of Butter', 'g of Flour', 'g of Sugar', 'tsp of Salt',
-                    'tsp of\nBaking Powder', 'tsp of\nVanilla Extract', 'g of\nCocoa Powder', 'tsp of\nUbe Extract']
 
 stock_lbls = ['Eggs:', 'Milk (ml):', 'Oil (ml):', 'Butter (g):', 'Flour (g):', 'Sugar (g):', 
               'Baking\nPowder (tsp):', 'Vanilla\nExtract (tsp):', 'Cocoa\nPowder (tsp):', 'Ube\nExtract (tsp):']

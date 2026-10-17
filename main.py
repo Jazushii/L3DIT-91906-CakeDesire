@@ -132,6 +132,9 @@ def do_switch(switch_to):
     if switch_to == 'inventory':
         in_orderlist = False
         frm_inventory.tkraise()
+        if update_inventory == 1:
+            create_inven_stock(content)
+            update_inventory == 0
     if switch_to == 'orderlist':
         in_orderlist = True
         frm_orderlist.tkraise()

@@ -487,11 +487,24 @@ def create_new_order_btn(content):
     btn_new.pack(fill='both', expand=True)
 
 # Task 2.6
-def update_status(i, status):
+def update_status(i, status, content):
     files[i][1]['completed'] = status.get()
 
     with open(files[i][0], "w") as f:
         json.dump(files[i][1], f, indent=4)
+
+    # auto deduction (or addition when unchecked) to the inventory stock when completed
+    print(status.get())
+
+    if status.get() == True:
+        for s in range(10):
+            stock[stock_save_lbls[s]] =- files[i][1][stock_save_lbls[s]]
+
+    elif status.get() == False:
+        for s in range(10):
+            stock[stock_save_lbls[s]] =+ files[i][1][stock_save_lbls[s]]
+
+    update_inventory == 1
 
 def create_order_list(content):
     global frm_orderlist
@@ -582,7 +595,7 @@ def create_order_list(content):
                         completed = tk.BooleanVar()
                         completed.set(files[b][1]['completed'])
                         check_box = tk.Checkbutton(frm_chk, variable=completed, width=25, height=25,
-                                                   command=lambda b=b, status=completed: update_status(b, status))
+                                                   command=lambda b=b, status=completed, content=content: update_status(b, status, content))
                         check_box.pack(fill='both', expand=True)
 
                         frm_btn = tk.Frame(frm_order, width=125, height=25)
