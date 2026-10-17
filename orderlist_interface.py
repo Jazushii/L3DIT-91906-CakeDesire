@@ -156,6 +156,7 @@ def create_tiers_table(content, rnum):
 def load_order(content, file_name):
     with open(f'{file_name}.json', 'r') as file:
         order = json.load(file)
+
     for dl in range(8):
         detail_ents[dl].delete(0, 'end')
         detail_ents[dl].insert(0, order[detail_save_lbls[dl]])

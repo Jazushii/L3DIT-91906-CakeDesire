@@ -19,14 +19,23 @@ def scan_files():
     for f in os.listdir(path):
         if f.endswith('.json'):
             if f != 'inventory_stock.json':
-                with open(f, 'r') as file:
-                    order = json.load(file)
-                
-                files.append((f, order))
+                if f != '.json':
+                    with open(f, 'r') as file:
+                        order = json.load(file)
+                    
+                    files.append((f, order))
 
     files.sort(key=lambda x:(int(x[1]['due_year']),
                              int(x[1]['due_month']),
                              int(x[1]['due_day'])))
+
+    if len(files) == 0:
+        for f in os.listdir(path):
+            if f == '.json':
+                with open(f, 'r') as file:
+                    order = json.load(file)
+                                    
+                    files.append((f, order))
 
 # INVENTORY INTERFACE
 with open('inventory_stock.json', 'r') as file:
@@ -80,20 +89,24 @@ weekday_lbls = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturda
 def get_incoming_order():
     global incoming_order
     scan_files()
-    for i in range(len(files)):
-        if int(files[i][1]['due_year']) >= current_yr:
-            if int(files[i][1]['due_month']) >= current_mth:
-                if int(files[i][1]['due_month']) == current_mth:
-                    if int(files[i][1]['due_day']) >= current_day:
-                        if files[i][1]['completed'] == False:
-                            print('completed check')
-                            incoming_order = files[i][0].removesuffix('.json')
+    if files[0][0] == '.json':
+        incoming_order = files[0][0].removesuffix('.json')
 
-                            break
-                else:
-                    if int(files[i][1]['due_day']) >= 1:
-                        if files[i][1]['completed'] == False:
-                            print('completed check')
-                            incoming_order = files[i][0].removesuffix('.json')
-                    
-                            break
+    else:
+        for i in range(len(files)):
+            if int(files[i][1]['due_year']) >= current_yr:
+                if int(files[i][1]['due_month']) >= current_mth:
+                    if int(files[i][1]['due_month']) == current_mth:
+                        if int(files[i][1]['due_day']) >= current_day:
+                            if files[i][1]['completed'] == False:
+                                print('completed check')
+                                incoming_order = files[i][0].removesuffix('.json')
+
+                                break
+                    else:
+                        if int(files[i][1]['due_day']) >= 1:
+                            if files[i][1]['completed'] == False:
+                                print('completed check')
+                                incoming_order = files[i][0].removesuffix('.json')
+                        
+                                break
