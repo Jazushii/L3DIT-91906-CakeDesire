@@ -497,15 +497,18 @@ def update_status(i, status, content):
     print(status.get())
 
     if status.get() == True:
+        print('stock deducted')
         for s in range(10):
-            stock[stock_save_lbls[s]] =- files[i][1][stock_save_lbls[s]]
+            stock[stock_save_lbls[s]] -= files[i][1][stock_save_lbls[s]]
 
     elif status.get() == False:
+        print('stock restored')
         for s in range(10):
-            stock[stock_save_lbls[s]] =+ files[i][1][stock_save_lbls[s]]
+            stock[stock_save_lbls[s]] += files[i][1][stock_save_lbls[s]]
 
     update_inventory == 1
     update_orderlist == 1
+    print('update')
 
 def create_order_list(content):
     global frm_orderlist

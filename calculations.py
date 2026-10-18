@@ -38,7 +38,7 @@ def scan_files():
                     files.append((f, order))
 
 # INVENTORY INTERFACE
-update_inventory = 0
+update_inventory = 1
 
 with open('inventory_stock.json', 'r') as file:
     stock = json.load(file)
@@ -55,7 +55,7 @@ stock_save_lbls = ['eggs', 'milk', 'oil', 'butter', 'flour', 'sugar',
                     'baking_powder', 'vanilla_extract', 'cocoa_powder', 'ube_extract']
 
 # ORDERLIST INTERFACE
-update_orderlist = 0
+update_orderlist = 1
 
 dd_placeholders = ['dd', 'mm', 'yyyy']
 
