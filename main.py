@@ -6,6 +6,7 @@ from calendar_interface import *
 
 # window creation function
 def create_window():
+    global root, root_w, root_h
 
     # TASK 1.1 & 1.2
     # creates the window
@@ -24,22 +25,41 @@ def create_window():
     get_incoming_order()
 
     # creating frames for each interface
-    global frm_inventory, frm_orderlist, frm_calendar
-    frm_calendar = tk.Frame(root, width=root_w, height=root_h)
-    frm_calendar.place(x=0, y=0)
-    frm_calendar.pack_propagate(False)
-    interface(frm_calendar, 'calendar')
-    frm_orderlist = tk.Frame(root, width=root_w, height=root_h)
-    frm_orderlist.place(x=0, y=0)
-    frm_orderlist.pack_propagate(False)
-    interface(frm_orderlist, 'orderlist')
-    frm_inventory = tk.Frame(root, width=root_w, height=root_h)
-    frm_inventory.place(x=0, y=0)
-    frm_inventory.pack_propagate(False)
-    interface(frm_inventory, 'inventory')
+    create_interface('calendar')
+    create_interface('orderlist')
+    create_interface('inventory')
 
     # loops and actually runs the window
     root.mainloop()
+
+frm_inventory = None
+frm_orderlist = None
+frm_calendar = None
+def create_interface(type):
+    global frm_inventory, frm_orderlist, frm_calendar
+    if type == 'inventory':
+        if frm_inventory is not None:
+            frm_inventory.destroy()
+        frm_inventory = tk.Frame(root, width=root_w, height=root_h)
+        frm_inventory.place(x=0, y=0)
+        frm_inventory.pack_propagate(False)
+        interface(frm_inventory, 'inventory')
+
+    if type == 'orderlist':
+        if frm_orderlist is not None:
+            frm_orderlist.destroy()
+        frm_orderlist = tk.Frame(root, width=root_w, height=root_h)
+        frm_orderlist.place(x=0, y=0)
+        frm_orderlist.pack_propagate(False)
+        interface(frm_orderlist, 'orderlist')
+
+    if type == 'calendar':
+        if frm_calendar is not None:
+            frm_calendar.destroy()
+        frm_calendar = tk.Frame(root, width=root_w, height=root_h)
+        frm_calendar.place(x=0, y=0)
+        frm_calendar.pack_propagate(False)
+        interface(frm_calendar, 'calendar')
 
 in_orderlist = False
 # creates the title and navbar
@@ -129,15 +149,22 @@ def switch_check(content, switch_to):
 def do_switch(switch_to):
     global in_orderlist
 
+    get_incoming_order()
+
     if switch_to == 'inventory':
         in_orderlist = False
         frm_inventory.tkraise()
         if update_inventory == 1:
-            create_inven_stock(content)
+            create_interface('inventory')
             update_inventory == 0
+
     if switch_to == 'orderlist':
         in_orderlist = True
         frm_orderlist.tkraise()
+        if update_orderlist == 1:
+            create_interface('orderlist')
+            update_orderlist == 0
+
     if switch_to == 'calendar':
         in_orderlist = False
         frm_calendar.tkraise()

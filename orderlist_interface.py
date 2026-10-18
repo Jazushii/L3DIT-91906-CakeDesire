@@ -505,6 +505,7 @@ def update_status(i, status, content):
             stock[stock_save_lbls[s]] =+ files[i][1][stock_save_lbls[s]]
 
     update_inventory == 1
+    update_orderlist == 1
 
 def create_order_list(content):
     global frm_orderlist
