@@ -324,7 +324,14 @@ def error_prev():
             if tsum_alpha != 0:
                 has_error = True
                 t_errors[f'alpha{t}'] = t
-                
+
+            # checking for size boundaries
+            if tsum_alpha == 0:
+                if te == 1:
+                    if int(tier_ents[t].get()) > 12:
+                        has_error = True
+                        t_errors[f'alpha{t}'] = t
+
             t += 1
 
 def make_black(event, type, num):
