@@ -116,8 +116,11 @@ def create_tiers_table(content, rnum):
 
         tier_num = 0
 
+        tier_lbl_track = 0
+
         for tr in range(int(rnum)):
             for tc in range(3):
+                # adds the labels
                 if tr == 0:
                     frm_lbl = tk.Frame(frm_tiers, width=84, height=38, bd=1.5, relief='groove', bg='#FEF8A0')
                     frm_lbl.grid(row=0, column=tc)
@@ -130,13 +133,20 @@ def create_tiers_table(content, rnum):
                 frame.grid(row=tr+1, column=tc)
                 frame.place(x=4+(tc*84), y=98+((tr)*25))
                 frame.pack_propagate(False)
+
+                # tier label column
                 if tc == 0:
-                    lbl_tier = tk.Label(frame, text=f'Tier {tr+1}', font=('Segoe Print', 12), bd=1.5, relief='groove')
+                    lbl_tier = tk.Label(frame, text=f'Tier {int(int(rnum)-tier_lbl_track)}', font=('Segoe Print', 12), bd=1.5, relief='groove')
                     lbl_tier.pack(fill='both', expand=True)
+                    tier_lbl_track += 1
+
+                # tier layer entry column
                 elif tc == 1: 
                     tier_ents.append(tk.Entry(frame, font=('Arial', 12), bd=1.5, relief='groove'))
                     tier_ents[tier_num].pack(fill='both', expand=True)
                     tier_num += 1
+
+                # tier sizes entry column
                 elif tc == 2:
                     for s in range(2):
                         frm_size = tk.Frame(frame, width=42, height=25)
@@ -174,6 +184,7 @@ def load_order(content, file_name):
     for dl in range(8):
         detail_ents[dl].delete(0, 'end')
         detail_ents[dl].insert(0, order[detail_save_lbls[dl]])
+        detail_ents[dl].config(fg='black')
 
     create_tiers_table(content, int(order['tier_num']))
 
