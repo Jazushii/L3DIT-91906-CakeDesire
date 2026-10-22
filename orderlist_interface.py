@@ -87,7 +87,7 @@ def create_details(content):
 
 # Task 2.3
 def create_tiers_table(content, rnum):
-    if int(rnum) <= 3:
+    if 1 <= int(rnum) <= 3:
         global frm_tiers
         if frm_tiers is not None:
             frm_tiers.destroy()
@@ -99,8 +99,9 @@ def create_tiers_table(content, rnum):
         lbl_tiers.place(x=5, y=-1)
         global ent_tiers
         ent_tiers = tk.Entry(frm_tiers, width=2, font=('Arial', 12))
-        ent_tiers.place(x=5, y=30)
+        ent_tiers.place(x=27, y=30)
         ent_tiers.insert(0, rnum)
+        ent_tiers.config(state='readonly')
 
         # Task 2.3.2 Tiers Table
         # List of labels for the table
@@ -147,14 +148,23 @@ def create_tiers_table(content, rnum):
                         tier_num += 1
 
         # Task 2.3.1
-        frm_btn_tiers = tk.Frame(frm_tiers, width=22, height=22)
-        frm_btn_tiers.place(x=27, y=30)
-        frm_btn_tiers.pack_propagate(False)
-        btn_tiers = tk.Button(frm_btn_tiers, text='▼', font=('Arial', 10, 'bold'), bg='#FEF8A0',
-                            activebackground='#FEF8A0', command=lambda: create_tiers_table(content, ent_tiers.get()))
-        btn_tiers.pack(fill='both', expand=True)
+        
 
-    if int(rnum) > 3:
+        frm_btn_tiers_down = tk.Frame(frm_tiers, width=22, height=22)
+        frm_btn_tiers_down.place(x=5, y=30)
+        frm_btn_tiers_down.pack_propagate(False)
+        btn_tiers_down = tk.Button(frm_btn_tiers_down, text='-', font=('Arial', 12, 'bold'), bg='#FEF8A0',
+                            activebackground='#FEF8A0', command=lambda: create_tiers_table(content, (int(ent_tiers.get())-1)))
+        btn_tiers_down.pack(fill='both', expand=True)
+
+        frm_btn_tiers_up = tk.Frame(frm_tiers, width=22, height=22)
+        frm_btn_tiers_up.place(x=49, y=30)
+        frm_btn_tiers_up.pack_propagate(False)
+        btn_tiers_up = tk.Button(frm_btn_tiers_up, text='+', font=('Arial', 12, 'bold'), bg='#FEF8A0',
+                            activebackground='#FEF8A0', command=lambda: create_tiers_table(content, (int(ent_tiers.get())+1)))
+        btn_tiers_up.pack(fill='both', expand=True)
+
+    else:
         ent_tiers.config(fg='red')
         ent_tiers.bind('<FocusIn>', lambda event, num='a': make_black(event, 'a', num))
 
