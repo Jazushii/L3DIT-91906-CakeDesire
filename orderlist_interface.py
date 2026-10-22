@@ -108,8 +108,7 @@ def create_tiers_table(content, rnum):
         tier_ent_lbls = [
             'Tier:',
             'Layers:',
-            'Size (In.):',
-            ''
+            'Wid.Hgt.'
         ]
 
         global tier_ents
