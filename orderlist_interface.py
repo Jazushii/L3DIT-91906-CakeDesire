@@ -87,71 +87,76 @@ def create_details(content):
 
 # Task 2.3
 def create_tiers_table(content, rnum):
-    global frm_tiers
-    if frm_tiers is not None:
-        frm_tiers.destroy()
+    if int(rnum) <= 3:
+        global frm_tiers
+        if frm_tiers is not None:
+            frm_tiers.destroy()
 
-    frm_tiers = tk.Frame(content, width=265, height=106+(int(rnum)*25), bd=1.5, relief='groove')
-    frm_tiers.place(x=20, y=230)
-    frm_tiers.pack_propagate(False)
-    lbl_tiers = tk.Label(frm_tiers, text='No. of Cake Tiers:', font=('Segoe Print', 12))
-    lbl_tiers.place(x=5, y=-1)
-    global ent_tiers
-    ent_tiers = tk.Entry(frm_tiers, width=2, font=('Arial', 12))
-    ent_tiers.place(x=5, y=30)
-    ent_tiers.insert(0, rnum)
+        frm_tiers = tk.Frame(content, width=265, height=106+(int(rnum)*25), bd=1.5, relief='groove')
+        frm_tiers.place(x=20, y=230)
+        frm_tiers.pack_propagate(False)
+        lbl_tiers = tk.Label(frm_tiers, text='No. of Cake Tiers:', font=('Segoe Print', 12))
+        lbl_tiers.place(x=5, y=-1)
+        global ent_tiers
+        ent_tiers = tk.Entry(frm_tiers, width=2, font=('Arial', 12))
+        ent_tiers.place(x=5, y=30)
+        ent_tiers.insert(0, rnum)
 
-    # Task 2.3.2 Tiers Table
-    # List of labels for the table
-    tier_ent_lbls = [
-        'Tier:',
-        'Layers:',
-        'Size (In.):',
-        ''
-    ]
+        # Task 2.3.2 Tiers Table
+        # List of labels for the table
+        tier_ent_lbls = [
+            'Tier:',
+            'Layers:',
+            'Size (In.):',
+            ''
+        ]
 
-    global tier_ents
-    tier_ents = []
+        global tier_ents
+        tier_ents = []
 
-    tier_num = 0
+        tier_num = 0
 
-    for tr in range(int(rnum)):
-        for tc in range(3):
-            if tr == 0:
-                frm_lbl = tk.Frame(frm_tiers, width=84, height=38, bd=1.5, relief='groove', bg='#FEF8A0')
-                frm_lbl.grid(row=0, column=tc)
-                frm_lbl.place(x=4+(tc*84), y=60)
-                frm_lbl.pack_propagate(False)
-                lbl = tk.Label(frm_lbl, text=tier_ent_lbls[tc], font=('Segoe Print', 12), bg='#FEF8A0')
-                lbl.place(x=0, y=-1)
+        for tr in range(int(rnum)):
+            for tc in range(3):
+                if tr == 0:
+                    frm_lbl = tk.Frame(frm_tiers, width=84, height=38, bd=1.5, relief='groove', bg='#FEF8A0')
+                    frm_lbl.grid(row=0, column=tc)
+                    frm_lbl.place(x=4+(tc*84), y=60)
+                    frm_lbl.pack_propagate(False)
+                    lbl = tk.Label(frm_lbl, text=tier_ent_lbls[tc], font=('Segoe Print', 12), bg='#FEF8A0')
+                    lbl.place(x=0, y=-1)
 
-            frame = tk.Frame(frm_tiers, width=84, height=25)
-            frame.grid(row=tr+1, column=tc)
-            frame.place(x=4+(tc*84), y=98+((tr)*25))
-            frame.pack_propagate(False)
-            if tc == 0:
-                lbl_tier = tk.Label(frame, text=f'Tier {tr+1}', font=('Segoe Print', 12), bd=1.5, relief='groove')
-                lbl_tier.pack(fill='both', expand=True)
-            elif tc == 1: 
-                tier_ents.append(tk.Entry(frame, font=('Arial', 12), bd=1.5, relief='groove'))
-                tier_ents[tier_num].pack(fill='both', expand=True)
-                tier_num += 1
-            elif tc == 2:
-                for s in range(2):
-                    frm_size = tk.Frame(frame, width=42, height=25)
-                    frm_size.place(x=42*s, y=0)
-                    frm_size.pack_propagate(False)
-                    tier_ents.append(tk.Entry(frm_size, font=('Arial', 12), bd=1.5, relief='groove'))
+                frame = tk.Frame(frm_tiers, width=84, height=25)
+                frame.grid(row=tr+1, column=tc)
+                frame.place(x=4+(tc*84), y=98+((tr)*25))
+                frame.pack_propagate(False)
+                if tc == 0:
+                    lbl_tier = tk.Label(frame, text=f'Tier {tr+1}', font=('Segoe Print', 12), bd=1.5, relief='groove')
+                    lbl_tier.pack(fill='both', expand=True)
+                elif tc == 1: 
+                    tier_ents.append(tk.Entry(frame, font=('Arial', 12), bd=1.5, relief='groove'))
                     tier_ents[tier_num].pack(fill='both', expand=True)
                     tier_num += 1
+                elif tc == 2:
+                    for s in range(2):
+                        frm_size = tk.Frame(frame, width=42, height=25)
+                        frm_size.place(x=42*s, y=0)
+                        frm_size.pack_propagate(False)
+                        tier_ents.append(tk.Entry(frm_size, font=('Arial', 12), bd=1.5, relief='groove'))
+                        tier_ents[tier_num].pack(fill='both', expand=True)
+                        tier_num += 1
 
-    # Task 2.3.1
-    frm_btn_tiers = tk.Frame(frm_tiers, width=22, height=22)
-    frm_btn_tiers.place(x=27, y=30)
-    frm_btn_tiers.pack_propagate(False)
-    btn_tiers = tk.Button(frm_btn_tiers, text='▼', font=('Arial', 10, 'bold'), bg='#FEF8A0',
-                          activebackground='#FEF8A0', command=lambda: create_tiers_table(content, ent_tiers.get()))
-    btn_tiers.pack(fill='both', expand=True)
+        # Task 2.3.1
+        frm_btn_tiers = tk.Frame(frm_tiers, width=22, height=22)
+        frm_btn_tiers.place(x=27, y=30)
+        frm_btn_tiers.pack_propagate(False)
+        btn_tiers = tk.Button(frm_btn_tiers, text='▼', font=('Arial', 10, 'bold'), bg='#FEF8A0',
+                            activebackground='#FEF8A0', command=lambda: create_tiers_table(content, ent_tiers.get()))
+        btn_tiers.pack(fill='both', expand=True)
+
+    if int(rnum) > 3:
+        ent_tiers.config(fg='red')
+        ent_tiers.bind('<FocusIn>', lambda event, num='a': make_black(event, 'a', num))
 
 def load_order(content, file_name):
     with open(f'{file_name}.json', 'r') as file:
@@ -302,6 +307,19 @@ def error_prev():
                 
             t += 1
 
+def make_black(event, type, num):
+    if type == 'd':
+        detail_ents[num].config(fg='black')
+        detail_ents[num].unbind('<FocusIn>')
+
+    if type == 't':
+        tier_ents[num].config(fg='black')
+        tier_ents[num].unbind('<FocusIn>')
+
+    if type == 'a':
+        ent_tiers.config(fg='black')
+        ent_tiers.unbind('<FocusIn>')
+
 def resolve_error(content):
     def delete_required(event, type, num):
         if type == 'd':
@@ -315,15 +333,6 @@ def resolve_error(content):
                 tier_ents[num].delete(0, tk.END)
                 tier_ents[num].config(fg='black')
                 tier_ents[num].unbind('<FocusIn>')
-        
-    def make_black(event, type, num):
-        if type == 'd':
-            detail_ents[num].config(fg='black')
-            detail_ents[num].unbind('<FocusIn>')
-
-        if type == 't':
-            tier_ents[num].config(fg='black')
-            tier_ents[num].unbind('<FocusIn>')
 
     for type, num in d_errors.items():
         detail_ents[num].unbind('<FocusIn>')
