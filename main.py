@@ -99,11 +99,11 @@ def interface(main, type):
 
     # sets the interface navbar attributes for the different interfaces
     inven_font = ('Segoe Print', 14, 'bold') if type == 'inventory' else ('Segoe Print', 14)
-    inven_colour = '#FFC957' if type == 'inventory' else '#FEF67F'
+    inven_colour = SUB if type == 'inventory' else PARA
     order_font = ('Segoe Print', 14, 'bold') if type == 'orderlist' else ('Segoe Print', 14)
-    order_colour = '#FFC957' if type == 'orderlist' else '#FEF67F'
+    order_colour = SUB if type == 'orderlist' else PARA
     calen_font = ('Segoe Print', 14, 'bold') if type == 'calendar' else ('Segoe Print', 14)
-    calen_colour = '#FFC957' if type == 'calendar' else '#FEF67F'
+    calen_colour = SUB if type == 'calendar' else PARA
 
     # create the buttons for the navbar with the command to switch them to that interface
     btn_inven = tk.Button(navbar_inven, text='Inventory', font=inven_font, bg=inven_colour,

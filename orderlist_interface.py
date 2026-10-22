@@ -500,15 +500,12 @@ def update_status(i, status, content):
         for s in range(10):
             stock[stock_save_lbls[s]] -= files[i][1][stock_save_lbls[s]]
 
-        with open('inventory_stock.json', 'w') as f:
-            json.dump(stock, f, indent=4)
-
     elif status.get() == False:
         for s in range(10):
             stock[stock_save_lbls[s]] += files[i][1][stock_save_lbls[s]]
 
-        with open('inventory_stock.json', 'w') as f:
-            json.dump(stock, f, indent=4)
+    with open('inventory_stock.json', 'w') as f:
+        json.dump(stock, f, indent=4)
 
     update_inventory == 1
     update_orderlist == 1
