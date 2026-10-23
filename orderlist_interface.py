@@ -315,18 +315,18 @@ def error_prev():
 
             # checks for boundary entries for 2, 3, 4
             if dsum_alpha == 0:
-                # checks year
+                # checks before year
                 if int(detail_ents[4].get()) < order_yr:
                     has_error = True
                     d_errors[f'alpha{4}'] = 4
 
-                elif int(detail_ents[4].get()) >= order_yr:
+                elif int(detail_ents[4].get()) == order_yr:
                     # checks month
                     if int(detail_ents[3].get()) < order_mth:
                         has_error = True
                         d_errors[f'alpha{3}'] = 3
 
-                    elif int(detail_ents[3].get()) >= order_mth:
+                    elif int(detail_ents[3].get()) == order_mth:
                         # checks day
                         if int(detail_ents[2].get()) < order_day:
                             has_error = True
@@ -396,7 +396,7 @@ def resolve_error(content):
             detail_ents[num].bind('<FocusIn>', lambda event, num=num: make_black(event, 'd', num))
         if type == f'alpha{num}':
             detail_ents[num].config(fg='red')
-            detail_ents[num].bind('<FocusIn>', lambda event, d=num: delete_placeholder(event, d, True))
+            detail_ents[num].bind('<FocusIn>', lambda event, num=num: make_black(event, 'd', num))
 
     for type, num in t_errors.items():
         tier_ents[num].unbind('<FocusIn>')
