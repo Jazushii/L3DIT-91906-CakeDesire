@@ -481,6 +481,7 @@ def confirm(content, type, switch_to):
             popup.destroy()
             if type == 'save':
                 create_order_list(content)
+                update_calendar == 1
             elif type == 'change':
                 import __main__
                 __main__.do_switch(switch_to)
@@ -568,6 +569,7 @@ def update_status(i, status, content):
 
     update_inventory == 1
     update_orderlist == 1
+    update_calendar == 1
     print('update')
 
 def create_order_list(content):

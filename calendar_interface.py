@@ -4,7 +4,7 @@ from calculations import *
 def open_calendar(content):
     create_title(content, f'{current_mth_name} {current_yr}')
     create_buttons(content)
-    create_calendar(content)
+    create_calendar(content, current_mth, current_yr)
 
 frm_title = None
 def create_title(content, date):
@@ -55,10 +55,10 @@ def calen_change(content, type):
             calen_mth = 1
 
     create_title(content, f'{calendar.month_name[calen_mth]} {calen_yr}')
-    create_calendar(content)
+    create_calendar(content, calen_mth, calen_yr)
 
 frm_calendar = None
-def create_calendar(content):
+def create_calendar(content, calen_mth, calen_yr):
     global frm_calendar
     if frm_calendar is not None:
         frm_calendar.destroy()
@@ -76,40 +76,117 @@ def create_calendar(content):
         label = tk.Label(frame, text=weekday_lbls[w], font=('Segoe Print', 12, 'bold'))
         label.pack(fill='both', expand=True)
 
+    # first_day = first week day
+    first_day, total_days = calendar.monthrange(calen_yr, calen_mth)
+    print(first_day)
+
+    prev_mth = calen_mth - 1
+    prev_yr = calen_yr
+    if prev_mth == 0:
+        prev_yr -= 1
+        prev_mth = 12
+    prev_first_day, prev_total_days = calendar.monthrange(prev_yr, prev_mth)
+
+    next_mth = calen_mth + 1
+    next_yr = calen_yr
+    if next_mth == 13:
+        next_yr += 1
+        next_mth = 1
+
+    # day_track = the actual day number
+    day_track = 1
+    # day_num = the boxes of calendar (loop range)
+    day_num = 0
+    num_of_weeks = math.ceil((first_day + 1 + total_days) / 7)
+    frm_height = math.floor(390 / num_of_weeks)
+
     # weeks
     for r in range(num_of_weeks):
         # week days
         for c in range(7):
-            frame = tk.Frame(frm_calendar, width=120, height=frm_height, bd=1.5, relief='groove')
-            frame.place(x=5+120*c, y=41+frm_height*r)
-            frame.pack_propagate(False)
+            global frm_day
+            frm_day = tk.Frame(frm_calendar, width=120, height=frm_height, bd=1.5, relief='groove')
+            frm_day.place(x=5+120*c, y=41+frm_height*r)
+            frm_day.pack_propagate(False)
 
-            import calculations
-
-            day = tk.Label(frame, font=('Arial', 12))
+            lbl_day = tk.Label(frm_day, font=('Arial', 12))
 
             # labeling the previous month's days
-            if calculations.day_num < calculations.first_day:
-                altered_prev_total_days = calculations.prev_total_days
-                altered_prev_total_days -= ((calculations.first_day-1)-(1*calculations.day_num))
+            if day_num < first_day:
+                altered_prev_total_days = prev_total_days
+                altered_prev_total_days -= ((first_day-1)-(1*day_num))
 
-                day.config(text=altered_prev_total_days)
+                lbl_day.config(text=altered_prev_total_days)
+                lbl_day.pack()
 
-            # labelling the next month's days
-            if calculations.day_track > calculations.total_days:
-                day.config(text=calculations.day_track-calculations.total_days)
-                calculations.day_track += 1
+                for ot in range(len(files)):
+                    if (prev_yr == int(files[ot][1]['due_year']) and 
+                        prev_mth == int(files[ot][1]['due_month']) and
+                        altered_prev_total_days == int(files[ot][1]['due_day'])):
+
+                        lbl_order = tk.Label(frm_day, text=f' {files[ot][1]['customer_name']} ',
+                                             font=('Arial', 8))
+
+                        if files[ot][1]['completed'] == True:
+                            lbl_order.config(bg=GREEN)
+
+                        if files[ot][1]['completed'] == False:
+                            lbl_order.config(bg=ORANGE)
+                
+                        lbl_order.pack()
 
             # labeling the current month's days
-            if calculations.day_num >= calculations.first_day and calculations.day_track <= calculations.total_days:
-                day.config(text=calculations.day_track)
+            elif day_track <= total_days:
+                lbl_day.config(text=day_track)
+                lbl_day.pack()
 
                 # current day tracker
-                if calculations.day_track == calculations.current_day:
-                    frame.config(bg=PARA)
-                    day.config(bg=PARA)
+                if (calen_mth == current_mth and
+                    calen_yr == current_yr and
+                    day_track == current_day):
+                    frm_day.config(bg=PARA)
+                    lbl_day.config(bg=PARA)
 
-                calculations.day_track += 1
+                # order tracker
+                for ot in range(len(files)):
+                    if (calen_yr == int(files[ot][1]['due_year']) and 
+                        calen_mth == int(files[ot][1]['due_month']) and
+                        day_track == int(files[ot][1]['due_day'])):
 
-            day.pack()
-            calculations.day_num += 1
+                        lbl_order = tk.Label(frm_day, text=f' {files[ot][1]['customer_name']} ',
+                                             font=('Arial', 8))
+
+                        if files[ot][1]['completed'] == True:
+                            lbl_order.config(bg=GREEN)
+
+                        if files[ot][1]['completed'] == False:
+                            lbl_order.config(bg=ORANGE)
+
+                        lbl_order.pack()
+
+                day_track += 1
+
+            # labelling the next month's days
+            else:
+                lbl_day.config(text=day_track - total_days)
+                lbl_day.pack()
+
+                for ot in range(len(files)):
+                    if (next_yr == int(files[ot][1]['due_year']) and 
+                        next_mth == int(files[ot][1]['due_month']) and
+                        (day_track - total_days) == int(files[ot][1]['due_day'])):
+            
+                        lbl_order = tk.Label(frm_day, text=f' {files[ot][1]['customer_name']} ',
+                                             font=('Arial', 8))
+                
+                        if files[ot][1]['completed'] == True:
+                            lbl_order.config(bg=GREEN)
+                
+                        if files[ot][1]['completed'] == False:
+                            lbl_order.config(bg=ORANGE)
+                
+                        lbl_order.pack()
+
+                day_track += 1
+
+            day_num += 1

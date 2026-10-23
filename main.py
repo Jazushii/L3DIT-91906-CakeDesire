@@ -168,5 +168,8 @@ def do_switch(switch_to):
     if switch_to == 'calendar':
         in_orderlist = False
         frm_calendar.tkraise()
+        if update_calendar == 1:
+            create_interface('calendar')
+            update_calendar == 0
 
 create_window()
