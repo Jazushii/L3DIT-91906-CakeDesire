@@ -59,6 +59,8 @@ def calen_change(content, type):
 
 frm_calendar = None
 def create_calendar(content, calen_mth, calen_yr):
+    calculate_restock_day()
+
     global frm_calendar
     if frm_calendar is not None:
         frm_calendar.destroy()
@@ -110,6 +112,7 @@ def create_calendar(content, calen_mth, calen_yr):
             frm_day.pack_propagate(False)
 
             lbl_day = tk.Label(frm_day, font=('Arial', 12))
+            lbl_restock = tk.Label(frm_day, text='Restock Day', font=('Arial', 10), bg=RED)
 
             # labeling the previous month's days
             if day_num < first_day:
@@ -119,6 +122,7 @@ def create_calendar(content, calen_mth, calen_yr):
                 lbl_day.config(text=altered_prev_total_days)
                 lbl_day.pack()
 
+                # order tracker
                 for ot in range(len(files)):
                     if (prev_yr == int(files[ot][1]['due_year']) and 
                         prev_mth == int(files[ot][1]['due_month']) and
@@ -134,6 +138,10 @@ def create_calendar(content, calen_mth, calen_yr):
                             lbl_order.config(bg=ORANGE)
                 
                         lbl_order.pack()
+
+                # restock day tracker
+                if restock_date == datetime.date(prev_yr, prev_mth, altered_prev_total_days):
+                    lbl_restock.pack()
 
             # labeling the current month's days
             elif day_track <= total_days:
@@ -164,6 +172,10 @@ def create_calendar(content, calen_mth, calen_yr):
 
                         lbl_order.pack()
 
+                # restock day tracker
+                if restock_date == datetime.date(calen_yr, calen_mth, day_track):
+                    lbl_restock.pack()
+
                 day_track += 1
 
             # labelling the next month's days
@@ -171,6 +183,7 @@ def create_calendar(content, calen_mth, calen_yr):
                 lbl_day.config(text=day_track - total_days)
                 lbl_day.pack()
 
+                # order tracker
                 for ot in range(len(files)):
                     if (next_yr == int(files[ot][1]['due_year']) and 
                         next_mth == int(files[ot][1]['due_month']) and
@@ -187,6 +200,66 @@ def create_calendar(content, calen_mth, calen_yr):
                 
                         lbl_order.pack()
 
+                # restock day tracker
+                if restock_date == datetime.date(next_yr, next_mth, (day_track - total_days)):
+                    lbl_restock.pack()
+
                 day_track += 1
 
             day_num += 1
+
+def calculate_restock_day():
+    temp_stock = {}
+    for s in range(10):
+        temp_stock[stock_save_lbls[s]] = stock[stock_save_lbls[s]]
+    for i in range(len(files)):
+        if files[i][1]['completed'] == False:
+            for s in range(10):
+                temp_stock[stock_save_lbls[s]] -= files[i][1][stock_save_lbls[s]]
+
+                if temp_stock[stock_save_lbls[s]] < 0:
+                    insuff = i
+                    break
+
+            if temp_stock[stock_save_lbls[s]] < 0:
+                break
+
+    insuff_date = datetime.date(int(files[insuff][1]['due_year']),
+                                int(files[insuff][1]['due_month']),
+                                int(files[insuff][1]['due_day']))
+    insuff_weekday = insuff_date.weekday()
+
+    global restock_date
+    # insuff at tuesday, restock at sunday 6
+    if insuff_weekday == 1:
+        restock_date = insuff_date - datetime.timedelta(days=2)
+
+    # insuff at wednesday, restock at monday 0
+    if insuff_weekday == 2:
+        restock_date = insuff_date - datetime.timedelta(days=2)
+
+    # restock at tuesday 1
+    # insuff at monday
+    if insuff_weekday == 0:
+        restock_date = insuff_date - datetime.timedelta(days=5)
+
+    # insuff at thursday - sunday
+    if 3 <= insuff_weekday <= 6:
+        restock_date = insuff_date - datetime.timedelta(days=insuff_weekday-2)
+
+    check_loop = True
+
+    while check_loop == True:
+        check_loop = False
+
+        for i in range(len(files)):
+            if restock_date == datetime.date(
+                int(files[i][1]['due_year']), int(files[i][1]['due_month']), int(files[i][1]['due_day'])):
+
+                if 0 <= restock_date.weekday() <= 1:
+                    restock_date = restock_date - datetime.timedelta(days=1)
+                    check_loop = True
+
+                if restock_date.weekday() == 6:
+                    restock_date = restock_date - datetime.timedelta(days=5)
+                    check_loop = True

@@ -61,7 +61,7 @@ def create_details(content):
             label = tk.Label(frame, text=detail_ent_lbls[detail_num], font=('Segoe Print', 12))
             label.place(x=5, y=-1)
             if detail_num == 2:
-                label2 = tk.Label(frame, text=f'(Order after {order_yr}/{order_mth}/{order_day})', font=('Segoe Print', 9))
+                label2 = tk.Label(frame, text=f'(Order after {order_day}/{order_mth}/{order_yr})', font=('Segoe Print', 9))
                 label2.place(x=88, y=3)
 
                 frm_dd = tk.Frame(frame, width=200, height=30)
@@ -579,9 +579,9 @@ def update_status(i, status, content):
     with open('inventory_stock.json', 'w') as f:
         json.dump(stock, f, indent=4)
 
-    update_inventory = 1
-    update_orderlist = 1
-    update_calendar = 1
+    update_inventory == 1
+    update_orderlist == 1
+    update_calendar == 1
     print('update')
 
 def create_order_list(content):
