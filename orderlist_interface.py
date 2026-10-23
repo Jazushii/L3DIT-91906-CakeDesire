@@ -61,6 +61,9 @@ def create_details(content):
             label = tk.Label(frame, text=detail_ent_lbls[detail_num], font=('Segoe Print', 12))
             label.place(x=5, y=-1)
             if detail_num == 2:
+                label2 = tk.Label(frame, text=f'(Order after {order_yr}/{order_mth}/{order_day})', font=('Segoe Print', 9))
+                label2.place(x=88, y=3)
+
                 frm_dd = tk.Frame(frame, width=200, height=30)
                 frm_dd.place(x=5, y=30)
 
@@ -310,6 +313,25 @@ def error_prev():
                 has_error = True
                 d_errors[f'alpha{de}'] = de
 
+            # checks for boundary entries for 2, 3, 4
+            if dsum_alpha == 0:
+                # checks year
+                if int(detail_ents[4].get()) < order_yr:
+                    has_error = True
+                    d_errors[f'alpha{4}'] = 4
+
+                elif int(detail_ents[4].get()) >= order_yr:
+                    # checks month
+                    if int(detail_ents[3].get()) < order_mth:
+                        has_error = True
+                        d_errors[f'alpha{3}'] = 3
+
+                    elif int(detail_ents[3].get()) >= order_mth:
+                        # checks day
+                        if int(detail_ents[2].get()) < order_day:
+                            has_error = True
+                            d_errors[f'alpha{2}'] = 2
+
     # searching for errors in tiers
     t = 0
     for tnum in range(int(ent_tiers.get())):
@@ -326,11 +348,12 @@ def error_prev():
                 t_errors[f'alpha{t}'] = t
 
             # checking for size boundaries
-            if tsum_alpha == 0:
-                if te == 1:
-                    if int(tier_ents[t].get()) > 12:
-                        has_error = True
-                        t_errors[f'alpha{t}'] = t
+            if te == 1:
+                if tier_ents[t].get() != '' and tier_ents[t].get() != '*':
+                    if tsum_alpha == 0:
+                        if int(tier_ents[t].get()) > 12:
+                            has_error = True
+                            t_errors[f'alpha{t}'] = t
 
             t += 1
 

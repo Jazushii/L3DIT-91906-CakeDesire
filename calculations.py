@@ -86,6 +86,11 @@ frm_height = math.floor(390 / num_of_weeks)
 
 weekday_lbls = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
+order_date = today + datetime.timedelta(weeks=2)
+order_yr = order_date.year
+order_mth = order_date.month
+order_day = order_date.day
+
 def get_incoming_order():
     global incoming_order
     scan_files()
