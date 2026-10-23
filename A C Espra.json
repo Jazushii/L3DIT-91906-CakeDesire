@@ -1,6 +1,6 @@
 {
     "customer_name": "A C Espra",
-    "cake_flavour": "Vanilla",
+    "cake_flavour": "Chocolate",
     "due_day": "05",
     "due_month": "12",
     "due_year": "2026",
@@ -21,7 +21,7 @@
     "flour": 1111,
     "sugar": 1111,
     "baking_powder": 8,
-    "vanilla_extract": 6,
+    "vanilla_extract": 0,
     "cocoa_powder": 222,
-    "ube_extract": 11
+    "ube_extract": 0
 }
